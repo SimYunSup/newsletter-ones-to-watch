@@ -1,5 +1,5 @@
 import rss from '@astrojs/rss';
-import {ghostClient} from "../lib/ghost.js";
+import {ghostClient} from "../lib/ghost.ts";
 
 export async function GET(context) {
 	const posts = await ghostClient.posts
