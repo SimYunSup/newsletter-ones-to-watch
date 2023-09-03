@@ -1,0 +1,83 @@
+---
+import 'github-markdown-css/github-markdown-light.css';
+import { ghostClient } from '@/lib/ghost';
+import Layout from '@/components/BasicLayout.astro';
+
+const { slug } = Astro.params;
+const post = await ghostClient.posts
+	.read({
+		limit: 'all',
+		id: slug,
+		filter: 'tag:news',
+		fields:
+			"id,feature_image,title,html,slug,published_at,excerpt",
+	})
+	.catch((err) => {
+		console.error(err);
+	});
+
+const tags = /tags:([\w,]+)\|/.exec(post.excerpt)[1].split(',');
+const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)[1]
+const featureImage = post.feature_image.replace(import.meta.env.GHOST_SITE_URL,'https://ones-to-watch.ethansup.net');
+---
+<Layout title={post.title}>
+	<Fragment slot="head">
+		<meta name="author" content={author} />
+		<meta name="description" content={post.excerpt} />
+		<meta property="og:title" content={post.title} />
+		<meta property="og:description" content={post.excerpt} />
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:image" content={post.feature_image} />
+		<link rel="preload" as="image" href={post.feature_image} />
+	</Fragment>
+	<article
+		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 lg:pt-[80px] max-w-3xl mx-auto"
+	>
+		{
+			tags && (
+				<p class="text-gray-500 text-[14px] font-semibold h-5 mb-8">
+					{tags.map((tag) => (
+						<span
+							class="inline-block rounded-xl py-1 px-4 text-md mr-1 bg-teal-200"
+						>
+							{tag}
+						</span>
+					))}
+				</p>
+			)
+		}
+		<h1 class="text-3xl font-semibold mb-8">{post.title}</h1>
+		<div class="flex items-center gap-3">
+			<div>
+				<strong>{author}</strong>
+				<div class="flex items-center text-gray-400 text-sm gap-1">
+					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(post.published_at))}</p>
+				</div>
+			</div>
+		</div>
+		<img
+			class="mt-16 w-full"
+			src={featureImage}
+			alt={post.title}
+			width="752"
+			height="499"
+		/>
+		<div class="markdown-body" set:html={post.html} />
+		<script src="https://giscus.app/client.js"
+				data-repo="SimYunSup/newsletter-ones-to-watch"
+				data-repo-id="R_kgDOKO1eRg"
+				data-category-id="[ENTER CATEGORY ID HERE]"
+				data-mapping="pathname"
+				data-strict="0"
+				data-reactions-enabled="1"
+				data-emit-metadata="0"
+				data-input-position="bottom"
+				data-theme="light"
+				data-lang="ko"
+				data-loading="lazy"
+				crossorigin="anonymous"
+				async>
+		</script>
+	</article>
+</Layout>

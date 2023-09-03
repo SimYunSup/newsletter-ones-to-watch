@@ -1,0 +1,21 @@
+---
+import 'github-markdown-css/github-markdown-light.css';
+import Layout from '@/components/BasicLayout.astro';
+import {ghostClient} from '@/lib/ghost';
+
+const pageData = await ghostClient.pages
+	.read({
+		slug: 'about',
+	});
+console.log(pageData);
+---
+
+<Layout
+	title="About us"
+>
+	<article class="flex">
+		<div class="container mx-auto markdown-body px-4 lg:px-32">
+			<Fragment set:html={pageData.html} />
+		</div>
+	</article>
+</Layout>

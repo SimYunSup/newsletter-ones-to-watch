@@ -1,0 +1,20 @@
+---
+import { Icon } from 'astro-icon'
+import HeaderLink from './HeaderLink.astro';
+---
+
+<header class="mb-12">
+	<div class="flex justify-around py-4">
+		<h2 class="inline-block h-6 font-bold text-xl"><a href="/">OTW for FE</a></h2>
+		<div class="hidden sm:block">
+			<a class="block w-6 h-6"><Icon pack="mdi" name="github" /></a>
+		</div>
+	</div>
+	<nav class="flex">
+		<div class="mx-auto">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/news/list/1">News</HeaderLink>
+			<HeaderLink href="/about">About us</HeaderLink>
+		</div>
+	</nav>
+</header>

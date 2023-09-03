@@ -1,0 +1,76 @@
+---
+import Layout from '@/components/BasicLayout.astro';
+import {ghostClient} from '@/lib/ghost';
+
+const posts = await ghostClient.posts
+    .browse({
+        limit: '4',
+        page: '1',
+        filter: 'tag:news',
+        fields:
+            "id,feature_image,title,html,slug,published_at,excerpt",
+    });
+const postData = posts.map((post) => ({
+    ...post,
+    tags: /tags:([\w,]+)\|/.exec(post.excerpt)[1].split(','),
+    feature_image: post.feature_image.replace(import.meta.env.GHOST_SITE_URL,'https://ones-to-watch.ethansup.net'),
+}))
+---
+<Layout title={'ONE TO WATCH for FrontEnd'}>
+    <Fragment slot="head">
+        <meta name="description" content=""/>
+        <meta property="og:title" content="ONE TO WATCH for FrontEnd"/>
+        <meta property="og:description" content="프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."/>
+        <meta property="og:url" content={Astro.url}/>
+        <!--<meta property="og:image" content=""/>-->
+    </Fragment>
+    <article class="container pt-12 px-4 sm:px-12 mx-auto">
+        <h1 class="mb-4 text-6xl text-center font-bold">
+            Ones To Watch for FrontEnd
+        </h1>
+        <h2 class="mb-8 text-3xl text-center font-bold">
+            프론트엔드에 대한 정보들을 매주 큐레이션해드립니다.
+        </h2>
+        <div class="flex justify-center h-18">
+            <div style="max-width: 440px;margin: 0 auto;width: 100%"><script src="https://cdn.jsdelivr.net/ghost/signup-form@~0.1/umd/signup-form.min.js" data-button-color="#27eedd" data-button-text-color="#FFFFFF" data-site={import.meta.env.GHOST_SITE_URL} async></script></div>
+        </div>
+    </article>
+    <article class="container pt-12 px-4 sm:px-12 mx-auto">
+        <h3 class="mb-8 text-2xl text-center font-bold">
+            최신 정보
+        </h3>
+        <ul class="flex sm:flex-col">
+            {postData.map((post) => (
+                    <li class="w-full rounded-md border-4 border-gray-500 overflow-hidden p-3 lg:w-1/2">
+                        <a
+                            class="w-full h-40 flex overflow-hidden"
+                            href={`/news/post/${post.id}`}
+                        >
+                            <img
+                                    src={post.feature_image}
+                                    alt=""
+                                    class="w-1/6 mr-4 lg:w-1/3"
+                            />
+                            <div class="py-3 flex flex-col grow w-32">
+                                <div class="text-3xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
+                                    {post.title}
+                                </div>
+                                <div class="mb-auto">
+                                    {post.tags.map((tag) => (
+                                            <span
+                                                    class="inline-block rounded-xl py-1 px-4 text-md mr-1 bg-teal-200"
+                                            >
+										{tag}
+									</span>
+                                    ))}
+                                </div>
+                                <div class="text-lg text-gray-700 w-full">
+                                    {new Intl.DateTimeFormat('ko-KR').format(new Date(post.published_at))}
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+            ))}
+        </ul>
+    </article>
+</Layout>≈
