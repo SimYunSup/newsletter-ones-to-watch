@@ -14,7 +14,10 @@ export default defineConfig({
       alias: {
         '@': '/src'
       }
-    }
+    },
+    build: {
+      minify: false,
+    },
   },
   output: "server",
   adapter: cloudflare()
