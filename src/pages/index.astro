@@ -13,7 +13,6 @@ const posts = await ghostClient.posts
 const postData = posts.map((post) => ({
     ...post,
     tags: /tags:([\w,]+)\|/.exec(post.excerpt)[1].split(','),
-    feature_image: post.feature_image.replace(import.meta.env.GHOST_SITE_URL,'https://ones-to-watch.ethansup.net'),
 }))
 ---
 <Layout title={'ONE TO WATCH for FrontEnd'}>

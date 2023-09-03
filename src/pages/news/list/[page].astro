@@ -18,7 +18,6 @@ const postData = posts.map((post) => ({
 	...post,
 	tags: /tags:([\w,]+)\|/.exec(post.excerpt)[1].split(','),
 	author: /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)[1],
-	feature_image: post.feature_image.replace(import.meta.env.GHOST_SITE_URL,'https://ones-to-watch.ethansup.net'),
 }))
 ---
 
