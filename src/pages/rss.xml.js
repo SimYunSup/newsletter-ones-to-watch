@@ -3,7 +3,7 @@ import {ghostClient} from "../lib/ghost.ts";
 
 export async function GET(context) {
 	const posts = await ghostClient.posts
-		.read({
+		.browse({
 			limit: '12',
 			filter: 'tag:news',
 			fields:
