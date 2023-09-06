@@ -6,16 +6,56 @@ import {ghostClient} from '@/lib/ghost';
 const pageData = await ghostClient.pages
 	.read({
 		slug: 'about',
-	});
-console.log(pageData);
+	}).fields({ html: true }).fetch();
+if (!pageData.success) {
+  return Astro.redirect('/404');
+}
 ---
 
 <Layout
-	title="About us"
+    pageTitle="About us"
 >
+	<Fragment slot="head">
+        <meta name="description" content="OTW for FE팀을 소개합니다"/>
+        <meta property="og:title" content="ONE TO WATCH for FrontEnd"/>
+        <meta property="og:description" content="OTW for FE팀을 소개합니다."/>
+        <meta property="og:url" content={Astro.url}/>
+        <meta property="og:image" content="/images/og.png" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" integrity="sha512-W/zrbCncQnky/EzL+/AYwTtosvrM+YG/V6piQLSe2HuKS6cmbw89kjYkp3tWFn1dkWV7L1ruvJyKbLz73Vlgfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style is:global>
+    .nav-github a,
+    .nav-linkedin a,
+    .nav-twitter a,
+    .nav-x a {
+        font-size: 0 !important;
+        color: #222222;
+        cursor: pointer;
+    }
+
+    .nav-github a::before,
+    .nav-linkedin a::before,
+    .nav-twitter a::before,
+    .nav-x a::before {
+        font-family: "Font Awesome 6 Brands";
+        display: inline-block;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .nav-github a::before {content: "\f09b"}
+    .nav-linkedin a::before {content: "\f08c"}
+    .nav-twitter a::before {content: "\f099"}
+    .nav-x a::before {content: "\e61b"}
+</style>
+
+	</Fragment>
 	<article class="flex">
-		<div class="container mx-auto markdown-body px-4 lg:px-32">
-			<Fragment set:html={pageData.html} />
+		<div class="container mx-auto px-4 lg:px-32">
+			<div class="markdown-body" set:html={pageData.data.html} />
 		</div>
 	</article>
 </Layout>

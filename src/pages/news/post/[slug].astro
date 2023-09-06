@@ -1,25 +1,33 @@
 ---
 import 'github-markdown-css/github-markdown-light.css';
+import '@/styles/content.css';
 import { ghostClient } from '@/lib/ghost';
 import Layout from '@/components/BasicLayout.astro';
 
 const { slug } = Astro.params;
-const post = await ghostClient.posts
+const result = await ghostClient.posts
 	.read({
-		limit: 'all',
-		id: slug,
-		filter: 'tag:news',
-		fields:
-			"id,feature_image,title,html,slug,published_at,excerpt",
+		id: slug ?? '',
 	})
-	.catch((err) => {
-		console.error(err);
-	});
+	.fields({
+		id: true,
+		feature_image: true,
+		title: true,
+		html: true,
+		slug: true,
+		published_at: true,
+		excerpt: true,
+	})
+	.fetch();
 
-const tags = /tags:([\w,]+)\|/.exec(post.excerpt)[1].split(',');
-const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)[1]
+if (!result.success) {
+    return Astro.redirect('/404');
+}
+const post = result.data;
+const tags = /tags:([\w,]+)\|/.exec(post.excerpt)?.[1].split(',');
+const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)?.[1];
 ---
-<Layout title={post.title}>
+<Layout pageTitle={post.title}>
 	<Fragment slot="head">
 		<meta name="author" content={author} />
 		<meta name="description" content={post.excerpt} />
@@ -27,11 +35,17 @@ const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)[1]
 		<meta property="og:description" content={post.excerpt} />
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={Astro.url} />
-		<meta property="og:image" content={post.feature_image} />
-		<link rel="preload" as="image" href={post.feature_image} />
+		{post.feature_image ? (
+			<Fragment>
+				<meta property="og:image" content={post.feature_image} />
+				<link rel="preload" as="image" href={post.feature_image} />
+			</Fragment>
+		): (
+      <meta property="og:image" content="/images/og.png" />
+		)}
 	</Fragment>
 	<article
-		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 lg:pt-[80px] max-w-3xl mx-auto"
+		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
 	>
 		{
 			tags && (
@@ -51,22 +65,24 @@ const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)[1]
 			<div>
 				<strong>{author}</strong>
 				<div class="flex items-center text-gray-400 text-sm gap-1">
-					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(post.published_at))}</p>
+					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(post.published_at ?? ''))}</p>
 				</div>
 			</div>
 		</div>
-		<img
+		{post.feature_image ? (
+			<img
 			class="mt-16 w-full"
 			src={post.feature_image}
 			alt={post.title}
 			width="752"
 			height="499"
-		/>
-		<div class="markdown-body" set:html={post.html} />
+			/>
+		) : null}
+		<div class="markdown-body pb-12" set:html={post.html} />
 		<script src="https://giscus.app/client.js"
 				data-repo="SimYunSup/newsletter-ones-to-watch"
 				data-repo-id="R_kgDOKO1eRg"
-				data-category-id="[ENTER CATEGORY ID HERE]"
+				data-category-id="General"
 				data-mapping="pathname"
 				data-strict="0"
 				data-reactions-enabled="1"
