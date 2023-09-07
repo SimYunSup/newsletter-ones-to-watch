@@ -10,18 +10,14 @@ const result = await ghostClient.posts
   .browse({
     limit: 12,
     page: Number(page),
-    filter: "tags:news",
+    filter: "tags:email",
     fields: "id,feature_image,title,published_at,excerpt",
   })
   .fetch();
 if (!result.success || !result.data.length) {
   return Astro.redirect("/404");
 }
-const postData = result.data.map((post) => ({
-  ...post,
-  tags: /tags:([\w,]+)\|/.exec(post.excerpt)?.[1].split(","),
-  author: /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)?.[1],
-}));
+const postData = result.data
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
@@ -32,7 +28,7 @@ const postData = result.data.map((post) => ({
       >
         {
           postData.map((post) => (
-            <li class="w-full rounded-md border-4 border-gray-500 overflow-hidden p-3 lg:w-[calc(50%-.5rem)]">
+            <li class="w-full rounded-md border-4 border-gray-500 overflow-hidden p-3">
               <a
                 class="w-full h-28 lg:h-40 flex overflow-hidden"
                 href={`/news/post/${post.id}`}

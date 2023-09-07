@@ -1,3 +1,7 @@
+article .markdown-body {
+  font-family: "Pretendard Variable", "Tossface",-apple-system,BlinkMacSystemFont,Apple SD Gothic Neo,"sans-serif";
+}
+
 .kg-bookmark-card {
   margin: 0 !important;
   width: 100%;
@@ -149,6 +153,7 @@ figcaption {
   padding-right: .8em;
   line-height: 1.25em;
   font-size: 1.15em;
+  font-family: "Pretendard Variable", "Tossface";
 }
 .kg-callout-card.kg-card {
   border-radius: 0.25em;
@@ -158,4 +163,9 @@ figcaption {
 }
 .kg-callout-card-accent a {
   text-decoration: underline;
+}
+.emoji {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
 }
