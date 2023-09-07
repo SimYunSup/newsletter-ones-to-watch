@@ -25,6 +25,7 @@ if (!result.success) {
 }
 const post = result.data;
 const tags = /tags:([\w,]+)\|/.exec(post.excerpt)?.[1].split(',');
+	console.log(post)
 if (!(tags?.includes('email'))) {
   return Astro.redirect('/404');
 }
@@ -33,7 +34,6 @@ if (!(tags?.includes('email'))) {
 	<Fragment slot="head">
 		<meta name="description" content={post.excerpt} />
 		<meta property="og:title" content={post.title} />
-		<meta property="og:description" content={post.excerpt} />
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={Astro.url} />
 		{post.feature_image ? (
