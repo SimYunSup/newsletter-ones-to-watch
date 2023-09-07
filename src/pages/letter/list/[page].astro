@@ -31,7 +31,7 @@ const postData = result.data
             <li class="w-full rounded-md border-4 border-gray-500 overflow-hidden p-3">
               <a
                 class="w-full h-28 lg:h-40 flex overflow-hidden"
-                href={`/news/post/${post.id}`}
+                href={`/letter/post/${post.id}`}
               >
                 <img
                   src={post.feature_image ?? "/images/no-image.png"}
@@ -66,7 +66,7 @@ const postData = result.data
             result.meta.pagination.prev ? (
               <a
                 class="rounded-xl bg-teal-600 text-white text-3xl p-4"
-                href={`/news/list/${(page ? Number(page) : 2) - 1}`}
+                href={`/letter/list/${(page ? Number(page) : 2) - 1}`}
               >
                 이전
               </a>
@@ -78,7 +78,7 @@ const postData = result.data
             result.meta.pagination.next ? (
               <a
                 class="rounded-xl bg-teal-600 text-white text-3xl p-4"
-                href={`/news/list/${(page ? Number(page) : 0) + 1}`}
+                href={`/letter/list/${(page ? Number(page) : 0) + 1}`}
               >
                 다음
               </a>

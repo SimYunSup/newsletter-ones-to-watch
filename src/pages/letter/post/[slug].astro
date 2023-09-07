@@ -25,11 +25,12 @@ if (!result.success) {
 }
 const post = result.data;
 const tags = /tags:([\w,]+)\|/.exec(post.excerpt)?.[1].split(',');
-const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)?.[1];
+if (!(tags?.includes('email'))) {
+  return Astro.redirect('/404');
+}
 ---
 <Layout pageTitle={post.title}>
 	<Fragment slot="head">
-		<meta name="author" content={author} />
 		<meta name="description" content={post.excerpt} />
 		<meta property="og:title" content={post.title} />
 		<meta property="og:description" content={post.excerpt} />
@@ -47,23 +48,9 @@ const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)?.[1];
 	<article
 		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
 	>
-		{
-			tags && (
-				<p class="text-gray-500 text-[14px] font-semibold h-5 mb-8">
-					{tags.map((tag) => (
-						<span
-							class="inline-block rounded-xl py-1 px-4 text-md mr-1 bg-teal-200"
-						>
-							{tag}
-						</span>
-					))}
-				</p>
-			)
-		}
 		<h1 class="text-3xl font-semibold mb-8">{post.title}</h1>
 		<div class="flex items-center gap-3">
 			<div>
-				<strong>{author}</strong>
 				<div class="flex items-center text-gray-400 text-sm gap-1">
 					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(post.published_at ?? ''))}</p>
 				</div>

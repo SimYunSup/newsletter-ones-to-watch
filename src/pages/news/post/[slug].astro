@@ -21,11 +21,14 @@ const result = await ghostClient.posts
 	.fetch();
 
 if (!result.success) {
-    return Astro.redirect('/404');
+  return Astro.redirect('/404');
 }
 const post = result.data;
 const tags = /tags:([\w,]+)\|/.exec(post.excerpt)?.[1].split(',');
 const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)?.[1];
+if (tags?.includes('email')) {
+  return Astro.redirect('/404');
+}
 ---
 <Layout pageTitle={post.title}>
 	<Fragment slot="head">
