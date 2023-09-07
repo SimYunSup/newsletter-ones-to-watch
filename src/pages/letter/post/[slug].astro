@@ -32,7 +32,6 @@ if (!(tags?.includes('email'))) {
 ---
 <Layout pageTitle={post.title}>
 	<Fragment slot="head">
-		<meta name="description" content={post.excerpt} />
 		<meta property="og:title" content={post.title} />
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={Astro.url} />
