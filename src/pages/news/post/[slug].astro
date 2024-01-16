@@ -1,86 +1,51 @@
 ---
 import 'github-markdown-css/github-markdown-light.css';
 import '@/styles/content.css';
-import { ghostClient } from '@/lib/ghost';
+import { NotionRenderer } from '@notion-render/client';
+import { notionClient } from '../../../lib/data';
 import Layout from '@/components/BasicLayout.astro';
 
-const { slug } = Astro.params;
-const result = await ghostClient.posts
-	.read({
-		id: slug ?? '',
-	})
-	.fields({
-		id: true,
-		feature_image: true,
-		title: true,
-		html: true,
-		slug: true,
-		published_at: true,
-		excerpt: true,
-	})
-	.fetch();
+const renderer = new NotionRenderer();
 
-if (!result.success) {
+const { slug } = Astro.params;
+const propertyResult = await notionClient.pages.retrieve({
+	page_id: slug,
+});
+const published_date = propertyResult.properties.날짜.date.start;
+const title = propertyResult.properties.이름.title[0].plain_text
+const result = await notionClient.blocks.children.list({
+	block_id: slug,
+})
+
+if (!result) {
   return Astro.redirect('/404');
 }
-const post = result.data;
-const tags = /tags:([\w,]+)\|/.exec(post.excerpt)?.[1].split(',');
-const author = /author:([\w\sㄱ-ㅎ가-힣]+)\|/.exec(post.excerpt)?.[1];
-if (tags?.includes('email')) {
-  return Astro.redirect('/404');
-}
+
+const html = await renderer.render(...(result.results as any));
+
 ---
-<Layout pageTitle={post.title}>
+<Layout pageTitle={""}>
 	<Fragment slot="head">
-		<meta name="author" content={author} />
 		<meta name="description" content={`뉴스레터`} />
-		<meta property="og:title" content={post.title} />
+		<meta property="og:title" content={title} />
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={Astro.url} />
-		{post.feature_image ? (
-			<Fragment>
-				<meta property="og:image" content={post.feature_image} />
-				<link rel="preload" as="image" href={post.feature_image} />
-			</Fragment>
-		): (
-      <meta property="og:image" content="/images/og.png" />
-		)}
+		<meta property="og:image" content="/images/og.png" />
 	</Fragment>
 	<article
 		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
 	>
-		{
-			tags && (
-				<p class="text-gray-500 text-[14px] font-semibold h-5 mb-8">
-					{tags.map((tag) => (
-						<span
-							class="inline-block rounded-xl py-1 px-4 text-md mr-1 bg-teal-200"
-						>
-							{tag}
-						</span>
-					))}
-				</p>
-			)
-		}
-		<h1 class="text-3xl font-semibold mb-8">{post.title}</h1>
+		<h1 class="text-3xl font-semibold mb-8">
+			{title}
+		</h1>
 		<div class="flex items-center gap-3">
 			<div>
-				<strong>{author}</strong>
 				<div class="flex items-center text-gray-400 text-sm gap-1">
-					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(post.published_at ?? ''))}</p>
+					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(published_date))}</p>
 				</div>
 			</div>
 		</div>
-		{post.feature_image ? (
-			<img
-			class="mt-16 w-full"
-			src={post.feature_image}
-			alt={post.title}
-			width="752"
-			height="499"
-			/>
-		) : null}
-		<div class="markdown-body pb-12" set:html={post.html} />
+		<div class="markdown-body pb-12" set:html={html} />
 		<script>
 			import Twemoji from 'twemoji';
 			Twemoji.parse(document.body)

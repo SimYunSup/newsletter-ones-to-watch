@@ -15,6 +15,8 @@
     "@astrojs/rss": "^3.0.0",
     "@astrojs/sitemap": "^3.0.0",
     "@astrojs/tailwind": "^5.0.0",
+    "@notion-render/client": "^0.0.2",
+    "@notionhq/client": "^2.2.14",
     "@ts-ghost/content-api": "^4.0.8",
     "astro": "^3.0.7",
     "github-markdown-css": "^5.2.0",

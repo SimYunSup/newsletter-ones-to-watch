@@ -1,15 +1,31 @@
 import rss from '@astrojs/rss';
-import {ghostClient} from "../lib/ghost.ts";
+import {notionClient} from "../lib/data.ts";
 
 export async function GET(context) {
-	const posts = await ghostClient.posts
-		.browse({
-			limit: 12,
-			filter: 'tags:news',
-			fields:
-				"id,feature_image,title,html,slug,published_at,excerpt",
-		})
-		.fetch();
+  const response = await notionClient.databases.query({
+      database_id: import.meta.env.NOTION_DATABASE_ID,
+      filter: {
+        property: "Status",
+        select: {
+          equals: "New"
+        }
+      },
+      sorts: [
+        {
+          property: "날짜",
+          direction: "descending"
+        }
+      ],
+      page_size: 12,
+    },
+  );
+  const postData = response.results.map(v => ({
+    id: v.id,
+    value: {
+      date: v.properties.날짜.date.start,
+      name: v.properties.이름.title[0].plain_text,
+    },
+  }))
 	return rss({
 		title: 'Ones To Watch For FrontEnd',
 		description: '프론트엔드에 대한 정보들을 매주 큐레이션해드립니다.',
@@ -18,9 +34,9 @@ export async function GET(context) {
 		site: context.site,
 		// Array of `<item>`s in output xml
 		// See "Generating items" section for examples using content collections and glob imports
-		items: posts.data.map((post) => ({
-			title: post.title,
-			pubDate: post.published_at,
+		items: postData.data.map((post) => ({
+			title: post.value.name,
+			pubDate: post.value.date,
 		// Compute RSS link from post `slug`
 		// This example assumes all posts are rendered as `/blog/[slug]` routes
 			link: `/news/list/${post.id}`,
