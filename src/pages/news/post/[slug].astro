@@ -16,7 +16,7 @@ const renderer = new NotionRenderer({
 					<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">
 						<div class="h-full flex-auto p-3 w-full">
              	<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
-                ${bookmarkData.title}
+                ${bookmarkData.title ?? bookmarkData.url}
               </div>
               <div class="text-md lg:text-lg text-gray-700 w-full text-ellipsis">
               	${bookmarkData.description ?? ''}
