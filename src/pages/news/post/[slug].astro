@@ -51,7 +51,8 @@ const html = await renderer.render(...(response as any));
 ---
 <Layout pageTitle={""}>
 	<Fragment slot="head">
-		<meta name="description" content={`뉴스레터`} />
+		<title>{metadata.title}</title>
+		<meta name="description" content={`${metadata.title} - ${metadata.targetName}`} />
 		<meta property="og:title" content={metadata.title} />
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={Astro.url} />
