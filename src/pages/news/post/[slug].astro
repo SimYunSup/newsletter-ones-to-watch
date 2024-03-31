@@ -4,8 +4,7 @@ import '@/styles/content.css';
 import { createBlockRenderer, NotionRenderer } from '@notion-render/client';
 import Layout from '@/components/BasicLayout.astro';
 
-const imageBaseURL = import.meta.env.IMAGE_BASE;
-console.log(imageBaseURL)
+const imageBaseURL = import.meta.env.IMAGE_BASE ?? 'https://cdn-otw.ethansup.net/';
 
 const renderer = new NotionRenderer({
 	renderers: [
