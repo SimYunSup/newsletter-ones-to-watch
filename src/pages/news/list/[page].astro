@@ -1,48 +1,33 @@
 ---
-import {notionClient} from "../../../lib/data";
 import Layout from "@/components/BasicLayout.astro";
 
-const {page} = Astro.params;
+const { page } = Astro.params;
 if (!Number.isSafeInteger(Number(page))) {
   return Astro.redirect("/404");
 }
+const runtime = Astro.locals.runtime;
 let currentPage = Number(page);
 let nextCursor: string | undefined;
 let result = {};
-while (currentPage >= 1) {
-  const response = await notionClient.databases.query({
-      database_id: import.meta.env.NOTION_DATABASE_ID,
-      filter: {
-        property: "Status",
-        select: {
-          equals: "New"
-        }
-      },
-      sorts: [
-        {
-          property: "날짜",
-          direction: "descending"
-        }
-      ],
-      start_cursor: nextCursor,
-      page_size: 12,
-    },
-  );
-  result = response;
-  nextCursor = response.next_cursor;
-  currentPage = currentPage - 1;
+const response = await runtime.env.CRAWLER_KV.list({
+  prefix: 'newsletter',
+});
+
+interface PostData {
+  id: string;
+  date: string;
 }
-if (!result.results.length) {
-  return Astro.redirect("/404");
+
+let postData = [];
+
+for (const item of response.keys.slice((page - 1) * 12, page * 12)) {
+  postData.push({
+    id: item.name,
+    name: item.metadata.title,
+    date: item.metadata.targetDate,
+  })
 }
-const hasNextPage = !!(result.next_cursor)
-const postData = result.results.map(v => ({
-  id: v.id,
-  value: {
-    date: v.properties.날짜.date.start,
-    name: v.properties.이름.title[0].plain_text,
-  },
-}))
+console.log(response.keys, postData)
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
@@ -60,13 +45,15 @@ const postData = result.results.map(v => ({
               >
                 <div class="py-3 flex flex-col grow w-32">
                   <div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
-                    {post.value.name}
+                    {post.name}
                   </div>
-                  <div class="text-md lg:text-lg text-gray-700 w-full">
-                    {new Intl.DateTimeFormat("ko-KR").format(
-                      new Date(post.value.date)
-                    )}
-                  </div>
+                  {post.date ? (
+                    <div class="text-md lg:text-lg text-gray-700 w-full">
+                      {new Intl.DateTimeFormat("ko-KR").format(
+                        new Date(post.date)
+                      )}
+                    </div>
+                  ) : null}
                 </div>
               </a>
             </li>
@@ -88,7 +75,7 @@ const postData = result.results.map(v => ({
         </div>
         <div>
           {
-            hasNextPage ? (
+            false ? (
               <a
                 class="rounded-xl bg-teal-600 text-white text-3xl p-4"
                 href={`/news/list/${(page ? Number(page) : 0) + 1}`}

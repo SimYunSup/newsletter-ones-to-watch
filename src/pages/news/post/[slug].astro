@@ -1,33 +1,57 @@
 ---
 import 'github-markdown-css/github-markdown-light.css';
 import '@/styles/content.css';
-import { NotionRenderer } from '@notion-render/client';
-import { notionClient } from '../../../lib/data';
+import { createBlockRenderer, NotionRenderer } from '@notion-render/client';
 import Layout from '@/components/BasicLayout.astro';
 
-const renderer = new NotionRenderer();
+const renderer = new NotionRenderer({
+	renderers: [
+		createBlockRenderer(
+			'bookmark',
+			async (data) => {
+				const bookmarkData = data.bookmark as any;
+				const imageBaseURL = import.meta.env.IMAGE_BASE;
+				const imageTag = bookmarkData.image ? `<img class="h-full" src="${imageBaseURL}${bookmarkData.image}" alt="">` : ''
+				return `
+					<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">
+						<div class="h-full flex-auto p-3 w-full">
+             	<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
+                ${bookmarkData.title}
+              </div>
+              <div class="text-md lg:text-lg text-gray-700 w-full text-ellipsis">
+              	${bookmarkData.description ?? ''}
+              </div>
+						</div>
+						${imageTag}
+					</a>
+				`
+			}
+		)
+	]
+});
 
 const { slug } = Astro.params;
-const propertyResult = await notionClient.pages.retrieve({
-	page_id: slug,
-});
-const published_date = propertyResult.properties.날짜.date.start;
-const title = propertyResult.properties.이름.title[0].plain_text
-const result = await notionClient.blocks.children.list({
-	block_id: slug,
-})
+if (!slug) {
+	return Astro.redirect("/404");
+}
 
-if (!result) {
+const runtime = Astro.locals.runtime;
+const { value: response, metadata } = await runtime.env.CRAWLER_KV.getWithMetadata(
+	slug,
+	'json',
+);
+
+if (!response) {
   return Astro.redirect('/404');
 }
 
-const html = await renderer.render(...(result.results as any));
+const html = await renderer.render(...(response as any));
 
 ---
 <Layout pageTitle={""}>
 	<Fragment slot="head">
 		<meta name="description" content={`뉴스레터`} />
-		<meta property="og:title" content={title} />
+		<meta property="og:title" content={metadata.title} />
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content={Astro.url} />
 		<meta property="og:image" content="/images/og.png" />
@@ -36,12 +60,12 @@ const html = await renderer.render(...(result.results as any));
 		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
 	>
 		<h1 class="text-3xl font-semibold mb-8">
-			{title}
+			{metadata.title}
 		</h1>
-		<div class="flex items-center gap-3">
+		<div class="flex items-center gap-3 mb-2">
 			<div>
 				<div class="flex items-center text-gray-400 text-sm gap-1">
-					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(published_date))}</p>
+					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(metadata.targetDate))}</p>
 				</div>
 			</div>
 		</div>

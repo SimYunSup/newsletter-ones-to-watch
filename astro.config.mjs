@@ -19,6 +19,20 @@ export default defineConfig({
       minify: false,
     },
   },
-  output: "server",
-  adapter: cloudflare()
+  output: 'server',
+  adapter: cloudflare({
+    mode: 'directory',
+    runtime: {
+      mode: 'local',
+      type: 'pages',
+      bindings: {
+        'CRAWLER_KV': {
+          type: 'kv',
+        },
+        'IMAGE_R2': {
+          type: 'r2',
+        },
+      },
+    },
+  }),
 });
