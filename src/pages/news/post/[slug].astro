@@ -4,13 +4,14 @@ import '@/styles/content.css';
 import { createBlockRenderer, NotionRenderer } from '@notion-render/client';
 import Layout from '@/components/BasicLayout.astro';
 
+const imageBaseURL = import.meta.env.IMAGE_BASE;
+
 const renderer = new NotionRenderer({
 	renderers: [
 		createBlockRenderer(
 			'bookmark',
 			async (data) => {
 				const bookmarkData = data.bookmark as any;
-				const imageBaseURL = import.meta.env.IMAGE_BASE;
 				const imageTag = bookmarkData.image ? `<img class="h-full" src="${imageBaseURL}${bookmarkData.image}" alt="">` : ''
 				return `
 					<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">
@@ -18,7 +19,7 @@ const renderer = new NotionRenderer({
              	<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
                 ${bookmarkData.title ?? bookmarkData.url}
               </div>
-              <div class="text-md lg:text-lg text-gray-700 w-full text-ellipsis">
+              <div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis">
               	${bookmarkData.description ?? ''}
               </div>
 						</div>
