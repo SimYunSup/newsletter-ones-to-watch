@@ -7,27 +7,19 @@ if (!Number.isSafeInteger(Number(page))) {
 }
 const runtime = Astro.locals.runtime;
 let currentPage = Number(page);
-let nextCursor: string | undefined;
-let result = {};
 const response = await runtime.env.CRAWLER_KV.list({
   prefix: 'newsletter',
 });
 
-interface PostData {
-  id: string;
-  date: string;
-}
-
 let postData = [];
 
-for (const item of response.keys.slice((page - 1) * 12, page * 12)) {
+for (const item of response.keys.slice((currentPage - 1) * 12, page * 12)) {
   postData.push({
     id: item.name,
     name: item.metadata.title,
     date: item.metadata.targetDate,
   })
 }
-console.log(response.keys, postData)
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
