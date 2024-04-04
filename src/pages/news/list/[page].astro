@@ -20,6 +20,7 @@ for (const item of response.keys.slice((currentPage - 1) * 12, page * 12)) {
     date: item.metadata.targetDate,
   })
 }
+postData = postData.sort((a, b) => new Date(b.date) - new Date(a.date))
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
