@@ -7,83 +7,77 @@ import Layout from '@/components/BasicLayout.astro';
 const imageBaseURL = import.meta.env.IMAGE_BASE ?? 'https://cdn-otw.ethansup.net/';
 
 const renderer = new NotionRenderer({
-	renderers: [
-		createBlockRenderer(
-			'bookmark',
-			async (data) => {
-				const bookmarkData = data.bookmark as any;
-				const imageTag = bookmarkData.image ? `<img class="h-28 min-w-28 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : ''
-				return `
-					<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">
-						<div class="h-full flex-auto p-3 w-full">
-             	<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
-                ${bookmarkData.title ?? bookmarkData.url}
-              </div>
-              <div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis">
-              	${bookmarkData.description ?? ''}
-              </div>
-						</div>
-						${imageTag}
-					</a>
-				`
-			}
-		)
-	]
+  renderers: [
+    createBlockRenderer(
+      'bookmark',
+      async (data) => {
+        const bookmarkData = data.bookmark as any;
+        const imageTag = bookmarkData.image ? `<img class="h-28 w-1/6 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
+        let html = `<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">`;
+        html += `<div class="h-full w-5/6 flex-auto p-3">`;
+        html += `<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
+        html += String(bookmarkData.title ?? bookmarkData.url);
+        html += '</div>';
+        html += '<div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis">';
+        html += String(bookmarkData.description ?? '');
+        html += '</div>';
+        html += imageTag;
+        html += '</a>';
+
+        return html;
+      },
+    ),
+  ],
 });
 
 const { slug } = Astro.params;
 if (!slug) {
-	return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
 
 const runtime = Astro.locals.runtime;
 const { value: response, metadata: info } = await runtime.env.CRAWLER_KV.getWithMetadata(
-	slug,
-	'json',
+  slug,
+  'json',
 );
 
 if (!response) {
   return Astro.redirect('/404');
 }
 const html = await renderer.render(...(response as any));
-
 ---
 <Layout
-	pageTitle={info.title}
-	description={`${info.title} - ${info.targetDate}`}
+  pageTitle={info.title}
+  description={`${info.title} - ${info.targetDate}`}
 >
-	<article
-		class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
-	>
-		<h1 class="text-3xl font-semibold mb-8">
-			{info.title}
-		</h1>
-		<div class="flex items-center gap-3 mb-2">
-			<div>
-				<div class="flex items-center text-gray-400 text-sm gap-1">
-					<p>{new Intl.DateTimeFormat('ko-KR').format(new Date(info.targetDate))}</p>
-				</div>
-			</div>
-		</div>
-		<div class="markdown-body pb-12" set:html={html} />
-		<script>
-			import Twemoji from 'twemoji';
-			Twemoji.parse(document.body)
-		</script>
-		<script src="https://giscus.app/client.js"
-				data-repo="SimYunSup/newsletter-ones-to-watch"
-				data-repo-id="R_kgDOKO1eRg"
-				data-category-id="DIC_kwDOKO1eRs4CZDYo"
-				data-mapping="pathname"
-				data-strict="0"
-				data-reactions-enabled="1"
-				data-emit-metadata="0"
-				data-input-position="bottom"
-				data-theme="light"
-				data-lang="ko"
-				data-loading="lazy"
-				crossorigin="anonymous"
-				async>
-		</script>
-	</article>
+  <article
+    class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
+  >
+    <h1 class="text-3xl font-semibold mb-8">
+      {info.title}
+    </h1>
+    <div class="flex items-center gap-3 mb-2">
+      <div>
+        <div class="flex items-center text-gray-400 text-sm gap-1">
+          <p>{new Intl.DateTimeFormat('ko-KR').format(new Date(info.targetDate))}</p>
+        </div>
+      </div>
+    </div>
+    <div class="markdown-body pb-12" set:html={html} />
+    <script src="https://giscus.app/client.js"
+            data-repo="SimYunSup/newsletter-ones-to-watch"
+            data-repo-id="R_kgDOKO1eRg"
+            data-category-id="DIC_kwDOKO1eRs4CZDYo"
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="light"
+            data-lang="ko"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async>
+    </script>
+  </article>
 </Layout>

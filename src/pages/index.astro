@@ -1,5 +1,5 @@
 ---
-import Layout from "@/components/BasicLayout.astro";
+import Layout from '@/components/BasicLayout.astro';
 
 const runtime = Astro.locals.runtime;
 const response = await runtime.env.CRAWLER_KV.list({
@@ -12,11 +12,11 @@ for (const item of response.keys.slice(0, 6)) {
     id: item.name,
     name: item.metadata.title,
     date: item.metadata.targetDate,
-  })
+  });
 }
 ---
 
-<Layout pageTitle={"Ones To Watch for FrontEnd"}>
+<Layout pageTitle={'Ones To Watch for FrontEnd'}>
   <Fragment slot="head">
     <meta
       name="description"
@@ -55,8 +55,8 @@ for (const item of response.keys.slice(0, 6)) {
                   {post.name}
                 </div>
                 <div class="text-md lg:text-lg text-gray-700 w-full">
-                  {new Intl.DateTimeFormat("ko-KR").format(
-                    new Date(post.date)
+                  {new Intl.DateTimeFormat('ko-KR').format(
+                    new Date(post.date),
                   )}
                 </div>
               </div>

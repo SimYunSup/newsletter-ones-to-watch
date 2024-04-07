@@ -1,9 +1,9 @@
 ---
-import Layout from "@/components/BasicLayout.astro";
+import Layout from '@/components/BasicLayout.astro';
 
 const { page } = Astro.params;
 if (!Number.isSafeInteger(Number(page))) {
-  return Astro.redirect("/404");
+  return Astro.redirect('/404');
 }
 const runtime = Astro.locals.runtime;
 let currentPage = Number(page);
@@ -18,9 +18,9 @@ for (const item of response.keys.slice((currentPage - 1) * 12, page * 12)) {
     id: item.name,
     name: item.metadata.title,
     date: item.metadata.targetDate,
-  })
+  });
 }
-postData = postData.sort((a, b) => new Date(b.date) - new Date(a.date))
+postData = postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
@@ -42,8 +42,8 @@ postData = postData.sort((a, b) => new Date(b.date) - new Date(a.date))
                   </div>
                   {post.date ? (
                     <div class="text-md lg:text-lg text-gray-700 w-full">
-                      {new Intl.DateTimeFormat("ko-KR").format(
-                        new Date(post.date)
+                      {new Intl.DateTimeFormat('ko-KR').format(
+                        new Date(post.date),
                       )}
                     </div>
                   ) : null}
