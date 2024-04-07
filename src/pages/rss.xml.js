@@ -1,5 +1,4 @@
 import rss from '@astrojs/rss';
-import { notionClient } from '../lib/data.ts';
 
 export async function GET(context) {
   const runtime = context.locals.runtime;
