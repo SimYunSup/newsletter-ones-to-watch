@@ -12,17 +12,51 @@ const renderer = new NotionRenderer({
       'bookmark',
       async (data) => {
         const bookmarkData = data.bookmark as any;
-        const imageTag = bookmarkData.image ? `<img class="h-28 w-1/6 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
+        const imageTag = bookmarkData.image ? `<img class="h-28 w-1/5 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
         let html = `<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">`;
-        html += `<div class="h-full w-5/6 flex-auto p-3">`;
+        html += `<div class="h-full w-4/5 flex-auto p-3">`;
         html += `<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
         html += String(bookmarkData.title ?? bookmarkData.url);
         html += '</div>';
-        html += '<div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis">';
+        html += '<div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis h-[calc(100%-2rem)]">';
         html += String(bookmarkData.description ?? '');
+        html += '</div>';
         html += '</div>';
         html += imageTag;
         html += '</a>';
+
+        return html;
+      },
+    ),
+    createBlockRenderer(
+      'heading_1',
+      async (data, renderer) => {
+        const child = await renderer.render(...data.heading_1.rich_text);
+        let html = `<h1 id="${data.id}" class="notion-${data.type} notion-color-${data.heading_1.color}">`;
+        html += child;
+        html += '</h1>';
+
+        return html;
+      },
+    ),
+    createBlockRenderer(
+      'heading_2',
+      async (data, renderer) => {
+        const child = await renderer.render(...data.heading_2.rich_text);
+        let html = `<h2 id="${data.id}" class="notion-${data.type} notion-color-${data.heading_2.color}">`;
+        html += child;
+        html += '</h2>';
+
+        return html;
+      },
+    ),
+    createBlockRenderer(
+      'heading_3',
+      async (data, renderer) => {
+        const child = await renderer.render(...data.heading_3.rich_text);
+        let html = `<h3 id="${data.id}" class="notion-${data.type} notion-color-${data.heading_3.color}">`;
+        html += child;
+        html += '</h3>';
 
         return html;
       },
