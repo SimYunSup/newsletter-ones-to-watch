@@ -14,7 +14,7 @@ let list = await runtime.env.CRAWLER_KV.get(
 let postData = [];
 
 list = list.slice((page - 1) * 12, page * 12)
-postData = postData.sort((a, b) => new Date(b.date) - new Date(a.date));
+postData = list.sort((a, b) => new Date(b.date) - new Date(a.date));
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
