@@ -2,18 +2,13 @@
 import Layout from '@/components/BasicLayout.astro';
 
 const runtime = Astro.locals.runtime;
-const response = await runtime.env.CRAWLER_KV.list({
-  prefix: 'newsletter',
-});
 
-let postData = [];
-for (const item of response.keys.slice(0, 6)) {
-  postData.push({
-    id: item.name,
-    name: item.metadata.title,
-    date: item.metadata.targetDate,
-  });
-}
+const list = await runtime.env.CRAWLER_KV.get(
+  'pagination',
+  'json',
+);
+
+const postData = list.slice(0, 6);
 ---
 
 <Layout pageTitle={'Ones To Watch for FrontEnd'}>

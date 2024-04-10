@@ -70,7 +70,12 @@ if (!slug) {
 }
 
 const runtime = Astro.locals.runtime;
-const { value: response, metadata: info } = await runtime.env.CRAWLER_KV.getWithMetadata(
+const list = await runtime.env.CRAWLER_KV.get(
+  'pagination',
+  'json',
+);
+const info = list?.find((item) => item.id === slug) ?? {};
+const response = await runtime.env.CRAWLER_KV.get(
   slug,
   'json',
 );
@@ -93,7 +98,7 @@ const html = await renderer.render(...(response as any));
     <div class="flex items-center gap-3 mb-2">
       <div>
         <div class="flex items-center text-gray-400 text-sm gap-1">
-          <p>{new Intl.DateTimeFormat('ko-KR').format(new Date(info.targetDate))}</p>
+          <p>{new Intl.DateTimeFormat('ko-KR').format(new Date(info.date))}</p>
         </div>
       </div>
     </div>

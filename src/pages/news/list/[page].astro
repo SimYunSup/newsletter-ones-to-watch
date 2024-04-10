@@ -6,20 +6,14 @@ if (!Number.isSafeInteger(Number(page))) {
   return Astro.redirect('/404');
 }
 const runtime = Astro.locals.runtime;
-let currentPage = Number(page);
-const response = await runtime.env.CRAWLER_KV.list({
-  prefix: 'newsletter',
-});
+let list = await runtime.env.CRAWLER_KV.get(
+  'pagination',
+  'json',
+);
 
 let postData = [];
 
-for (const item of response.keys.slice((currentPage - 1) * 12, page * 12)) {
-  postData.push({
-    id: item.name,
-    name: item.metadata.title,
-    date: item.metadata.targetDate,
-  });
-}
+list = list.slice((page - 1) * 12, page * 12)
 postData = postData.sort((a, b) => new Date(b.date) - new Date(a.date));
 ---
 
