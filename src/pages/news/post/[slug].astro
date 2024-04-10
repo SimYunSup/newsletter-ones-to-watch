@@ -76,7 +76,7 @@ const list = await runtime.env.CRAWLER_KV.get(
 );
 const info = list?.find((item) => item.id === slug) ?? {};
 const response = await runtime.env.CRAWLER_KV.get(
-  slug,
+  'newsletter' + slug,
   'json',
 );
 
