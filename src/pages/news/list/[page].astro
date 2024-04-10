@@ -6,15 +6,14 @@ if (!Number.isSafeInteger(Number(page))) {
   return Astro.redirect('/404');
 }
 const runtime = Astro.locals.runtime;
-let list = await runtime.env.CRAWLER_KV.get(
+const list = await runtime.env.CRAWLER_KV.get(
   'pagination',
   'json',
 );
 
-let postData = [];
+let postData = list.slice((page - 1) * 12, page * 12).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-list = list.slice((page - 1) * 12, page * 12)
-postData = list.sort((a, b) => new Date(b.date) - new Date(a.date));
+const length = list.length;
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
@@ -62,7 +61,7 @@ postData = list.sort((a, b) => new Date(b.date) - new Date(a.date));
         </div>
         <div>
           {
-            list.length > 12 * page ? (
+            length > 12 * page ? (
               <a
                 class="rounded-xl bg-teal-600 text-white text-3xl p-4"
                 href={`/news/list/${(page ? Number(page) : 0) + 1}`}
