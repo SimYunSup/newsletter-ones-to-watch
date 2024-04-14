@@ -32,7 +32,7 @@ const renderer = new NotionRenderer({
       'heading_1',
       async (data, renderer) => {
         const child = await renderer.render(...data.heading_1.rich_text);
-        let html = `<h1 id="${data.id}" class="notion-${data.type} notion-color-${data.heading_1.color}">`;
+        let html = `<h1 id="${data.id}" class="notion-${data.type} cursor-pointer notion-color-${data.heading_1.color}">`;
         html += child;
         html += '</h1>';
 
@@ -43,7 +43,7 @@ const renderer = new NotionRenderer({
       'heading_2',
       async (data, renderer) => {
         const child = await renderer.render(...data.heading_2.rich_text);
-        let html = `<h2 id="${data.id}" class="notion-${data.type} notion-color-${data.heading_2.color}">`;
+        let html = `<h2 id="${data.id}" class="notion-${data.type} cursor-pointer notion-color-${data.heading_2.color}">`;
         html += child;
         html += '</h2>';
 
@@ -54,7 +54,7 @@ const renderer = new NotionRenderer({
       'heading_3',
       async (data, renderer) => {
         const child = await renderer.render(...data.heading_3.rich_text);
-        let html = `<h3 id="${data.id}" class="notion-${data.type} notion-color-${data.heading_3.color}">`;
+        let html = `<h3 id="${data.id}" class="notion-${data.type} cursor-pointer notion-color-${data.heading_3.color}">`;
         html += child;
         html += '</h3>';
 
@@ -103,6 +103,21 @@ const html = await renderer.render(...(response as any));
       </div>
     </div>
     <div class="markdown-body pb-12" set:html={html} />
+    <script client:load>
+      const markdownElement = document.querySelector('.markdown-body');
+
+      const headingElements = markdownElement.querySelectorAll('h2');
+      Array.from(headingElements).forEach((element) => {
+        element.addEventListener('click', (e) => {
+          const id = e.currentTarget.id;
+          const url = new URL(window.document.location);
+          url.hash = `#${id}`;
+          window.navigator.clipboard.writeText(
+            url.toString(),
+          );
+        });
+      });
+    </script>
     <script src="https://giscus.app/client.js"
             data-repo="SimYunSup/newsletter-ones-to-watch"
             data-repo-id="R_kgDOKO1eRg"
