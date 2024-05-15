@@ -9,6 +9,33 @@ const imageBaseURL = import.meta.env.IMAGE_BASE ?? 'https://cdn-otw.ethansup.net
 const renderer = new NotionRenderer({
   renderers: [
     createBlockRenderer(
+      'code',
+      async (data, renderer) => {
+        const code = (await renderer.render(...data.code.rich_text)).replace(
+          /[\u00A0-\u9999<>&]/g,
+          function (i: string) {
+            return `&#${i.charCodeAt(0)};`;
+          }
+        ).replace(/</g, '&lt;')
+          .replace(/>/g, '&lt;');
+
+        return `
+            <div class="notion-${data.type}">
+                <pre><code class="language-${
+          data.code.language
+        }">${code}</code></pre>
+                ${
+          data.code.caption.length > 0
+            ? `<legend>${await renderer.render(
+              ...data.code.caption
+            )}</legend>`
+            : ''
+        }
+            </div>
+        `;
+      }
+    ),
+    createBlockRenderer(
       'bookmark',
       async (data) => {
         const bookmarkData = data.bookmark as any;
