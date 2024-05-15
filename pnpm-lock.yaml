@@ -35,6 +35,9 @@ dependencies:
   pretendard:
     specifier: ^1.3.9
     version: 1.3.9
+  sanitize-html:
+    specifier: ^2.13.0
+    version: 2.13.0
   tailwindcss:
     specifier: ^3.4.3
     version: 3.4.3

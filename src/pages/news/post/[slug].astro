@@ -46,39 +46,12 @@ const renderer = new NotionRenderer({
       }
     ),
     createBlockRenderer(
-      'code',
-      async (data, renderer) => {
-        const code = (await renderer.render(...data.code.rich_text)).replace(
-          /[\u00A0-\u9999<>&]/g,
-          function (i: string) {
-            return `&#${i.charCodeAt(0)};`;
-          }
-        ).replace(/</g, '&lt;')
-          .replace(/>/g, '&lt;');
-
-        return `
-            <div class="notion-${data.type}">
-                <pre><code class="language-${
-          data.code.language
-        }">${code}</code></pre>
-                ${
-          data.code.caption.length > 0
-            ? `<legend>${await renderer.render(
-              ...data.code.caption
-            )}</legend>`
-            : ''
-        }
-            </div>
-        `;
-      }
-    ),
-    createBlockRenderer(
       'bookmark',
       async (data) => {
         const bookmarkData = data.bookmark as any;
         const imageTag = bookmarkData.image ? `<img class="h-28 w-1/5 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
         let html = `<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">`;
-        html += `<div class="h-[calc(100%-1.5rem)] w-4/5 flex-auto m-3">`;
+        html += `<div class="h-[calc(100%-1.5rem)] w-4/5 flex-auto m-3 overflow-hidden">`;
         html += `<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
         html += String(bookmarkData.title ?? bookmarkData.url);
         html += '</div>';
