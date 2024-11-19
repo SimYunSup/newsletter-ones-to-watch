@@ -2,9 +2,10 @@ import rss from '@astrojs/rss';
 
 export async function GET(context) {
   const runtime = context.locals.runtime;
-  const response = await runtime.env.CRAWLER_KV.list({
-    prefix: 'newsletter',
-  });
+  const response = await runtime.env.CRAWLER_KV.get(
+    'pagination',
+    'json',
+  ).slice(0, 12);
   return rss({
     title: 'Ones To Watch For FrontEnd',
     description: '프론트엔드에 대한 정보들을 매주 큐레이션해드립니다.',
@@ -15,10 +16,10 @@ export async function GET(context) {
     // See "Generating items" section for examples using content collections and glob imports
     items: response.map((post) => ({
       title: post.metadata.title,
-      pubDate: post.metadata.targetDate,
+      pubDate: post.metadata.date,
       // Compute RSS link from post `slug`
       // This example assumes all posts are rendered as `/blog/[slug]` routes
-      link: `/news/list/${post.name}`,
+      link: `/news/list/${post.id}`,
     })),
     // (optional) inject custom xml
     customData: `<language>ko-kr</language>`,

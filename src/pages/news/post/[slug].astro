@@ -4,6 +4,7 @@ import 'github-markdown-css/github-markdown-light.css';
 import '@/styles/content.css';
 import { createBlockRenderer, NotionRenderer } from '@notion-render/client';
 import Layout from '@/components/BasicLayout.astro';
+import type { PaginationData } from '@/typescript/KVData';
 
 const imageBaseURL = import.meta.env.IMAGE_BASE ?? 'https://cdn-otw.ethansup.net/';
 
@@ -52,7 +53,7 @@ const renderer = new NotionRenderer({
         const imageTag = bookmarkData.image ? `<img class="h-28 w-1/5 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
         let html = `<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">`;
         html += `<div class="h-[calc(100%-1.5rem)] w-4/5 flex-auto m-3 overflow-hidden">`;
-        html += `<div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
+        html += `<div class="text-xl lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
         html += String(bookmarkData.title ?? bookmarkData.url);
         html += '</div>';
         html += '<div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis h-[calc(100%-2rem)]">';
@@ -107,11 +108,11 @@ if (!slug) {
 }
 
 const runtime = Astro.locals.runtime;
-const list = await runtime.env.CRAWLER_KV.get(
+const list = await runtime.env.CRAWLER_KV.get<PaginationData[]>(
   'pagination',
   'json',
 );
-const info = list?.find((item) => item.id === slug) ?? {};
+const info = list?.find((item) => item.id === slug)!;
 const response = await runtime.env.CRAWLER_KV.get(
   'newsletter' + slug,
   'json',
@@ -124,7 +125,7 @@ const html = await renderer.render(...(response as any));
 ---
 <Layout
   pageTitle={info.title}
-  description={`${info.title} - ${info.targetDate}`}
+  description={`${info.title} - ${info.date}`}
 >
   <article
     class="col-span-12 lg:col-span-8 lg:col-start-3 pt-10 px-2 lg:pt-[80px] max-w-3xl mx-auto"
@@ -140,14 +141,24 @@ const html = await renderer.render(...(response as any));
       </div>
     </div>
     <div class="markdown-body pb-12" set:html={html} />
-    <script client:load>
+    <script>
       const markdownElement = document.querySelector('.markdown-body');
 
-      const headingElements = markdownElement.querySelectorAll('h2');
+      const headingElements = markdownElement?.querySelectorAll('h2');
+      if (!headingElements) {
+        return;
+      }
       Array.from(headingElements).forEach((element) => {
         element.addEventListener('click', (e) => {
-          const id = e.currentTarget.id;
-          const url = new URL(window.document.location);
+          const targetElement = e.currentTarget;
+          if (!(targetElement instanceof Element)) {
+            return;
+          }
+          const id = targetElement?.id;
+          if (!id) {
+            return;
+          }
+          const url = new URL(window.document.location.href);
           url.hash = `#${id}`;
           window.navigator.clipboard.writeText(
             url.toString(),

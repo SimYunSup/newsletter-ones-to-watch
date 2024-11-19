@@ -1,17 +1,20 @@
 ---
+import type { PaginationData } from '@/typescript/KVData';
 import Layout from '@/components/BasicLayout.astro';
 
 const { page } = Astro.params;
-if (!Number.isSafeInteger(Number(page))) {
-  return Astro.redirect('/404');
-}
 const runtime = Astro.locals.runtime;
-const list = await runtime.env.CRAWLER_KV.get(
+const list = await runtime.env.CRAWLER_KV.get<PaginationData[]>(
   'pagination',
   'json',
 );
+if (!Number.isSafeInteger(Number(page)) || !list) {
+  return Astro.redirect('/404');
+}
+const validatedPage = Number(page as string);
 
-let postData = list.slice((page - 1) * 12, page * 12).sort((a, b) => new Date(b.date) - new Date(a.date));
+let postData = list.slice((validatedPage - 1) * 12, validatedPage * 12)
+  .sort((a, b) => (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
 
 const length = list.length;
 ---
@@ -30,11 +33,11 @@ const length = list.length;
                 href={`/news/post/${post.id}`}
               >
                 <div class="py-3 flex flex-col grow w-32">
-                  <div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
+                  <div class="text-lg lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
                     {post.title}
                   </div>
                   {post.date ? (
-                    <div class="text-md lg:text-lg text-gray-700 w-full">
+                    <div class="text-sm lg:text-md lg:text-lg text-gray-700 w-full">
                       {new Intl.DateTimeFormat('ko-KR').format(
                         new Date(post.date),
                       )}
@@ -49,10 +52,10 @@ const length = list.length;
       <nav class="flex justify-between w-full px-0 sm:px-8 my-8">
         <div>
           {
-            Number(page) > 1 ? (
+            validatedPage > 1 ? (
               <a
-                class="rounded-xl bg-teal-600 text-white text-3xl p-4"
-                href={`/news/list/${(page ? Number(page) : 2) - 1}`}
+                class="rounded-xl bg-teal-600 text-white text-xl lg:text-3xl p-4"
+                href={`/news/list/${(validatedPage ?? 0) - 1}`}
               >
                 이전
               </a>
@@ -61,10 +64,10 @@ const length = list.length;
         </div>
         <div>
           {
-            length > 12 * page ? (
+            length > 12 * validatedPage ? (
               <a
-                class="rounded-xl bg-teal-600 text-white text-3xl p-4"
-                href={`/news/list/${(page ? Number(page) : 0) + 1}`}
+                class="rounded-xl bg-teal-600 text-white text-xl lg:text-3xl p-4"
+                href={`/news/list/${(validatedPage ?? 0) + 1}`}
               >
                 다음
               </a>

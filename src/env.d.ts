@@ -6,12 +6,12 @@ interface ImportMetaEnv {
 
 type KVNamespace = import('@cloudflare/workers-types').KVNamespace;
 type R2Object = import('@cloudflare/workers-types').R2Object;
-type ENV = {
+interface ENV {
   SERVER_URL: string;
-  KV_BINDING: KVNamespace;
+  CRAWLER_KV: KVNamespace;
 };
 
-type Runtime = import('@astrojs/cloudflare').DirectoryRuntime<ENV>;
+type Runtime = import('@astrojs/cloudflare').Runtime<ENV>;
 
 declare namespace App {
   interface Locals extends Runtime {
