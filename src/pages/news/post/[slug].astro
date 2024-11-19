@@ -145,9 +145,7 @@ const html = await renderer.render(...(response as any));
       const markdownElement = document.querySelector('.markdown-body');
 
       const headingElements = markdownElement?.querySelectorAll('h2');
-      if (!headingElements) {
-        return;
-      }
+      if (headingElements) {
       Array.from(headingElements).forEach((element) => {
         element.addEventListener('click', (e) => {
           const targetElement = e.currentTarget;
@@ -165,6 +163,7 @@ const html = await renderer.render(...(response as any));
           );
         });
       });
+      }
     </script>
     <script src="https://giscus.app/client.js"
             data-repo="SimYunSup/newsletter-ones-to-watch"
