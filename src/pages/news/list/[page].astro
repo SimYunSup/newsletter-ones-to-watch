@@ -1,6 +1,7 @@
 ---
 import type { PaginationData } from '@/typescript/KVData';
 import Layout from '@/components/BasicLayout.astro';
+import Post from '@/components/Post.astro';
 
 const { page } = Astro.params;
 const runtime = Astro.locals.runtime;
@@ -27,25 +28,7 @@ const length = list.length;
       >
         {
           postData.map((post) => (
-            <li class="w-full rounded-md border-4 border-gray-500 overflow-hidden p-3 lg:w-[calc(50%-.5rem)]">
-              <a
-                class="w-full h-20 lg:h-28 flex overflow-hidden"
-                href={`/news/post/${post.id}`}
-              >
-                <div class="py-3 flex flex-col grow w-32">
-                  <div class="text-lg lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
-                    {post.title}
-                  </div>
-                  {post.date ? (
-                    <div class="text-sm lg:text-md lg:text-lg text-gray-700 w-full">
-                      {new Intl.DateTimeFormat('ko-KR').format(
-                        new Date(post.date),
-                      )}
-                    </div>
-                  ) : null}
-                </div>
-              </a>
-            </li>
+            <Post post={post} />
           ))
         }
       </ul>

@@ -50,10 +50,10 @@ const renderer = new NotionRenderer({
       'bookmark',
       async (data) => {
         const bookmarkData = data.bookmark as any;
-        const imageTag = bookmarkData.image ? `<img class="h-28 w-1/5 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
+        const imageTag = bookmarkData.image ? `<img class="h-28 w-auto lg:w-1/5 object-cover" src="${imageBaseURL}${bookmarkData.image}" alt="">` : '';
         let html = `<a href="${bookmarkData.url}" target="_blank" class="mb-2 w-full border-2 border-gray-500 h-28 flex text-gray-950 overflow-hidden" target="_blank">`;
         html += `<div class="h-[calc(100%-1.5rem)] w-4/5 flex-auto m-3 overflow-hidden">`;
-        html += `<div class="text-xl lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
+        html += `<div class="text-md lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">`;
         html += String(bookmarkData.title ?? bookmarkData.url);
         html += '</div>';
         html += '<div class="text-xs lg:text-lg text-gray-700 w-full text-ellipsis h-[calc(100%-2rem)]">';

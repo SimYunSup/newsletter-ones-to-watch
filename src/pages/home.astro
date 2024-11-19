@@ -1,6 +1,7 @@
 ---
 import type { PaginationData } from '@/typescript/KVData';
 import Layout from '@/components/BasicLayout.astro';
+import Post from '@/components/Post.astro';
 
 const runtime = Astro.locals.runtime;
 
@@ -30,37 +31,21 @@ const postData = list.slice(0, 6);
     <meta property="og:image" content="/images/og.png" />
   </Fragment>
   <article class="container pt-12 px-4 sm:px-12 mx-auto">
-    <h1 class="mb-4 text-6xl text-center font-bold">
+    <h1 class="mb-4 text-2xl lg:text-6xl text-center font-bold">
       Ones To Watch for FrontEnd
     </h1>
-    <h2 class="mb-8 text-3xl text-center font-bold">
+    <h2 class="mb-8 text-xl lg:text-3xl text-center font-bold">
       프론트엔드에 대한 정보들을 매주 큐레이션해드립니다.
     </h2>
   </article>
   <article class="container pt-12 px-4 lg:px-12 mx-auto">
-    <h3 class="mb-8 text-2xl text-center font-bold">최신 정보</h3>
+    <h3 class="mb-8 text-lg lg:text-2xl text-center font-bold">최신 정보</h3>
     <ul
       class="flex flex-col lg:flex-row mb-18 flex-wrap gap-x-0 gap-y-4 lg:gap-x-4"
     >
       {
         postData.map((post) => (
-          <li class="w-full rounded-md border-4 border-gray-500 overflow-hidden p-3 lg:w-[calc(50%-.5rem)]">
-            <a
-              class="w-full h-20 lg:h-28 flex overflow-hidden"
-              href={`/news/post/${post.id}`}
-            >
-              <div class="py-3 flex flex-col grow w-32">
-                <div class="text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
-                  {post.title}
-                </div>
-                <div class="text-md lg:text-lg text-gray-700 w-full">
-                  {new Intl.DateTimeFormat('ko-KR').format(
-                    new Date(post.date),
-                  )}
-                </div>
-              </div>
-            </a>
-          </li>
+          <Post post={post} />
         ))
       }
     </ul>
