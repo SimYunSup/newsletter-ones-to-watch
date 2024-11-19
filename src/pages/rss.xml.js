@@ -15,11 +15,11 @@ export async function GET(context) {
     // Array of `<item>`s in output xml
     // See "Generating items" section for examples using content collections and glob imports
     items: response.map((post) => ({
-      title: post.metadata.title,
-      pubDate: post.metadata.date,
+      title: post.title,
+      pubDate: post.date,
       // Compute RSS link from post `slug`
       // This example assumes all posts are rendered as `/blog/[slug]` routes
-      link: `/news/list/${post.id}`,
+      link: `/news/post/${post.id}`,
     })),
     // (optional) inject custom xml
     customData: `<language>ko-kr</language>`,
