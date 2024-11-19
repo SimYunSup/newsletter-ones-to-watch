@@ -9,9 +9,9 @@ const { post, as } = Astro.props;
 
 const Element = as ?? 'li';
 ---
-<Element class="w-full overflow-hidden">
+<Element class="w-full lg:w-[calc(50%-.5rem)] overflow-hidden">
   <a
-    class="w-full p-3 lg:w-[calc(50%-.5rem)] h-20 lg:h-28 flex rounded-md border-4 border-gray-500"
+    class="w-full p-3 h-20 lg:h-28 flex rounded-md border-4 border-gray-500"
     href={`/news/post/${post.id}`}
   >
     <div class="py-3 flex flex-col grow w-full overflow-hidden">
