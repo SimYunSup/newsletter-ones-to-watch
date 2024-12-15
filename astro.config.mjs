@@ -4,14 +4,12 @@ import tailwind from "@astrojs/tailwind";
 import mdx from '@astrojs/mdx';
 import cloudflare from "@astrojs/cloudflare";
 
+import partytown from '@astrojs/partytown';
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ones-to-watch.ethansup.net',
-  integrations: [
-    sitemap(),
-    tailwind(),
-    mdx(),
-  ],
+  integrations: [sitemap(), tailwind(), mdx(), partytown()],
   trailingSlash: 'never',
   vite: {
     resolve: {

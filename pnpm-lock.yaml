@@ -11,6 +11,9 @@ dependencies:
   '@astrojs/mdx':
     specifier: ^3.1.9
     version: 3.1.9(astro@4.16.13)
+  '@astrojs/partytown':
+    specifier: ^2.1.2
+    version: 2.1.2
   '@astrojs/rss':
     specifier: ^4.0.9
     version: 4.0.9
@@ -146,6 +149,13 @@ packages:
       vfile: 6.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@astrojs/partytown@2.1.2:
+    resolution: {integrity: sha512-1a9T5lqxtnrw0qLPo1KwliUvaaUzPNPtWucD8VxdwT7zqcpODFk1RzGgAgqVo+YhutFrTu/qclbtnOfXBuskjw==}
+    dependencies:
+      '@builder.io/partytown': 0.10.2
+      mrmime: 2.0.0
     dev: false
 
   /@astrojs/prism@3.1.0:
@@ -394,6 +404,12 @@ packages:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+    dev: false
+
+  /@builder.io/partytown@0.10.2:
+    resolution: {integrity: sha512-A9U+4PREWcS+CCYzKGIPovtGB/PBgnH/8oQyCE6Nr9drDJk6cMPpLQIEajpGPmG9tYF7N3FkRvhXm/AS9+0iKg==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
     dev: false
 
   /@cloudflare/kv-asset-handler@0.3.4:
