@@ -14,12 +14,12 @@ const Element = as ?? 'li';
     class="w-full p-3 h-20 lg:h-28 flex rounded-md border-4 border-gray-500"
     href={`/news/post/${post.id}`}
   >
-    <div class="py-3 flex flex-col grow w-full overflow-hidden">
+    <div class="py-0 lg:py-3 flex flex-col grow w-full overflow-hidden">
       <div class="text-md lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
         {post.title}
       </div>
       {post.date ? (
-        <div class="text-sm lg:text-md lg:text-lg text-gray-700 w-full">
+        <div class="text-sm lg:text-md text-gray-700 w-full">
           {new Intl.DateTimeFormat('ko-KR').format(
             new Date(post.date),
           )}
