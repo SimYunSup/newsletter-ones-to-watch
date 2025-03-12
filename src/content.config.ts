@@ -12,8 +12,8 @@ const env = loadEnv(import.meta.env.NODE_ENV, process.cwd(), "");
 // console.log(env.NOTION_TOKEN, env.NOTION_DATABASE_ID);
 const news = defineCollection({
   loader: notionLoader({
-    auth: env.NOTION_TOKEN,
-    database_id: env.NOTION_DATABASE_ID,
+    auth: process.env.NOTION_TOKEN ?? env.NOTION_TOKEN,
+    database_id: process.env.NOTION_TOKEN ?? env.NOTION_DATABASE_ID,
     filter: {
       select: {
         equals: "New",
