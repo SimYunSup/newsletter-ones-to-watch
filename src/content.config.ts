@@ -13,7 +13,7 @@ console.log(JSON.stringify(process.env));
 const news = defineCollection({
   loader: notionLoader({
     auth: process.env.NOTION_TOKEN ?? env.NOTION_TOKEN,
-    database_id: process.env.NOTION_TOKEN ?? env.NOTION_DATABASE_ID,
+    database_id: process.env.NOTION_DATABASE_ID ?? env.NOTION_DATABASE_ID,
     filter: {
       select: {
         equals: "New",
