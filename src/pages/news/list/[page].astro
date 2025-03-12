@@ -1,43 +1,41 @@
 ---
-import type { PaginationData } from '@/typescript/KVData';
+import { getCollection } from 'astro:content';
 import Layout from '@/components/BasicLayout.astro';
 import Post from '@/components/Post.astro';
+import "@/styles/list-page.css";
 
 const { page } = Astro.params;
-const runtime = Astro.locals.runtime;
-const list = await runtime.env.CRAWLER_KV.get<PaginationData[]>(
-  'pagination',
-  'json',
-);
-if (!Number.isSafeInteger(Number(page)) || !list) {
+// 
+const collection = await getCollection('news');
+if (!Number.isSafeInteger(Number(page)) || !collection) {
   return Astro.redirect('/404');
 }
 const validatedPage = Number(page as string);
 
-let postData = list.slice((validatedPage - 1) * 12, validatedPage * 12)
-  .sort((a, b) => (new Date(b.date)).getTime() - (new Date(a.date)).getTime());
-
-const length = list.length;
+const list = collection.sort(
+  (a, b) => (b.data.properties.날짜?.start.getTime() ?? 0) - (a.data.properties.날짜?.start.getTime() ?? 0))
+  .slice(12 * (validatedPage - 1), 12 * validatedPage);
+const length = collection.length;
 ---
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
   <article class="flex">
-    <div class="container mx-auto px-4 sm:px-24">
+    <div class="container">
       <ul
-        class="flex flex-col lg:flex-row mb-18 flex-wrap gap-x-0 gap-y-4 lg:gap-x-4"
+        class="article-grid"
       >
         {
-          postData.map((post) => (
+          list.map((post) => (
             <Post post={post} />
           ))
         }
       </ul>
-      <nav class="flex justify-between w-full px-0 sm:px-8 my-8">
+      <nav class="pagination-list">
         <div>
           {
             validatedPage > 1 ? (
               <a
-                class="rounded-xl bg-teal-600 text-white text-xl lg:text-3xl p-4"
+                class="pagination-previous"
                 href={`/news/list/${(validatedPage ?? 0) - 1}`}
               >
                 이전
@@ -49,7 +47,7 @@ const length = list.length;
           {
             length > 12 * validatedPage ? (
               <a
-                class="rounded-xl bg-teal-600 text-white text-xl lg:text-3xl p-4"
+                class="pagination-next"
                 href={`/news/list/${(validatedPage ?? 0) + 1}`}
               >
                 다음

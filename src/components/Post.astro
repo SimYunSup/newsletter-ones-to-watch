@@ -1,30 +1,35 @@
 ---
-import type { PaginationData } from '@/typescript/KVData';
+import type { CollectionEntry } from 'astro:content';
+import styles from "@/styles/components/post.module.css";
 
-type Props = {
-  post: PaginationData;
-  as: string;
+
+export interface Props {
+  post: CollectionEntry<"news">;
 };
-const { post, as } = Astro.props;
+const { post } = Astro.props;
 
-const Element = as ?? 'li';
+const { properties: data } = post.data;
 ---
-<Element class="w-full lg:w-[calc(50%-.5rem)] overflow-hidden">
-  <a
-    class="w-full p-3 h-20 lg:h-28 flex rounded-md border-4 border-gray-500"
-    href={`/news/post/${post.id}`}
-  >
-    <div class="py-0 lg:py-3 flex flex-col grow w-full overflow-hidden">
-      <div class="text-md lg:text-2xl font-bold mb-auto w-full text-ellipsis overflow-hidden whitespace-nowrap h-8">
-        {post.title}
-      </div>
-      {post.date ? (
-        <div class="text-sm lg:text-md text-gray-700 w-full">
-          {new Intl.DateTimeFormat('ko-KR').format(
-            new Date(post.date),
-          )}
+
+<a href={`/news/post/${post.id}`} class={styles.link}>
+  <article class={styles.card}>
+    <div class={styles.content}>
+      {post.data.cover?.type === "file" && (
+        <div class={styles["image-container"]}>
+          <img 
+            src={post.data.cover.file.url} 
+            alt="" 
+            loading="lazy"
+          />
         </div>
-      ) : null}
+      )}
+      <div class={styles.text}>
+        <h2 class={styles.title}>{data.이름}</h2>
+        <p class={styles.date}>
+          {data.날짜?.start ? new Intl.DateTimeFormat('ko-KR').format(
+            data.날짜.start,
+          ) : null}</p>
+      </div>
     </div>
-  </a>
-</Element>
+  </article>
+</a>

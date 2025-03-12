@@ -1,40 +1,64 @@
 ---
+import styles from "@/styles/components/header.module.css";
 import HeaderLink from './HeaderLink.astro';
+
+const isHome = Astro.url.pathname === "/";
+const isNews = Astro.url.pathname.includes("/news");
+const isAbout = Astro.url.pathname.includes("/about");
 ---
 
-<header class="mb-6 lg:mb-12">
-  <div class="flex justify-around py-4">
-    <h2 class="inline-block h-6 font-bold text-md lg:text-xl"><a href="/home">OTW for FE</a></h2>
-    <div class="hidden sm:flex">
-      <a class="block w-6 h-6 mr-3" href="https://github.com/SimYunSup/newsletter-ones-to-watch">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
-                fill="#24292f" />
+<header class={styles.header}>
+  <div class={styles.container}>
+    <div class={styles.left}>
+      <a class={styles.logo} href="/">
+        OTW for FE
+      </a>
+      <nav class={styles["desktop-nav"]}>
+        <a class={styles.link} href="/" aria-current={isHome ? true : undefined}>
+          Home
+        </a>
+        <a class={styles.link} href="/news/list/1" aria-current={isNews ? true : undefined}>
+          News
+        </a>
+        <a class={styles.link} href="/about" aria-current={isAbout ? true : undefined}>
+          About us
+        </a>
+      </nav>
+    </div>
+    <div class={styles.right}>
+      <a class={styles["icon-link"]} href="https://github.com" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+          <path d="M9 18c-4.51 2-5-2-7-2"></path>
         </svg>
+        <span class="sr-only">GitHub</span>
       </a>
-      <a class="block w-6 h-6" href="/rss.xml">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-             id="Capa_1" viewBox="0 0 455.731 455.731" xml:space="preserve">
-<g>
-	<rect x="0" y="0" style="fill:#F78422;" width="455.731" height="455.731" />
-  <g>
-		<path style="fill:#FFFFFF;"
-          d="M296.208,159.16C234.445,97.397,152.266,63.382,64.81,63.382v64.348    c70.268,0,136.288,27.321,185.898,76.931c49.609,49.61,76.931,115.63,76.931,185.898h64.348    C391.986,303.103,357.971,220.923,296.208,159.16z" />
-    <path style="fill:#FFFFFF;"
-          d="M64.143,172.273v64.348c84.881,0,153.938,69.056,153.938,153.939h64.348    C282.429,270.196,184.507,172.273,64.143,172.273z" />
-    <circle style="fill:#FFFFFF;" cx="109.833" cy="346.26" r="46.088" />
-	</g>
-</g>
-</svg>
+      <a class={styles["icon-link"]} href="/rss.xml">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <path d="M4 11a9 9 0 0 1 9 9"></path>
+          <path d="M4 4a16 16 0 0 1 16 16"></path>
+          <circle cx="5" cy="19" r="1"></circle>
+        </svg>
+        <span class="sr-only">RSS Feed</span>
       </a>
+      <button class={styles["mobile-menu-button"]} aria-label="Toggle menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
   </div>
-  <nav class="flex">
-    <div class="mx-auto">
-      <HeaderLink href="/home">Home</HeaderLink>
-      <HeaderLink href="/news/list/1">News</HeaderLink>
-      <HeaderLink href="/about">About us</HeaderLink>
-    </div>
-  </nav>
+  <div class={styles["mobile-nav"]}>
+    <a class={styles.link} href="/" aria-current={isHome ? true : undefined}>
+      Home
+    </a>
+    <a class={styles.link} href="/news/list/1" aria-current={isNews ? true : undefined}>
+      News
+    </a>
+    <a class={styles.link} href="/about" aria-current={isAbout ? true : undefined}>
+      About us
+    </a>
+  </div>
 </header>
