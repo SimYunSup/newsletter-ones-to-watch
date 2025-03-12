@@ -18,7 +18,7 @@ export default defineConfig({
       }
     },
     ssr: {
-      external: ['node:buffer'],
+      external: ['node:process'],
     },
   },
   output: 'server',
