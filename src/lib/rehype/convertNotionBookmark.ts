@@ -35,7 +35,7 @@ export default function() {
         } satisfies ElementContent;
         const text = await r.text();
         const match = text.match(TITLE_REGEX);
-        if (match?.[1]) {
+        if (match?.[1] && match[1].trim() !== "") {
           child.value = match[1].trim() + " 🔗";
           v.node.children.push(child);
           return;
