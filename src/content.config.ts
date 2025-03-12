@@ -9,7 +9,6 @@ import {
 import convertNotionBookmark from "./lib/rehype/convertNotionBookmark";
 
 const env = loadEnv(import.meta.env.NODE_ENV, process.cwd(), "");
-console.log(JSON.stringify(process.env));
 const news = defineCollection({
   loader: notionLoader({
     auth: process.env.NOTION_TOKEN ?? env.NOTION_TOKEN,

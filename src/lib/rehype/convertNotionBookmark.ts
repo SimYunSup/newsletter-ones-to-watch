@@ -11,11 +11,6 @@ export default function() {
   return async function (tree: Root) {
     const matches: Match[] = [];
     visit(tree, "element", function(node) {
-      if (node.tagName === "h2") {
-        console.log(JSON.stringify(node));
-      }
-    });
-    visit(tree, "element", function(node) {
       if (node.tagName === "bookmark") {
         node.tagName = "a";
         node.properties = {

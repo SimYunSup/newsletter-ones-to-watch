@@ -20,8 +20,8 @@ if (!news) {
 const { Content } = await render(news);
 ---
 <Layout
-  pageTitle={"info.title"}
-  description={"`${info.title} - ${info.date}`"}
+  pageTitle={news.data.properties.이름}
+  description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat('ko-KR').format(new Date())}`}
 >
   <article
     class="container"
