@@ -1,7 +1,48 @@
-@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@font-face {
+  font-family: "SUITE";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
 
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: "Pretendard Variable", "Tossface", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+@font-face {
+  font-family: "SUITE";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted-color: #64748b;
+  --border-color: #e2e8f0;
+  --primary-color: #0f172a;
+  --hover-bg: #f8fafc;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "SUITE", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.sr-only {
+  display: none;
 }

@@ -1,0 +1,135 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header styles */
+.header {
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  background-color: var(--background);
+  z-index: 50;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left, .right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--foreground);
+}
+
+.desktop-nav {
+  display: none;
+}
+
+.link {
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--foreground);
+  padding: 0.5rem;
+}
+
+.link[aria-current] {
+  text-decoration: underline;
+}
+
+.icon-link {
+  color: rgba(0, 0, 0, 0.6);
+  transition: color 0.2s;
+}
+
+.icon-link:hover {
+  color: var(--foreground);
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.mobile-menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav {
+  display: none;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-nav.active {
+  display: flex;
+}
+
+.mobile-nav .nav-link {
+  padding: 0.75rem 0;
+}
+
+/* Footer styles */
+.footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem 0;
+}
+
+.footer-content {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-color);
+}
+
+/* Utility classes */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .mobile-menu-button {
+    display: none;
+  }
+  
+  .container {
+    padding: 0 1.5rem;
+  }
+}

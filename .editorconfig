@@ -1,0 +1,3 @@
+[*.{astro,css,ts,tsx,js}]
+indent_size = 2
+indent_style = space

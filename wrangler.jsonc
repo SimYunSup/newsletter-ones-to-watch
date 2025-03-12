@@ -1,0 +1,12 @@
+{
+    "name": "new-newsletter",
+    "compatibility_date": "2025-03-11",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"pages_build_output_dir": "./dist",
+	"observability": {
+		"enabled": true
+	}
+  }
+  

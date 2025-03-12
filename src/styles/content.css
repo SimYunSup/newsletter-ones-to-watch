@@ -1,177 +1,32 @@
+@import url("https://tetunori.github.io/fluent-emoji-webfont/dist/FluentEmojiFlat.css");
+
 article .markdown-body {
-    font-family: "Pretendard Variable", "Tossface", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+  font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
 }
 
-.kg-bookmark-card {
-    margin: 0 !important;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid rgba(124, 139, 154, .25);
-    background: #fff;
-    border-radius: 3px;
-}
+article .markdown-body > .bookmark-link {
+  width: fit-content;
+  display: flex;
+  font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+  margin-bottom: .5rem;
+  padding: .25rem .75rem;
+  border-radius: .25rem;
+  font-size: .875rem;
+  color: #ffffff;
+  background: hsla(0, 0%, 0%, 1);
 
-.kg-bookmark-card:hover .kg-bookmark-title {
-    color: #2a7de1 !important;
-}
+  background: linear-gradient(90deg, hsla(0, 0%, 0%, 1) 0%, hsla(194, 78%, 50%, 1) 100%);
 
-.kg-bookmark-container {
-    display: flex;
-    color: #394047;
-    text-decoration: none !important;
-    box-shadow: none;
-    min-height: 120px;
-}
+  background: -moz-linear-gradient(90deg, hsla(0, 0%, 0%, 1) 0%, hsla(194, 78%, 50%, 1) 100%);
 
-.kg-bookmark-title {
-    font-size: 1rem;
-    line-height: 1.75;
-    font-weight: 500;
-    letter-spacing: 0
-}
-
-.kg-bookmark-content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-basis: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 20px;
-}
-
-.kg-bookmark-description {
-    display: -webkit-box;
-    font-size: 0.9rem;
-    line-height: 1.7;
-    margin-top: 3px;
-    color: #626d79;
-    font-weight: 400;
-    max-height: 45px;
-    overflow-y: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.kg-bookmark-thumbnail {
-    position: relative;
-    flex-grow: 1;
-    min-width: 33%;
-}
-
-.kg-bookmark-thumbnail img {
-    width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: 0 2px 2px 0;
-    margin: 0;
-}
-
-.kg-bookmark-metadata {
-    color: #394047;
-    font-size: 0.9rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    margin-top: 22px;
-}
-
-.kg-bookmark-icon {
-    width: 15px;
-    height: 15px;
-    margin: 0 6px 0 0 !important;
-}
-
-.kg-bookmark-publisher {
-    color: #626d79;
-    font-weight: 400;
-}
-
-.kg-bookmark-author:before {
-    content: "•";
-    color: #394047;
-    margin: 0 6px;
-    position: absolute;
-    right: 0;
-}
-
-.kg-bookmark-author {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 240px;
-    white-space: nowrap;
-    display: block;
-    line-height: 1.65em;
-    font-weight: 400;
-    position: relative;
-    padding-right: 18px;
-}
-
-figcaption {
-    color: #626d79 !important;
-    font-size: 0.9rem !important;
-    line-height: 1.7;
-    text-align: center;
-    margin-top: 10px !important;
-}
-
-.kg-embed-card {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
-    padding-bottom: 56%;
-    padding-top: 30px;
-    height: 0;
-    overflow: hidden;
-}
-
-.kg-embed-card iframe,
-.kg-embed-card object,
-.kg-embed-card embed {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.kg-image-card img {
-    margin: 0 auto;
-}
-
-.kg-callout-card {
-    margin: 1em 0;
-    display: flex;
-    padding: 1.2em 1.6em;
-}
-
-.kg-callout-card div.kg-callout-emoji {
-    padding-right: .8em;
-    line-height: 1.25em;
-    font-size: 1.15em;
-    font-family: "Pretendard Variable", "Tossface";
-}
-
-.kg-callout-card.kg-card {
-    border-radius: 0.25em;
-}
-
-.kg-callout-card-grey {
-    background: rgba(124, 139, 154, .13);
-}
-
-.kg-callout-card-accent a {
-    text-decoration: underline;
+  background: -webkit-linear-gradient(90deg, hsla(0, 0%, 0%, 1) 0%, hsla(194, 78%, 50%, 1) 100%);
+  &:has(+ &) {
+    margin-bottom: .75rem;
+  }
 }
 
 .emoji {
-    display: inline-block;
-    width: 1.15em;
-    height: 1.15em;
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
 }
