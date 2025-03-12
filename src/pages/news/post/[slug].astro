@@ -63,6 +63,7 @@ const { Content } = await render(news);
           }
           const url = new URL(window.document.location.href);
           url.hash = `#${id}`;
+          window.document.location.assign(url)  ;
           window.navigator.clipboard.writeText(
             url.toString(),
           );

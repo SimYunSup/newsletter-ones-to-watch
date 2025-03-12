@@ -32,6 +32,7 @@ article .markdown-body {
 }
 
 article .markdown-body > .bookmark-link {
+  cursor: pointer;
   width: fit-content;
   display: flex;
   font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
