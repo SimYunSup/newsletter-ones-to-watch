@@ -1,5 +1,32 @@
 @import url("https://tetunori.github.io/fluent-emoji-webfont/dist/FluentEmojiFlat.css");
 
+.container {
+  padding-top: 1.5rem;
+}
+.title {
+  margin: 1rem 0;
+  font-size: 2rem;
+}
+.description {
+  margin-bottom: 1rem;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--foreground);
+}
+.image-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+
+  @media (min-width: 769px) {
+    & {
+      width: 70%;
+    }
+  }
+}
+.image-container img {
+  width: 100%;
+  aspect-ratio: auto;
+}
 article .markdown-body {
   font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
 }

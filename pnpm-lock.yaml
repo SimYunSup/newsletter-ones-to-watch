@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  notion-astro-loader:
+    hash: 22fa6a08bed43e4b25d119528c52103280177ef151a2ed25126769da950cf303
+    path: patches/notion-astro-loader.patch
+
 importers:
 
   .:
@@ -34,7 +39,7 @@ importers:
         version: 5.8.1
       notion-astro-loader:
         specifier: ^0.4.0
-        version: 0.4.0(astro@5.1.5(@types/node@20.12.2)(jiti@1.21.6)(rollup@4.27.3)(typescript@5.6.3))
+        version: 0.4.0(patch_hash=22fa6a08bed43e4b25d119528c52103280177ef151a2ed25126769da950cf303)(astro@5.1.5(@types/node@20.12.2)(jiti@1.21.6)(rollup@4.27.3)(typescript@5.6.3))
       sanitize-html:
         specifier: ^2.14.0
         version: 2.14.0
@@ -5332,7 +5337,7 @@ snapshots:
 
   normalize-path@3.0.0: {}
 
-  notion-astro-loader@0.4.0(astro@5.1.5(@types/node@20.12.2)(jiti@1.21.6)(rollup@4.27.3)(typescript@5.6.3)):
+  notion-astro-loader@0.4.0(patch_hash=22fa6a08bed43e4b25d119528c52103280177ef151a2ed25126769da950cf303)(astro@5.1.5(@types/node@20.12.2)(jiti@1.21.6)(rollup@4.27.3)(typescript@5.6.3)):
     dependencies:
       '@jsdevtools/rehype-toc': 3.0.2
       '@notionhq/client': 2.2.15

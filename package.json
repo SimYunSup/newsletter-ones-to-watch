@@ -7,11 +7,11 @@
     "devsafe": "rimraf .astro/ && astro dev",
     "start": "astro dev",
     "build": "astro build",
-		"preview": "astro build && wrangler pages dev",
-		"deploy": "astro build && wrangler pages deploy",
+    "preview": "astro build && wrangler pages dev",
+    "deploy": "astro build && wrangler pages deploy",
     "astro": "astro",
-		"wrangler": "wrangler",
-		"cf-typegen": "wrangler types"
+    "wrangler": "wrangler",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.1.0",
@@ -26,7 +26,7 @@
     "sanitize-html": "^2.14.0"
   },
   "devDependencies": {
-		"@cloudflare/workers-types": "^4.20250311.0",
+    "@cloudflare/workers-types": "^4.20250311.0",
     "@eslint/js": "^9.18.0",
     "@notionhq/client": "^2.2.15",
     "@types/sanitize-html": "^2.13.0",
@@ -35,7 +35,12 @@
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "unist-util-flatmap": "^1.0.0",
-		"wrangler": "^3.114.1"
+    "wrangler": "^3.114.1"
   },
-  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b"
+  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b",
+  "pnpm": {
+    "patchedDependencies": {
+      "notion-astro-loader": "patches/notion-astro-loader.patch"
+    }
+  }
 }

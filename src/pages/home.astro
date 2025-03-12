@@ -1,19 +1,19 @@
 ---
-import type { PaginationData } from '@/typescript/KVData';
+import { getCollection } from 'astro:content';
 import Layout from '@/components/BasicLayout.astro';
 import Post from '@/components/Post.astro';
 
 const runtime = Astro.locals.runtime;
 
-const list = await runtime.env.CRAWLER_KV.get<PaginationData[]>(
-  'pagination',
-  'json',
-);
+const collection = await getCollection('news');
 
-if (!list) {
+if (!collection) {
   return Astro.redirect('/404');
 }
-const postData = list.slice(0, 6);
+const list = collection.sort(
+  (a, b) => (b.data.properties.날짜?.start.getTime() ?? 0) - (a.data.properties.날짜?.start.getTime() ?? 0))
+  .slice(0, 8);
+const length = collection.length;
 ---
 
 <Layout pageTitle={'Ones To Watch for FrontEnd'}>
@@ -44,7 +44,7 @@ const postData = list.slice(0, 6);
       class="flex flex-col lg:flex-row mb-18 flex-wrap gap-x-0 gap-y-4 lg:gap-x-4"
     >
       {
-        postData.map((post) => (
+        list.map((post) => (
           <Post post={post} />
         ))
       }

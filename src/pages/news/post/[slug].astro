@@ -26,16 +26,22 @@ const { Content } = await render(news);
   <article
     class="container"
   >
-    <h1 class="text-3xl font-semibold mb-8">
+  {news.data.cover?.type === "file" && (
+  <div class="image-container">
+    <img 
+      src={news.data.cover.file.url} 
+      alt="" 
+      loading="lazy"
+    />
+  </div>
+)}
+    <h1 class="title">
       {news.data.properties.이름}
     </h1>
-    <div class="flex items-center gap-3 mb-2">
-      <div>
-        <div class="flex items-center text-gray-400 text-sm gap-1">
-          <p>{new Intl.DateTimeFormat('ko-KR').format(new Date())}</p>
-        </div>
-      </div>
+    <div class="description">
+      <p>{new Intl.DateTimeFormat('ko-KR').format(new Date())}</p>
     </div>
+
     <div class="markdown-body">
       <Content />
     </div>

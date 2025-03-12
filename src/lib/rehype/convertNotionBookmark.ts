@@ -11,6 +11,9 @@ export default function () {
   return async function (tree: Root) {
     let matches: Match[] = [];
     visit(tree, "element", function (node) {
+      if (node.tagName === "h2") {
+        node.properties.id = node.properties["data-notion-block-id"];
+      }
       if (node.tagName === "bookmark") {
         node.tagName = "a";
         node.properties = {
@@ -52,6 +55,7 @@ export default function () {
         }
       }
       if (newMatches.length) {
+        matches = newMatches;
         continue;
       }
       break;

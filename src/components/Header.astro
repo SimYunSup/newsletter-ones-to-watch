@@ -14,7 +14,7 @@ const isAbout = Astro.url.pathname.includes("/about");
         OTW for FE
       </a>
       <nav class={styles["desktop-nav"]}>
-        <a class={styles.link} href="/" aria-current={isHome ? true : undefined}>
+        <a class={styles.link} href="/home" aria-current={isHome ? true : undefined}>
           Home
         </a>
         <a class={styles.link} href="/news/list/1" aria-current={isNews ? true : undefined}>
@@ -51,7 +51,7 @@ const isAbout = Astro.url.pathname.includes("/about");
     </div>
   </div>
   <div class={styles["mobile-nav"]}>
-    <a class={styles.link} href="/" aria-current={isHome ? true : undefined}>
+    <a class={styles.link} href="/home" aria-current={isHome ? true : undefined}>
       Home
     </a>
     <a class={styles.link} href="/news/list/1" aria-current={isNews ? true : undefined}>
