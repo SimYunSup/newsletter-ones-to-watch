@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import styles from "@/styles/components/post.module.css";
 
 
@@ -16,10 +17,11 @@ const { properties: data } = post.data;
     <div class={styles.content}>
       {post.data.cover?.type === "file" && (
         <div class={styles["image-container"]}>
-          <img 
-            src={post.data.cover.file.url} 
-            alt="" 
-            loading="lazy"
+          <Image 
+            src={post.data.cover.file.url}
+            sizes={`(max-width: 768px) 120px, (max-width: 1023px) 180px, 300px`}
+            alt=""
+            inferSize
           />
         </div>
       )}

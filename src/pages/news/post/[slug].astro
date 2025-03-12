@@ -1,6 +1,7 @@
 ---
 import { getEntry, render } from 'astro:content';
-import 'github-markdown-css/github-markdown-light.css';
+import { Image } from 'astro:assets';
+import 'github-markdown-css/github-markdown.css';
 import '@/styles/content.css';
 import Layout from '@/components/BasicLayout.astro';
 
@@ -28,10 +29,11 @@ const { Content } = await render(news);
   >
   {news.data.cover?.type === "file" && (
   <div class="image-container">
-    <img 
+    <Image 
       src={news.data.cover.file.url} 
+      sizes={`(max-width: 768px) 900px, (max-width: 1023px) 1200px, 1600px`}
       alt="" 
-      loading="lazy"
+      inferSize
     />
   </div>
 )}
