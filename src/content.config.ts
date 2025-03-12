@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import process from "node:process";
 import { defineCollection, z } from 'astro:content';
 import { loadEnv } from "vite";

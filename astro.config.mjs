@@ -17,8 +17,8 @@ export default defineConfig({
         '@': '/src'
       }
     },
-    build: {
-      minify: false,
+    ssr: {
+      external: ['node:buffer'],
     },
   },
   output: 'server',
