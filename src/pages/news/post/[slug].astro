@@ -1,9 +1,10 @@
 ---
-import { getEntry, render } from 'astro:content';
-import { Image } from 'astro:assets';
-import 'github-markdown-css/github-markdown.css';
-import '@/styles/content.css';
-import Layout from '@/components/BasicLayout.astro';
+import { getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
+import * as cheerio from "cheerio";
+import "github-markdown-css/github-markdown.css";
+import "@/styles/content.css";
+import Layout from "@/components/BasicLayout.astro";
 
 export interface Props {
   slug: string;
@@ -17,31 +18,94 @@ const news = await getEntry("news", String(slug));
 if (!news) {
   return Astro.redirect("/404");
 }
-
+interface Match {
+  url: string;
+  index: number;
+}
+interface URLSearchResult {
+  url: string;
+  value: string;
+}
+let matches: Match[] = [];
+const results: URLSearchResult[] = [];
+const rendered = cheerio.load(news.rendered!.html);
+rendered("a.bookmark-link").each(function (index, element) {
+  const elementInstance = rendered(element);
+  matches.push({
+    url: String(elementInstance.attr("href")),
+    index,
+  });
+});
+const { env } = Astro.locals.runtime;
+while (true) {
+  const responseList = await Promise.allSettled(
+    matches.map(async (v) => {
+      const preFetchedResult = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${v.url}`, "json");
+      if (preFetchedResult) {
+        return preFetchedResult;
+      }
+      return fetch(v.url).then(async (r) => {
+        const result = {
+          url: v.url,
+          value: new URL(v.url).host,
+        };
+        const html = await r.text();
+        const $ = cheerio.load(html);
+        const title = $("title").text();
+        if (title) {
+          result.value = title;
+        }
+        await env.NEWSLETTER_CRAWL.put(`url:${v.url}`, JSON.stringify(result), {
+          expirationTtl: 60 * 60 * 24 * 14,
+        });
+        result.value = result.value;
+        results.push(result);
+      });
+    }
+    ),
+  );
+  const newMatches: Match[] = [];
+  for (let i = 0; i < responseList.length; i++) {
+    if (responseList[i].status === "rejected") {
+      newMatches.push(matches[i]);
+    }
+  }
+  if (newMatches.length) {
+    matches = newMatches;
+    continue;
+  }
+  break;
+}
+results.forEach((result) => {
+  rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
+    `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value} 🔗</a>`,
+  );
+})
+news.rendered!.html = rendered.html();
 const { Content } = await render(news);
 ---
 <Layout
   pageTitle={news.data.properties.이름}
-  description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat('ko-KR').format(new Date())}`}
+  description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat("ko-KR").format(new Date())}`}
 >
-  <article
-    class="container"
-  >
-  {news.data.cover?.type === "file" && (
-  <div class="image-container">
-    <Image 
-      src={news.data.cover.file.url} 
-      sizes={`(max-width: 768px) 900px, (max-width: 1023px) 1200px, 1600px`}
-      alt="" 
-      inferSize
-    />
-  </div>
-)}
+  <article class="container">
+    {
+      news.data.cover?.type === "file" && (
+        <div class="image-container">
+          <Image
+            src={news.data.cover.file.url}
+            inferSize
+            sizes={`(max-width: 768px) 900px, (max-width: 1023px) 1200px, 1920px`}
+            alt=""
+          />
+        </div>
+      )
+    }
     <h1 class="title">
       {news.data.properties.이름}
     </h1>
     <div class="description">
-      <p>{new Intl.DateTimeFormat('ko-KR').format(new Date())}</p>
+      <p>{new Intl.DateTimeFormat("ko-KR").format(new Date())}</p>
     </div>
 
     <div class="markdown-body">
@@ -49,44 +113,43 @@ const { Content } = await render(news);
     </div>
     <!-- <div class="markdown-body pb-12" set:html={html} /> -->
     <script>
-      const markdownElement = document.querySelector('.markdown-body');
+      const markdownElement = document.querySelector(".markdown-body");
 
-      const headingElements = markdownElement?.querySelectorAll('h2');
+      const headingElements = markdownElement?.querySelectorAll("h2");
       if (headingElements) {
-      Array.from(headingElements).forEach((element) => {
-        element.addEventListener('click', (e) => {
-          const targetElement = e.currentTarget;
-          if (!(targetElement instanceof Element)) {
-            return;
-          }
-          const id = targetElement?.id;
-          if (!id) {
-            return;
-          }
-          const url = new URL(window.document.location.href);
-          url.hash = `#${id}`;
-          window.document.location.assign(url)  ;
-          window.navigator.clipboard.writeText(
-            url.toString(),
-          );
+        Array.from(headingElements).forEach((element) => {
+          element.addEventListener("click", (e) => {
+            const targetElement = e.currentTarget;
+            if (!(targetElement instanceof Element)) {
+              return;
+            }
+            const id = targetElement?.id;
+            if (!id) {
+              return;
+            }
+            const url = new URL(window.document.location.href);
+            url.hash = `#${id}`;
+            window.document.location.assign(url);
+            window.navigator.clipboard.writeText(url.toString());
+          });
         });
-      });
       }
     </script>
-    <script src="https://giscus.app/client.js"
-            data-repo="SimYunSup/newsletter-ones-to-watch"
-            data-repo-id="R_kgDOKO1eRg"
-            data-category-id="DIC_kwDOKO1eRs4CZDYo"
-            data-mapping="pathname"
-            data-strict="0"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="light"
-            data-lang="ko"
-            data-loading="lazy"
-            crossorigin="anonymous"
-            async>
-    </script>
+    <script
+      src="https://giscus.app/client.js"
+      data-repo="SimYunSup/newsletter-ones-to-watch"
+      data-repo-id="R_kgDOKO1eRg"
+      data-category-id="DIC_kwDOKO1eRs4CZDYo"
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="bottom"
+      data-theme="light"
+      data-lang="ko"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
   </article>
 </Layout>

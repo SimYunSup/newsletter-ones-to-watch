@@ -25,7 +25,7 @@
 }
 .image-container img {
   width: 100%;
-  aspect-ratio: auto;
+  height: 100%;
 }
 article .markdown-body {
   font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";

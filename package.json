@@ -21,6 +21,7 @@
     "@astrojs/sitemap": "^3.2.1",
     "@shoelace-style/shoelace": "^2.19.1",
     "astro": "^5.1.5",
+    "cheerio": "^1.0.0",
     "github-markdown-css": "^5.8.1",
     "notion-astro-loader": "^0.4.0",
     "sanitize-html": "^2.14.0"

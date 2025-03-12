@@ -1,12 +1,20 @@
 {
-    "name": "gatsby-personal-blog",
-    "compatibility_date": "2025-03-11",
+	"name": "gatsby-personal-blog",
+	"compatibility_date": "2025-03-11",
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
 	"pages_build_output_dir": "./dist",
 	"observability": {
 		"enabled": true
+	},
+	"kv_namespaces": [
+		{
+			"binding": "NEWSLETTER_CRAWL",
+			"id": "3e0e8a0ef4154797b8ae7827b599f140"
+		}
+	],
+	"images": {
+		"binding": "IMAGES"
 	}
-  }
-  
+}
