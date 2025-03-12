@@ -1,5 +1,5 @@
 {
-    "name": "new-newsletter",
+    "name": "gatsby-personal-blog",
     "compatibility_date": "2025-03-11",
 	"compatibility_flags": [
 		"nodejs_compat"
