@@ -103,19 +103,6 @@ const thumbnail = news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/ima
   description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat("ko-KR").format(new Date())}`}
   imageUrl={thumbnail}
 >
-<Fragment slot="head">
-  <meta
-    name="description"
-    content="프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."
-  />
-  <meta property="og:title" content="ONE TO WATCH for FrontEnd" />
-  <meta
-    property="og:description"
-    content="프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."
-  />
-  <meta property="og:url" content={Astro.url} />
-  <meta property="og:image" content={news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}` : "/images/og.png"} />
-</Fragment>
   <article class="container">
     {
       news.data.cover?.type === "file" && (
