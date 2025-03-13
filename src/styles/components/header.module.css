@@ -40,8 +40,8 @@
   color: var(--foreground);
 }
 .logo-sub {
-  margin: 0 .375rem auto;
-  font-size: 1rem;
+  margin: 0 .2rem auto;
+  font-size: .875rem;
   font-weight: 700;
   line-height: 1.25rem;
   color: var(--foreground);
