@@ -11,6 +11,8 @@
   }
 }
 .article-grid {
+  margin: 0;
+  padding: 2rem 0;
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(1, 1fr);

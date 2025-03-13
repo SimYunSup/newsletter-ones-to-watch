@@ -34,14 +34,22 @@
 .logo {
   display: flex;
   align-items: center;
-  column-gap: 4px;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 900;
   text-decoration: none;
   color: var(--foreground);
 }
+.logo-sub {
+  margin: 0 .375rem auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  color: var(--foreground);
+}
 .logo-img {
+  margin-right: .5rem;
   width: 2rem;
+  height: 2rem;
   color: currentColor;
 }
 
@@ -69,7 +77,8 @@
 }
 
 .link:hover,
-.icon-link:hover {
+.icon-link:hover
+.mobile-menu-button:hover {
   color: var(--foreground);
   opacity: 1;
 }
@@ -87,17 +96,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--foreground);
+  transition: opacity 0.2s;
+  opacity: 0.7;
 }
 
 .mobile-nav {
+  position: absolute;
   display: none;
   flex-direction: column;
   padding: 1rem;
+  width: 100%;
   background-color: var(--background);
   border-bottom: 1px solid var(--border-color);
 }
 
-.mobile-nav.active {
+.mobile-nav:global(.active) {
   display: flex;
 }
 
