@@ -20,12 +20,24 @@
   --primary-color: #0f172a;
   --hover-bg: #f8fafc;
 }
+@media (prefers-color-scheme: dark) {
+  :root,  [data-theme="dark"] {
+    --background: #0d1117;
+    --foreground: #f0f6fc;
+    --muted-color: #9198a1;
+    --border-color: #3d444db3;
+    --primary-color: #1e2e53;
+    --hover-bg: #334e90;
+  }
+}
 
 html,
 body {
   margin: 0;
   padding: 0;
   font-family: "SUITE", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 body {

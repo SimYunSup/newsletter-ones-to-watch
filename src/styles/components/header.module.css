@@ -47,19 +47,24 @@
   text-decoration: none;
   color: var(--foreground);
   padding: 0.5rem;
+  opacity: 0.7;
 }
 
 .link[aria-current] {
   text-decoration: underline;
+  opacity: 1;
 }
 
 .icon-link {
-  color: rgba(0, 0, 0, 0.6);
-  transition: color 0.2s;
+  color: var(--foreground);
+  transition: opacity 0.2s;
+  opacity: 0.7;
 }
 
+.link:hover,
 .icon-link:hover {
   color: var(--foreground);
+  opacity: 1;
 }
 
 .icon {
