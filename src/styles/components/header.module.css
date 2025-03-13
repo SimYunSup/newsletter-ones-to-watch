@@ -28,7 +28,12 @@
 .left, .right {
   display: flex;
   align-items: center;
+}
+.right {
   gap: 1.5rem;
+}
+.left {
+  gap: 3rem;
 }
 
 .logo {
@@ -148,7 +153,7 @@
 @media (min-width: 768px) {
   .desktop-nav {
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
   }
   
   .mobile-menu-button {
