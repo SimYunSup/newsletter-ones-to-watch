@@ -32,10 +32,17 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
   font-size: 1.5rem;
   font-weight: 700;
   text-decoration: none;
   color: var(--foreground);
+}
+.logo-img {
+  width: 2rem;
+  color: currentColor;
 }
 
 .desktop-nav {

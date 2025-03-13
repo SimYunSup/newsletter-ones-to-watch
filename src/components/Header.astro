@@ -1,9 +1,9 @@
 ---
+import Favicon from "@/assets/favicon.svg";
 import styles from "@/styles/components/header.module.css";
-import HeaderLink from './HeaderLink.astro';
 
-const isHome = Astro.url.pathname === "/";
-const isNews = Astro.url.pathname.includes("/news");
+const isHome = Astro.url.pathname.includes("/home");
+const isNews = Astro.url.pathname === "/" || Astro.url.pathname.includes("/news");
 const isAbout = Astro.url.pathname.includes("/about");
 ---
 
@@ -11,6 +11,7 @@ const isAbout = Astro.url.pathname.includes("/about");
   <div class={styles.container}>
     <div class={styles.left}>
       <a class={styles.logo} href="/">
+        <Favicon class={styles["logo-img"]}  />
         OTW for FE
       </a>
       <nav class={styles["desktop-nav"]}>

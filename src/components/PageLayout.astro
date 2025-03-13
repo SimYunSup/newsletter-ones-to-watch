@@ -1,7 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import 'github-markdown-css/github-markdown-light.css';
+import 'github-markdown-css/github-markdown.css';
 import '../styles/global.css';
 const {
   frontmatter,
@@ -13,6 +13,7 @@ const {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <meta name="generator" content={Astro.generator} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <title>{frontmatter.title}</title>
   <meta property="og:image" content="/images/og.png" />
   {frontmatter.description ? (

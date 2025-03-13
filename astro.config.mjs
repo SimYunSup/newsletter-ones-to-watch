@@ -41,4 +41,7 @@ export default defineConfig({
       type: 'workers',
     },
   }),
+  experimental: {
+    svg: true,
+  },
 });
