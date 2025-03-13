@@ -2,5 +2,6 @@
 
 interface Env {
 	NEWSLETTER_CRAWL: KVNamespace;
-	IMAGES: ImagesBinding;
+	CDN_URL: string;
+	IMAGES: R2Bucket;
 }

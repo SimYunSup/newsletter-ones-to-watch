@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { Image } from 'astro:assets';
 import styles from "@/styles/components/post.module.css";
 
 
@@ -9,7 +8,17 @@ export interface Props {
 };
 const { post } = Astro.props;
 
+
 const { properties: data } = post.data;
+const { env } = Astro.locals.runtime;
+if (post.data.cover?.type === "file") {
+  const image = await env.IMAGES.head(`thumbnail/${post.id}`);
+  if (!image) {
+    const imageResponse = await fetch(post.data.cover.file.url);
+    const imageBuffer = await imageResponse.arrayBuffer();
+    await env.IMAGES.put(`thumbnail/${post}`, imageBuffer);
+  }
+}
 ---
 
 <a href={`/news/post/${post.id}`} class={styles.link}>
@@ -17,11 +26,9 @@ const { properties: data } = post.data;
     <div class={styles.content}>
       {post.data.cover?.type === "file" && (
         <div class={styles["image-container"]}>
-          <Image 
-            src={post.data.cover.file.url}
-            sizes={`(max-width: 768px) 120px, (max-width: 1023px) 180px, 300px`}
+          <img 
+            src={`${env.CDN_URL}/cdn-cgi/image/width=400/thumbnail/${post.id}`}
             alt=""
-            inferSize
           />
         </div>
       )}

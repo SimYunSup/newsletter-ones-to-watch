@@ -1,6 +1,5 @@
 ---
 import { getEntry, render } from "astro:content";
-import { Image } from "astro:assets";
 import * as cheerio from "cheerio";
 import "github-markdown-css/github-markdown.css";
 import "@/styles/content.css";
@@ -18,6 +17,7 @@ const news = await getEntry("news", String(slug));
 if (!news) {
   return Astro.redirect("/404");
 }
+
 interface Match {
   url: string;
   index: number;
@@ -26,6 +26,8 @@ interface URLSearchResult {
   url: string;
   value: string;
 }
+
+const { env } = Astro.locals.runtime;
 let matches: Match[] = [];
 const results: URLSearchResult[] = [];
 const rendered = cheerio.load(news.rendered!.html);
@@ -36,7 +38,6 @@ rendered("a.bookmark-link").each(function (index, element) {
     index,
   });
 });
-const { env } = Astro.locals.runtime;
 while (true) {
   const responseList = await Promise.allSettled(
     matches.map(async (v) => {
@@ -92,10 +93,8 @@ const { Content } = await render(news);
     {
       news.data.cover?.type === "file" && (
         <div class="image-container">
-          <Image
-            src={news.data.cover.file.url}
-            inferSize
-            sizes={`(max-width: 768px) 900px, (max-width: 1023px) 1200px, 1920px`}
+          <img
+            src={`${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}`}
             alt=""
           />
         </div>
