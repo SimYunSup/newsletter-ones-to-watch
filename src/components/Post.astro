@@ -16,7 +16,11 @@ if (post.data.cover?.type === "file") {
   if (!image) {
     const imageResponse = await fetch(post.data.cover.file.url);
     const imageBuffer = await imageResponse.arrayBuffer();
-    await env.IMAGES.put(`thumbnail/${post}`, imageBuffer);
+    await env.IMAGES.put(`thumbnail/${post}`, imageBuffer, {
+      httpMetadata: {
+        contentType: imageResponse.headers.get("content-type") as any,
+      }
+    });
   }
 }
 ---
