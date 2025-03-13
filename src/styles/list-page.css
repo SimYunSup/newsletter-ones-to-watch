@@ -16,7 +16,7 @@
   grid-template-columns: repeat(1, 1fr);
   @media (min-width: 769px) {
     & {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 }
@@ -41,7 +41,7 @@
   border-radius: 0.375rem;
   border: 1px solid var(--border-color, #e2e8f0);
   background-color: var(--background, white);
-  color: var(--text-color, #0f172a);
+  color: var(--foreground);
   text-decoration: none;
   transition: all 0.2s ease;
 }
