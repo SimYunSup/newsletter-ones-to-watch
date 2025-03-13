@@ -55,7 +55,14 @@ while (true) {
     matches.map(async (v) => {
       const preFetchedResult = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${v.url}`, "json");
       if (preFetchedResult) {
-        return preFetchedResult;
+        if (preFetchedResult.value.includes(new URL(v.url).host)) {
+          if (new URL(preFetchedResult.value).host === new URL(v.url).host) {
+            results.push(preFetchedResult);
+            return;
+          }
+        }
+        results.push(preFetchedResult);
+        return;
       }
       return fetch(v.url).then(async (r) => {
         const result = {
@@ -71,7 +78,6 @@ while (true) {
         await env.NEWSLETTER_CRAWL.put(`url:${v.url}`, JSON.stringify(result), {
           expirationTtl: 60 * 60 * 24 * 14,
         });
-        result.value = result.value;
         results.push(result);
       });
     }
