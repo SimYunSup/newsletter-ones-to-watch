@@ -55,12 +55,6 @@ while (true) {
     matches.map(async (v) => {
       const preFetchedResult = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${v.url}`, "json");
       if (preFetchedResult) {
-        if (preFetchedResult.value.includes(new URL(v.url).host)) {
-          if (new URL(preFetchedResult.value).host === new URL(v.url).host) {
-            results.push(preFetchedResult);
-            return;
-          }
-        }
         results.push(preFetchedResult);
         return;
       }
