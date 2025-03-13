@@ -96,10 +96,12 @@ results.forEach((result) => {
 })
 news.rendered!.html = rendered.html();
 const { Content } = await render(news);
+const thumbnail = news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}` : undefined;
 ---
 <Layout
   pageTitle={news.data.properties.이름}
   description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat("ko-KR").format(new Date())}`}
+  imageUrl={thumbnail}
 >
 <Fragment slot="head">
   <meta

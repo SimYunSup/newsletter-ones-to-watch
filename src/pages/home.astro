@@ -17,19 +17,15 @@ const list = collection.sort(
 const length = collection.length;
 ---
 
-<Layout pageTitle={"Ones To Watch for FrontEnd"}>
+<Layout
+  pageTitle={"Ones To Watch for FrontEnd"}
+  description={"프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."}
+>
   <Fragment slot="head">
     <meta
       name="description"
       content="프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."
     />
-    <meta property="og:title" content="ONE TO WATCH for FrontEnd" />
-    <meta
-      property="og:description"
-      content="프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."
-    />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:image" content="/images/og.png" />
   </Fragment>
   <article class="container section">
     <h1 class="title">
