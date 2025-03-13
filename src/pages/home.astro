@@ -2,9 +2,8 @@
 import { getCollection } from "astro:content";
 import Layout from "@/components/BasicLayout.astro";
 import Post from "@/components/Post.astro";
+import Favicon from "@/assets/favicon.svg";
 import "@/styles/home.css";
-
-const runtime = Astro.locals.runtime;
 
 const collection = await getCollection("news");
 
@@ -29,7 +28,8 @@ const length = collection.length;
   </Fragment>
   <article class="container section">
     <h1 class="title">
-      Ones To Watch <span class="sub">for</span> FrontEnd
+      <Favicon class="logo" />
+      <span class="text">Ones To Watch <span class="sub">for</span> FrontEnd</span>
     </h1>
     <h2 class="description">
       프론트엔드에 대한 정보들을 매주 큐레이션해드립니다.

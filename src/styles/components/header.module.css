@@ -41,7 +41,7 @@
 }
 .logo-sub {
   margin: 0 .375rem auto;
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.25rem;
   color: var(--foreground);
