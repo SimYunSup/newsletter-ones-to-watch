@@ -28,3 +28,4 @@ pnpm-debug.log*
 next-env.d.ts
 .idea/*
 .wrangler/*
+.dev.vars
