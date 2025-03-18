@@ -1,7 +1,6 @@
 ---
 import { getEntry, render } from "astro:content";
 import * as cheerio from "cheerio";
-import "github-markdown-css/github-markdown.css";
 import "@/styles/content.css";
 import Layout from "@/components/BasicLayout.astro";
 
@@ -65,7 +64,7 @@ while (true) {
         };
         const html = await r.text();
         const $ = cheerio.load(html);
-        const title = $("title").text();
+        const title = $("head > title").text();
         if (title) {
           result.value = title;
         }

@@ -1,14 +1,14 @@
 import type { APIContext } from 'astro';
+import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
-
-import type { PaginationData } from '@/typescript/KVData';
 
 export async function GET(context: APIContext) {
   const runtime = context.locals.runtime;
-  const response = await runtime.env.CRAWLER_KV.get<PaginationData[]>(
-    'pagination',
-    'json',
-  );
+  const collection = await getCollection('news');
+
+  const response = collection.sort(
+    (a, b) => (b.data.properties.날짜?.start.getTime() ?? 0) - (a.data.properties.날짜?.start.getTime() ?? 0))
+    .slice(0, 12);
   const posts = response?.slice(0, 12);
   return rss({
     title: 'Ones To Watch For FrontEnd',
@@ -19,11 +19,14 @@ export async function GET(context: APIContext) {
     // Array of `<item>`s in output xml
     // See "Generating items" section for examples using content collections and glob imports
     items: posts?.map((post) => ({
-      title: post.title,
-      pubDate: new Date(post.date),
+      title: post.data.properties.이름,
+      description: post.data.properties.이름,
+      author: "Ones To Watch For FrontEnd",
+      pubDate: new Date(post.data.properties.날짜?.start ?? Date.now()),
       // Compute RSS link from post `slug`
       // This example assumes all posts are rendered as `/blog/[slug]` routes
       link: `/news/post/${post.id}`,
+      
     })) ?? [],
     // (optional) inject custom xml
     customData: `<language>ko-kr</language>`,
