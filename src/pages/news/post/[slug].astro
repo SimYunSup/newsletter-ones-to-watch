@@ -29,7 +29,7 @@ interface URLSearchResult {
 const { env } = Astro.locals.runtime;
 if (news.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`thumbnail/${slug}`);
-  if (!image) {
+  if (!image || !(image.uploaded instanceof Date)) {
     const imageResponse = await fetch(news.data.cover.file.url);
     const imageBuffer = await imageResponse.arrayBuffer();
     await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
