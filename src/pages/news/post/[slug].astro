@@ -29,7 +29,7 @@ interface URLSearchResult {
 const { env } = Astro.locals.runtime;
 if (news.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`thumbnail/${slug}`);
-  if (!image || !(image.uploaded instanceof Date)) {
+  if (!image || image.httpMetadata?.contentType?.includes("image") || !(image.uploaded instanceof Date)) {
     const imageResponse = await fetch(news.data.cover.file.url);
     const imageBuffer = await imageResponse.arrayBuffer();
     await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
@@ -95,7 +95,17 @@ results.forEach((result) => {
 })
 news.rendered!.html = rendered.html();
 const { Content } = await render(news);
-const thumbnail = news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}` : undefined;
+let thumbnail = news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}` : undefined;
+if (import.meta.env.DEV) {
+  const image = await env.IMAGES.get(`thumbnail/${slug}`);
+  
+  if (image) {
+    const arrayBuffer = await image.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    const contentType = image.httpMetadata?.contentType || 'image/jpeg';
+    thumbnail = `data:${contentType};base64,${base64}`;
+  }
+}
 ---
 <Layout
   pageTitle={news.data.properties.이름}
@@ -107,7 +117,7 @@ const thumbnail = news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/ima
       news.data.cover?.type === "file" && (
         <div class="image-container">
           <img
-            src={`${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}`}
+            src={thumbnail}
             alt=""
           />
         </div>
