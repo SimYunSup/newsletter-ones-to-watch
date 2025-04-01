@@ -30,13 +30,21 @@ const { env } = Astro.locals.runtime;
 if (news.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`thumbnail/${slug}`);
   if (!image || !(image.httpMetadata?.contentType?.includes("image")) || !(image.uploaded instanceof Date)) {
+    while (true) {
     const imageResponse = await fetch(news.data.cover.file.url);
+    if (!imageResponse.headers.get('content-type')?.includes("image")) {
+      await new Promise(resolve => {
+        setTimeout(resolve, 1000)
+      })
+      continue;
+    }
     const imageBuffer = await imageResponse.arrayBuffer();
     await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
       httpMetadata: {
         contentType: imageResponse.headers.get("content-type") as any,
       }
     });
+    }
   }
 }
 let matches: Match[] = [];
