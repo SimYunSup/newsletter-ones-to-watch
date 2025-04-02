@@ -109,22 +109,17 @@
   justify-content: center;
 }
 
-.contact-form {
+.newsletter-form {
+  margin-top: 4rem;
   display: flex;
-  justify-content: center;
-}
-
-.contact-link {
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  border-radius: 0.75rem;
-  width: 9rem;
-  height: 3rem;
-  color: var(--background);
-  background-color: var(--foreground);
-
-  &:hover {
-    background-color: var(--hover-bg);
+  justify-content: center;
+  & .form-title {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+  & > * {
+    width: 100%;
   }
 }
