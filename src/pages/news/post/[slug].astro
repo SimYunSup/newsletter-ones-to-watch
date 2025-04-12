@@ -29,21 +29,25 @@ interface URLSearchResult {
 const { env } = Astro.locals.runtime;
 if (news.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`thumbnail/${slug}`);
-  if (!image || !(image.httpMetadata?.contentType?.includes("image")) || !(image.uploaded instanceof Date)) {
+  if (
+    !image ||
+    !image.httpMetadata?.contentType?.includes("image") ||
+    !(image.uploaded instanceof Date)
+  ) {
     while (true) {
-    const imageResponse = await fetch(news.data.cover.file.url);
-    if (!imageResponse.headers.get('content-type')?.includes("image")) {
-      await new Promise(resolve => {
-        setTimeout(resolve, 1000)
-      })
-      continue;
-    }
-    const imageBuffer = await imageResponse.arrayBuffer();
-    await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
-      httpMetadata: {
-        contentType: imageResponse.headers.get("content-type") as any,
+      const imageResponse = await fetch(news.data.cover.file.url);
+      if (!imageResponse.headers.get("content-type")?.includes("image")) {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 1000);
+        });
+        continue;
       }
-    });
+      const imageBuffer = await imageResponse.arrayBuffer();
+      await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
+        httpMetadata: {
+          contentType: imageResponse.headers.get("content-type") as any,
+        },
+      });
     }
   }
 }
@@ -60,7 +64,10 @@ rendered("a.bookmark-link").each(function (index, element) {
 while (true) {
   const responseList = await Promise.allSettled(
     matches.map(async (v) => {
-      const preFetchedResult = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${v.url}`, "json");
+      const preFetchedResult = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(
+        `url:${v.url}`,
+        "json",
+      );
       if (preFetchedResult) {
         results.push(preFetchedResult);
         return;
@@ -81,8 +88,7 @@ while (true) {
         });
         results.push(result);
       });
-    }
-    ),
+    }),
   );
   const newMatches: Match[] = [];
   for (let i = 0; i < responseList.length; i++) {
@@ -98,23 +104,27 @@ while (true) {
 }
 results.forEach((result) => {
   rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
-    `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value} 🔗</a>`,
+    `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;")} 🔗</a>`,
   );
-})
+});
 news.rendered!.html = rendered.html();
 const { Content } = await render(news);
-let thumbnail = news.data.cover?.type === "file" ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}` : undefined;
+let thumbnail =
+  news.data.cover?.type === "file"
+    ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}`
+    : undefined;
 if (import.meta.env.DEV) {
   const image = await env.IMAGES.get(`thumbnail/${slug}`);
-  
+
   if (image) {
     const arrayBuffer = await image.arrayBuffer();
-    const base64 = Buffer.from(arrayBuffer).toString('base64');
-    const contentType = image.httpMetadata?.contentType || 'image/jpeg';
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    const contentType = image.httpMetadata?.contentType || "image/jpeg";
     thumbnail = `data:${contentType};base64,${base64}`;
   }
 }
 ---
+
 <Layout
   pageTitle={news.data.properties.이름}
   description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat("ko-KR").format(new Date())}`}
@@ -124,10 +134,7 @@ if (import.meta.env.DEV) {
     {
       news.data.cover?.type === "file" && (
         <div class="image-container">
-          <img
-            src={thumbnail}
-            alt=""
-          />
+          <img src={thumbnail} alt="" />
         </div>
       )
     }
@@ -179,7 +186,6 @@ if (import.meta.env.DEV) {
       data-lang="ko"
       data-loading="lazy"
       crossorigin="anonymous"
-      async
-    ></script>
+      async></script>
   </article>
 </Layout>
