@@ -45,7 +45,7 @@ if (news.data.cover?.type === "file") {
       const imageBuffer = await imageResponse.arrayBuffer();
       await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
         httpMetadata: {
-          contentType: imageResponse.headers.get("content-type") as any,
+          contentType: imageResponse.headers.get("content-type") ?? "application/octet-stream",
         },
       });
     }
@@ -76,14 +76,19 @@ while (true) {
         const result = {
           url: v.url,
           value: new URL(v.url).host,
+          description: "",
         };
         const html = await r.text();
         const $ = cheerio.load(html);
         const title = $("head > title").text();
+        const description = $("meta[name='description']").attr("content");
         if (title) {
           result.value = title;
         }
-        await env.NEWSLETTER_CRAWL.put(`url:${v.url}`, JSON.stringify(result), {
+        if (description) {
+          result.description = description;
+        }
+        await env.NEWSLETTER_CRAWL.put(`url:${slug}:${v.url}`, JSON.stringify(result), {
           expirationTtl: 60 * 60 * 24 * 14,
         });
         results.push(result);
