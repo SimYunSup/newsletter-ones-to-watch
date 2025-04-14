@@ -12,6 +12,14 @@ const { slug } = Astro.params;
 if (!slug) {
   return Astro.redirect("/404");
 }
+if (slug.length === 32) {
+  const uuid = `${slug.slice(0, 8)}-${slug.slice(8, 12)}-${slug.slice(12, 16)}-${slug.slice(16, 20)}-${slug.slice(20)}`;
+  const news = await getEntry("news", uuid);
+  if (!news) {
+    return Astro.redirect("/404");
+  }
+  return Astro.redirect(`/news/post/${uuid}`);
+}
 const news = await getEntry("news", String(slug));
 if (!news) {
   return Astro.redirect("/404");
