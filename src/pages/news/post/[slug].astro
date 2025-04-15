@@ -87,10 +87,8 @@ const fetchPromises = matches.map(async (match) => {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       const response = await fetch(match.url, {
-        signal: AbortSignal.timeout(5000), // Timeout per attempt
+        signal: AbortSignal.timeout(10000), // Timeout per attempt
         headers: {
-            "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-          "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
           "Cache-Control": "no-cache",
         }
       });
