@@ -184,7 +184,7 @@ if (import.meta.env.DEV) {
       {news.data.properties.이름}
     </h1>
     <div class="description">
-      <p>{new Intl.DateTimeFormat("ko-KR").format(new Date())}</p>
+      <p>{new Intl.DateTimeFormat("ko-KR").format(news.data.properties.날짜?.start)}</p>
     </div>
 
     <div class="markdown-body">
