@@ -44,6 +44,7 @@ if (news.data.cover?.type === "file") {
   });
 }
 let matches: Match[] = [];
+let messages: any[] = [];
 const rendered = cheerio.load(news.rendered!.html);
 rendered("a.bookmark-link").each(function (index, element) {
   const elementInstance = rendered(element);
@@ -56,12 +57,12 @@ rendered("a.bookmark-link").each(function (index, element) {
 matches.forEach(async (match) => {
   const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${match.url}`);
   if (!result) {
-    env.CRALWER_QUEUE.send({
+    messages.push({
       type: "url",
       url: match.url,
       slug,
-  		attempt: 0,
-	  	maxRetries: 3,
+      attempt: 0,
+      maxRetries: 3,
     });
     return;
   }
@@ -69,6 +70,7 @@ matches.forEach(async (match) => {
     `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;")} 🔗</a>`,
   );
 });
+await env.CRALWER_QUEUE.sendBatch(messages);
 news.rendered!.html = rendered.html();
 const { Content } = await render(news);
 let thumbnail =
