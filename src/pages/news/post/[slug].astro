@@ -54,8 +54,9 @@ rendered("a.bookmark-link").each(function (index, element) {
   });
 });
 
-matches.forEach(async (match) => {
+await Promise.all(matches.map(async (match) => {
   const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${match.url}`);
+    console.log("result", result);
   if (!result) {
     messages.push({
       body: {
@@ -73,8 +74,10 @@ matches.forEach(async (match) => {
   rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
     `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;")} 🔗</a>`,
   );
-});
-await env.CRALWER_QUEUE.sendBatch(messages);
+}));
+if (messages.length > 0) {
+  await env.CRALWER_QUEUE.sendBatch(messages);
+} 
 news.rendered!.html = rendered.html();
 const { Content } = await render(news);
 let thumbnail =
