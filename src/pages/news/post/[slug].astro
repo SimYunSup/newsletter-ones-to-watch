@@ -37,31 +37,13 @@ interface URLSearchResult {
 
 const { env } = Astro.locals.runtime;
 if (news.data.cover?.type === "file") {
-  const image = await env.IMAGES.head(`thumbnail/${slug}`);
-  if (
-    !image ||
-    !image.httpMetadata?.contentType?.includes("image") ||
-    !(image.uploaded instanceof Date)
-  ) {
-    while (true) {
-      const imageResponse = await fetch(news.data.cover.file.url);
-      if (!imageResponse.headers.get("content-type")?.includes("image")) {
-        await new Promise((resolve) => {
-          setTimeout(resolve, 1000);
-        });
-        continue;
-      }
-      const imageBuffer = await imageResponse.arrayBuffer();
-      await env.IMAGES.put(`thumbnail/${slug}`, imageBuffer, {
-        httpMetadata: {
-          contentType: imageResponse.headers.get("content-type") ?? "application/octet-stream",
-        },
-      });
-    }
-  }
+  await env.CRALWER_QUEUE.send({
+    type: "image",
+    url: news.data.cover.file.url,
+    slug,
+  });
 }
 let matches: Match[] = [];
-const results: URLSearchResult[] = [];
 const rendered = cheerio.load(news.rendered!.html);
 rendered("a.bookmark-link").each(function (index, element) {
   const elementInstance = rendered(element);
@@ -70,81 +52,19 @@ rendered("a.bookmark-link").each(function (index, element) {
     index,
   });
 });
-const MAX_RETRIES = 3;
-const RETRY_DELAY_MS = 500; // Delay between retries in milliseconds
 
-const fetchPromises = matches.map(async (match) => {
-  const preFetchedResult = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(
-    `url:${slug}:${match.url}`,
-    "json",
-  );
-  if (preFetchedResult) {
-    return preFetchedResult; // Return cached result if available
+matches.forEach(async (match) => {
+  const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${match.url}`);
+  if (!result) {
+    env.CRALWER_QUEUE.send({
+      type: "url",
+      url: match.url,
+      slug,
+  		attempt: 0,
+	  	maxRetries: 3,
+    });
+    return;
   }
-
-  // If not cached, attempt to fetch the URL with retries
-  let lastError: any = null;
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const response = await fetch(match.url, {
-        signal: AbortSignal.timeout(10000), // Timeout per attempt
-        headers: {
-          "Cache-Control": "no-cache",
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const html = await response.text();
-      const $ = cheerio.load(html);
-      const title = $("head > title").text().trim();
-      const value = title || new URL(match.url).host;
-      const description = $("meta[name='description']").attr("content")?.trim() ?? "";
-
-      const result: URLSearchResult = {
-        url: match.url,
-        value: value,
-        description: description,
-      };
-
-      await env.NEWSLETTER_CRAWL.put(`url:${slug}:${match.url}`, JSON.stringify(result), {
-        expirationTtl: 60 * 60 * 24 * 14, // 14 days
-      });
-
-      return result;
-
-    } catch (error) {
-      lastError = error;
-      console.error(`Attempt ${attempt} failed for ${match.url}:`, error instanceof Error ? error.message : error);
-      if (attempt < MAX_RETRIES) {
-        await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
-      }
-    }
-  }
-
-  console.error(`All ${MAX_RETRIES} attempts failed for ${match.url}. Last error:`, lastError);
-  throw { url: match.url, reason: lastError };
-});
-
-const settledResults = await Promise.allSettled(fetchPromises);
-
-settledResults.forEach((settledResult, index) => {
-  if (settledResult.status === "fulfilled") {
-    results.push(settledResult.value);
-  } else {
-    const failedUrl = settledResult.reason?.url || matches[index].url;
-    console.warn(`Using fallback hostname for ${failedUrl} after failed fetch attempts.`);
-    const fallbackResult: URLSearchResult = {
-      url: failedUrl,
-      value: new URL(failedUrl).host,
-    };
-    results.push(fallbackResult);
-  }
-});
-
-results.forEach((result) => {
   rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
     `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;")} 🔗</a>`,
   );

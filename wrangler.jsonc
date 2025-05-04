@@ -8,6 +8,14 @@
 	"observability": {
 		"enabled": true
 	},
+  "queues": {
+		"producers": [
+			{
+				"binding": "CRALWER_QUEUE",
+				"queue": "newletter-crawl-queue"
+			}
+		]
+	},
 	"kv_namespaces": [
 		{
 			"binding": "NEWSLETTER_CRAWL",

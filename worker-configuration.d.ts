@@ -4,4 +4,5 @@ interface Env {
 	NEWSLETTER_CRAWL: KVNamespace;
 	CDN_URL: string;
 	IMAGES: R2Bucket;
+	CRALWER_QUEUE: Queue;
 }

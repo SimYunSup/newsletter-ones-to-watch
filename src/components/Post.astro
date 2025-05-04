@@ -14,12 +14,11 @@ const { env } = Astro.locals.runtime;
 if (post.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`thumbnail/${post.id}`);
   if (!image) {
-    const imageResponse = await fetch(post.data.cover.file.url);
-    const imageBuffer = await imageResponse.arrayBuffer();
-    await env.IMAGES.put(`thumbnail/${post.id}`, imageBuffer, {
-      httpMetadata: {
-        contentType: imageResponse.headers.get("content-type") as any,
-      }
+    
+    await env.CRALWER_QUEUE.send({
+      type: "image",
+      url: post.data.cover.file.url,
+      slug: post.id,
     });
   }
 }
