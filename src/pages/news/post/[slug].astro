@@ -58,11 +58,15 @@ matches.forEach(async (match) => {
   const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${match.url}`);
   if (!result) {
     messages.push({
-      type: "url",
-      url: match.url,
-      slug,
-      attempt: 0,
-      maxRetries: 3,
+      body: {
+        type: "url",
+        url: match.url,
+        slug,
+        attempt: 0,
+        maxRetries: 3,
+      },
+      contentType: "json",
+      delaySeconds: 2,
     });
     return;
   }
