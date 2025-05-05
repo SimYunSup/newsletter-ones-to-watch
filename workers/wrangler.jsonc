@@ -1,14 +1,24 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
 {
-  "name": "newsletter-ones-to-watch",
-	"compatibility_date": "2025-03-11",
+	"$schema": "../node_modules/wrangler/config-schema.json",
+	"name": "newsletter-queuing",
+	"main": "./index.ts",
+	"compatibility_date": "2025-05-04",
 	"compatibility_flags": [
 		"nodejs_compat_v2"
 	],
-	"pages_build_output_dir": "./dist",
 	"observability": {
 		"enabled": true
 	},
-  "queues": {
+	"queues": {
+		"consumers": [
+			{
+				"queue": "newletter-crawl-queue"
+			}
+		],
 		"producers": [
 			{
 				"binding": "CRALWER_QUEUE",
@@ -28,5 +38,8 @@
 			"binding": "IMAGES",
 			"bucket_name": "newsletter-image"
 		}
-	]
+	],
+  "browser": {
+    "binding": "MYBROWSER"
+  }
 }
