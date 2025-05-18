@@ -54,32 +54,41 @@ rendered("a.bookmark-link").each(function (index, element) {
   });
 });
 
-await Promise.all(matches.map(async (match) => {
-  const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(`url:${match.url}`, { type: "json" });
-  if (!result) {
-    messages.push({
-      body: {
-        type: "url",
-        url: match.url,
-        slug,
-        attempt: 0,
-        maxRetries: 3,
-      },
-      contentType: "json",
-      delaySeconds: 2,
-    });
-    return;
-  }
-  rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
-    `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replace(/</g, "&lt;").replace(/>/g, "&gt;")} 🔗</a>`,
-  );
-}));
+await Promise.all(
+  matches.map(async (match) => {
+    try {
+      const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(
+        `url:${match.url}`,
+        { type: "json" }
+      );
+      if (!result) {
+        throw new Error("Result not found");
+      }
+      rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
+        `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replace(/</g, "&lt;").replace(/>/g, "&gt;")} 🔗</a>`
+      );
+    } catch (e) {
+      console.error(e);
+      messages.push({
+        body: {
+          type: "url",
+          url: match.url,
+          slug,
+          attempt: 0,
+          maxRetries: 3,
+        },
+        contentType: "json",
+        delaySeconds: 2,
+      });
+    }
+  })
+);
 if (messages.length > 0) {
   if (import.meta.env.DEV) {
     console.log("messages", messages);
   }
   await env.CRALWER_QUEUE.sendBatch(messages);
-} 
+}
 news.rendered!.html = rendered.html();
 const { Content } = await render(news);
 let thumbnail =
@@ -115,7 +124,13 @@ if (import.meta.env.DEV) {
       {news.data.properties.이름}
     </h1>
     <div class="description">
-      <p>{new Intl.DateTimeFormat("ko-KR").format(news.data.properties.날짜?.start)}</p>
+      <p>
+        {
+          new Intl.DateTimeFormat("ko-KR").format(
+            news.data.properties.날짜?.start
+          )
+        }
+      </p>
     </div>
 
     <div class="markdown-body">

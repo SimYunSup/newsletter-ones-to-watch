@@ -21,12 +21,14 @@ interface IMAGEQueueMessage {
 
 export default {
 	async fetch(req, env, ctx): Promise<Response> {
+    const url = new URL(req.url);
+    const path = url.pathname;
 		switch (true) {
-			case req.method === 'GET' && req.url.endsWith('/queue'):
+			case req.method === 'GET' && path.endsWith('/queue'):
 				return handleGetQueue(req, env);
-			case req.method === 'GET' && req.url.endsWith('/queue-image'):
+			case req.method === 'GET' && path.endsWith('/queue-image'):
 				return handleGetImageQueue(req, env);
-			case req.method === 'GET' && req.url.endsWith('/'):
+			case req.method === 'GET' && path.endsWith('/'):
 				return new Response("Hello from the queue endpoint");
 			default:
 				return new Response('Not found', { status: 404 });
@@ -106,8 +108,12 @@ async function processURL(message: URLQueueMessage, env: Env) {
 
 		const html = await response.text();
 		const $ = cheerio.load(html);
-		const title = $("head > title").text().trim();
-		const value = title || new URL(url).host;
+		let title = $("head > title").text().trim();
+    if (title?.includes("Vercel Security Checkpoint")) {
+      title = "";
+      throw new Error("Vercel Security Checkpoint");
+    }
+		const value = title;
 		const description = $("meta[name='description']").attr("content")?.trim() ?? "";
 
 		const result = {
@@ -151,12 +157,16 @@ async function processPuppeteerURL(message: URLPuppeteerQueueMessage, env: Env) 
     waitUntil: 'networkidle2',
     timeout: 15000,
   })
-  const title = await page.title();
+  let title = await page.title();
+  if (title?.includes("Vercel Security Checkpoint")) {
+    title = "";
+    console.warn(`Vercel Security Checkpoint for ${url}`);
+  }
   let description = '';
   try {
-	description = await page.$eval("meta[name='description']", element => element.getAttribute('content') || '');
+	  description = await page.$eval("meta[name='description']", element => element.getAttribute('content') || '');
   } catch (e) {
-	console.warn(`Could not find description meta tag for ${url}`);
+	  console.warn(`Could not find description meta tag for ${url}`);
   }
 
   const result = {
