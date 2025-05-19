@@ -52,11 +52,18 @@ article .markdown-body {
     padding: 0 .2em;
     font-size: inherit;
   }
-  & h2 {
+  & h1 {
     position: relative;
     margin: 1rem 0 0;
-    font-size: 1.75rem;
+    font-size: 1.7rem;
     line-height: 2.5rem;
+    cursor: pointer;
+  }
+  & h2 {
+    position: relative;
+    margin: 0.5rem 0 0;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
     cursor: pointer;
 
     &:hover::after {
@@ -64,7 +71,7 @@ article .markdown-body {
       position: relative;
       float: left;
       font-size: 1rem;
-      line-height: 2.5rem;
+      line-height: 1.75rem;
       @media (min-width: 769px) {
         left: -1.5rem;
         top: 0;
