@@ -15,12 +15,12 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.5.2",
-    "@astrojs/mdx": "^4.2.6",
+    "@astrojs/cloudflare": "^12.6.0",
+    "@astrojs/mdx": "^4.3.0",
     "@astrojs/partytown": "^2.1.4",
-    "@astrojs/rss": "^4.0.11",
-    "@astrojs/sitemap": "^3.3.1",
-    "astro": "^5.7.10",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.1",
+    "astro": "^5.10.2",
     "cheerio": "^1.0.0",
     "github-markdown-css": "^5.8.1",
     "notion-astro-loader": "^0.4.0",
@@ -40,7 +40,7 @@
     "unist-util-flatmap": "^1.0.0",
     "wrangler": "^4.14.1"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184",
   "pnpm": {
     "patchedDependencies": {
       "notion-astro-loader": "patches/notion-astro-loader.patch"
