@@ -11,6 +11,7 @@
   font-weight: 700;
   font-style: normal;
 }
+
 @font-face {
   font-family: "SUITE";
   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Heavy.woff2") format("woff2");
@@ -22,7 +23,9 @@
 
   --base-950: #080d40;
   --base-900: #131b67;
-  --base-800: #1a237e /* locked */;
+  --base-800: #1a237e
+    /* locked */
+  ;
   --base-700: #303ecc;
   --base-600: #5860e2;
   --base-500: #7d82ea;
@@ -34,7 +37,7 @@
 }
 
 :root {
-  
+
   --background: var(--base-50);
   --foreground: var(--base-950);
   --muted-color: var(--base-400);
@@ -42,8 +45,9 @@
   --primary-color: var(--base-700);
   --hover-bg: var(--base-200);
 }
+
 @media (prefers-color-scheme: dark) {
-  :root,  [data-theme="dark"] {
+  :root {
     --background: var(--base-950);
     --foreground: var(--base-50);
     --muted-color: var(--base-600);
@@ -51,6 +55,15 @@
     --primary-color: var(--base-300);
     --hover-bg: var(--base-800);
   }
+}
+
+[data-theme="dark"] {
+  --background: var(--base-950);
+  --foreground: var(--base-50);
+  --muted-color: var(--base-600);
+  --border-color: var(--base-200);
+  --primary-color: var(--base-300);
+  --hover-bg: var(--base-800);
 }
 
 html,
@@ -82,5 +95,5 @@ body {
 }
 
 a {
-  color: var(--base-400)
+  color: var(--base-500);
 }

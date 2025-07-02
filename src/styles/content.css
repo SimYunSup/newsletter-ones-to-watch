@@ -90,6 +90,25 @@ article .markdown-body {
       margin: 1.5rem 0 0;
     }
   }
+  & a {
+    text-decoration: none;
+    border-radius: .25rem;
+    padding: 0 .25rem;
+    font-size: 1rem;
+    color: var(--base-50);
+    background: linear-gradient(90deg, var(--base-700) 0%, var(--base-700) 70%, var(--base-900) 100%);
+    transition: transform .2s ease-in-out;
+    @media (prefers-color-scheme: dark) {
+      background: linear-gradient(90deg, var(--base-300) 0%, var(--base-300) 70%, var(--base-100) 100%);
+      color: var(--base-950);
+    }
+    &:visited {
+      color: var(--base-300);
+      @media (prefers-color-scheme: dark) {
+        color: var(--base-700);
+      }
+    }
+  }
   & > .bookmark-link {
     cursor: pointer;
     width: fit-content;
