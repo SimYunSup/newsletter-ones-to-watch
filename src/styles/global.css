@@ -80,3 +80,7 @@ body {
 .sr-only {
   display: none;
 }
+
+a {
+  color: var(--base-400)
+}
