@@ -122,9 +122,7 @@ async function processURL(message: URLQueueMessage, env: Env) {
 			description: description,
 		};
 		console.log("Result:", result);
-		await env.NEWSLETTER_CRAWL.put(`url:${url}`, JSON.stringify(result), {
-			expirationTtl: 60 * 60 * 24 * 14, // 14 days
-		});
+		await env.NEWSLETTER_CRAWL.put(`url:${url}`, JSON.stringify(result));
 
 		return;
 
