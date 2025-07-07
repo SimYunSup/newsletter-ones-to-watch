@@ -5,7 +5,7 @@ import Post from "@/components/Post.astro";
 import Favicon from "@/assets/favicon.svg";
 import "@/styles/home.css";
 
-export const prerender = true;
+export const prerender = false;
 const collection = await getCollection("news");
 
 if (!collection) {
