@@ -4,6 +4,7 @@ import Layout from '@/components/BasicLayout.astro';
 import Post from '@/components/Post.astro';
 import "@/styles/list-page.css";
 
+export const prerender = false;
 const { page } = Astro.params;
 // 
 const collection = await getCollection('news');

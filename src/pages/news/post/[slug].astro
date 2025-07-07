@@ -4,6 +4,7 @@ import * as cheerio from "cheerio";
 import "@/styles/content.css";
 import Layout from "@/components/BasicLayout.astro";
 
+export const prerender = false;
 export interface Props {
   slug: string;
 }

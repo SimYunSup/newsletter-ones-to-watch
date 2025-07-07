@@ -4,8 +4,9 @@
 	"compatibility_flags": [
 		"nodejs_compat_v2"
 	],
+  "workers_dev": true,
   "assets": {
-    "directory": "./dist/"
+    "directory": "./dist"
   },
 	"observability": {
 		"enabled": true
