@@ -1,11 +1,11 @@
 {
   "name": "newsletter-workers",
-	"compatibility_date": "2025-03-11",
+	"compatibility_date": "2025-07-07",
 	"compatibility_flags": [
 		"nodejs_compat_v2"
 	],
   "assets": {
-    "directory": "./dist/"
+    "main": "./dist/_worker.js/index.js"
   },
 	"observability": {
 		"enabled": true
