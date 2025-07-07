@@ -5,6 +5,7 @@
 		"nodejs_compat_v2"
 	],
   "workers_dev": true,
+	"main": "./dist/_worker.js/index.js",
   "assets": {
     "directory": "./dist"
   },
