@@ -5,7 +5,7 @@
 		"nodejs_compat_v2"
 	],
   "assets": {
-    "main": "./dist/_worker.js/index.js"
+    "directory": "./dist/"
   },
 	"observability": {
 		"enabled": true
