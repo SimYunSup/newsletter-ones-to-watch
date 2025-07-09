@@ -12,7 +12,7 @@ const { post } = Astro.props;
 const { properties: data } = post.data;
 const { env } = Astro.locals.runtime;
 if (post.data.cover?.type === "file") {
-  const image = await env.IMAGES.head(`thumbnail/${post.id}`);
+  const image = await env.IMAGES.head(`/thumbnail/${post.id}`);
   if (!image) {
     
     await env.CRALWER_QUEUE.send({
