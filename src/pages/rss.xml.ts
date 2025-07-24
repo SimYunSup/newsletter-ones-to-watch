@@ -1,4 +1,5 @@
 import type { APIContext } from 'astro';
+import * as cheerio from 'cheerio';
 import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 
@@ -18,16 +19,21 @@ export async function GET(context: APIContext) {
     site: context.site!,
     // Array of `<item>`s in output xml
     // See "Generating items" section for examples using content collections and glob imports
-    items: posts?.map((post) => ({
-      title: post.data.properties.이름,
-      description: post.data.properties.이름,
-      author: "Ones To Watch For FrontEnd",
-      pubDate: new Date(post.data.properties.날짜?.start ?? Date.now()),
-      // Compute RSS link from post `slug`
-      // This example assumes all posts are rendered as `/blog/[slug]` routes
-      link: `/news/post/${post.id}`,
-      
-    })) ?? [],
+    items: posts?.map((post) => {
+      const $ = cheerio.load(post.rendered?.html ?? '');
+      const h2Texts = $('h2').map((i, el) => {
+        return $(el).text();
+      }).get();
+      const description = h2Texts.join(',\n');
+      return {
+        title: post.data.properties.이름,
+        description,
+        author: "Ones To Watch For FrontEnd",
+        pubDate: new Date(post.data.properties.날짜?.start ?? Date.now()),
+        link: `/news/post/${post.id}`,
+      }
+
+    }) ?? [],
     // (optional) inject custom xml
     customData: `<language>ko-kr</language>`,
   });
