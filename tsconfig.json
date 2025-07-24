@@ -1,6 +1,7 @@
 {
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
+    "verbatimModuleSyntax": true,
     "strictNullChecks": true,
     "allowJs": true,
     "paths": {
