@@ -10,7 +10,7 @@ import partytown from '@astrojs/partytown';
 export default defineConfig({
   site: 'https://ones-to-watch.ethansup.net',
   integrations: [sitemap(), mdx(), partytown()],
-  trailingSlash: 'never',
+  trailingSlash: 'ignore',
   vite: {
     resolve: {
       alias: {
