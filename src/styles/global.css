@@ -97,3 +97,8 @@ body {
 a {
   color: var(--base-500);
 }
+
+main>.markdown-body {
+  padding: 0 1rem;
+  background-color: var(--background);
+}
