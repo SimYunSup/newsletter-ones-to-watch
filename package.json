@@ -15,32 +15,32 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.0",
-    "@astrojs/mdx": "^4.3.1",
+    "@astrojs/cloudflare": "^12.6.10",
+    "@astrojs/mdx": "^4.3.9",
     "@astrojs/partytown": "^2.1.4",
-    "@astrojs/rss": "^4.0.12",
-    "@astrojs/sitemap": "^3.4.1",
-    "astro": "^5.12.3",
+    "@astrojs/rss": "^4.0.13",
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.15.3",
     "cheerio": "^1.1.2",
     "github-markdown-css": "^5.8.1",
     "notion-astro-loader": "^0.4.0"
   },
   "devDependencies": {
-    "@cloudflare/puppeteer": "^1.0.3",
-    "@cloudflare/workers-types": "^4.20250724.0",
-    "@eslint/js": "^9.31.0",
-    "@notionhq/client": "^4.0.1",
-    "@types/node": "^24.1.0",
+    "@cloudflare/puppeteer": "^1.0.4",
+    "@cloudflare/workers-types": "^4.20251014.0",
+    "@eslint/js": "^9.38.0",
+    "@notionhq/client": "^5.3.0",
+    "@types/node": "^24.9.2",
     "@types/sanitize-html": "^2.16.0",
     "@types/unist": "^3.0.3",
-    "eslint": "^9.31.0",
+    "eslint": "^9.38.0",
     "prettier": "^3.6.2",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.0",
     "sanitize-html": "^2.17.0",
     "unist-util-flatmap": "^1.0.0",
-    "wrangler": "^4.25.1"
+    "wrangler": "^4.45.3"
   },
-  "packageManager": "pnpm@10.13.1",
+  "packageManager": "pnpm@10.20.0",
   "pnpm": {
     "patchedDependencies": {
       "notion-astro-loader": "patches/notion-astro-loader.patch"
