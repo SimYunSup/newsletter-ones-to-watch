@@ -78,7 +78,7 @@
   }
 
   .image-container {
-    width: 80px;
+    width: 120px;
   }
 
   .title {
@@ -90,14 +90,14 @@
 /* Tablet styles */
 @media (min-width: 769px) and (max-width: 1023px) {
   .image-container {
-    width: 100px;
+    width: 180px;
   }
 }
 
 /* Desktop styles */
 @media (min-width: 1024px) {
   .image-container {
-    width: 200px;
+    width: 280px;
   }
 
   .title {
