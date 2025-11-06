@@ -30,7 +30,7 @@ if (post.data.cover?.type === "file") {
       {post.data.cover?.type === "file" && (
         <div class={styles["image-container"]}>
           <img 
-            src={`${env.CDN_URL}/cdn-cgi/image/width=400/thumbnail/${post.id}`}
+            src={process.env.NODE_ENV === "production" ? `${env.CDN_URL}/cdn-cgi/image/width=400/thumbnail/${post.id}` : post.data.cover.file.url}
             alt=""
           />
         </div>

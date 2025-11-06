@@ -23,12 +23,14 @@ export default defineConfig({
   },
   output: 'server',
   image: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**.amazonaws.com",
-      },
-    ],
+    ...process.env.NODE_ENV === 'production' ? {} : {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: "**.amazonaws.com",
+        },
+      ],
+    }
   },
   adapter: cloudflare({
     mode: 'directory',
