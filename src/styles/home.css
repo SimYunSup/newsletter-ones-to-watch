@@ -32,7 +32,8 @@
     font-size: 4.5rem;
     line-height: 1.1;
   }
-  & > .logo {
+
+  &>.logo {
     margin-right: .5rem;
     width: 3.5rem;
     height: 3.5rem;
@@ -44,9 +45,11 @@
       margin-right: 1rem;
     }
   }
+
   & .text {
     display: inline-flex;
   }
+
   & .sub {
     margin: auto .375rem;
     font-size: 1.125rem;
@@ -74,6 +77,31 @@
   @media (min-width: 1024px) {
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--foreground);
+  background-color: var(--card-bg);
+  border: none;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 8px 16px rgba(48, 62, 204, 0.1);
+
+  &:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(48, 62, 204, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 12px rgba(48, 62, 204, 0.1);
   }
 }
 
@@ -147,7 +175,7 @@
     }
   }
 
-  & > * {
+  &>* {
     width: 100%;
     max-width: 32rem;
   }
@@ -243,18 +271,9 @@
   grid-template-columns: repeat(1, 1fr);
   gap: 2rem;
 
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem;
-  }
-
   @media (min-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 3rem;
-  }
-
-  @media (min-width: 1280px) {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 
