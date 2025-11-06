@@ -140,10 +140,7 @@
     font-weight: 700;
     text-align: center;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--primary-color), var(--purple-400));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--foreground);
 
     @media (min-width: 1024px) {
       font-size: 2rem;
