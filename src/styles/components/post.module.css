@@ -42,6 +42,8 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .image-container {
@@ -88,7 +90,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  line-clamp: 2;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -112,7 +114,6 @@
 
   .title {
     font-size: 1rem;
-    line-clamp: 2;
   }
 }
 
