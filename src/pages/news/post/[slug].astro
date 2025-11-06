@@ -94,7 +94,9 @@ news.rendered!.html = rendered.html();
 const { Content } = await render(news);
 let thumbnail =
   news.data.cover?.type === "file"
-    ? `${env.CDN_URL}/cdn-cgi/image/width=1200/thumbnail/${slug}`
+    ? process.env.NODE_ENV === "production"
+      ? `${env.CDN_URL}/cdn-cgi/image/width=400/thumbnail/${slug}`
+      : news.data.cover.file.url
     : undefined;
 if (import.meta.env.DEV) {
   const image = await env.IMAGES.get(`thumbnail/${slug}`);
