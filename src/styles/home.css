@@ -181,69 +181,6 @@
   }
 }
 
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1.5rem;
-  margin-top: 3rem;
-
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-}
-
-.stat-item {
-  text-align: center;
-  padding: 2rem 1.5rem;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 1rem;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--primary-color), var(--base-500));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.stat-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(48, 62, 204, 0.15);
-}
-
-.stat-item:hover::before {
-  opacity: 1;
-}
-
-.stat-number {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
-
-  @media (min-width: 1024px) {
-    font-size: 2.5rem;
-  }
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--muted-color);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 .features-section {
   padding: 3rem 1rem;
   background: var(--background);
