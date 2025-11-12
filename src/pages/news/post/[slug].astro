@@ -115,6 +115,9 @@ if (import.meta.env.DEV) {
   description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat("ko-KR").format(new Date())}`}
   imageUrl={thumbnail}
 >
+  <!-- Reading progress bar -->
+  <div class="reading-progress-bar" id="reading-progress"></div>
+
   <article class="container">
     {
       news.data.cover?.type === "file" && (
@@ -136,13 +139,176 @@ if (import.meta.env.DEV) {
       </p>
     </div>
 
-    <div class="markdown-body">
-      <Content />
-    </div>
-    <!-- <div class="markdown-body pb-12" set:html={html} /> -->
-    <script>
-      const markdownElement = document.querySelector(".markdown-body");
+    <!-- Content wrapper with sidebar layout -->
+    <div class="content-wrapper">
+      <!-- Table of Contents -->
+      <aside class="toc-container" id="table-of-contents" style="display: none;">
+        <h3 class="toc-title">
+          목차
+          <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">▼</button>
+        </h3>
+        <ul class="toc-list" id="toc-list"></ul>
+      </aside>
 
+      <!-- Article content -->
+      <div class="markdown-body" id="article-content">
+        <Content />
+      </div>
+    </div>
+    <script>
+      // Reading progress bar
+      function updateReadingProgress() {
+        const progressBar = document.getElementById('reading-progress');
+        const article = document.getElementById('article-content');
+
+        if (!progressBar || !article) return;
+
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const windowHeight = window.innerHeight;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        const scrollStart = articleTop;
+        const scrollEnd = articleTop + articleHeight - windowHeight;
+        const scrollProgress = (scrollTop - scrollStart) / (scrollEnd - scrollStart);
+
+        const percentage = Math.min(Math.max(scrollProgress * 100, 0), 100);
+        progressBar.style.width = `${percentage}%`;
+      }
+
+      window.addEventListener('scroll', updateReadingProgress);
+      window.addEventListener('resize', updateReadingProgress);
+      updateReadingProgress();
+
+      // Table of Contents generation
+      function generateTableOfContents() {
+        const markdownElement = document.querySelector(".markdown-body");
+        const tocContainer = document.getElementById('table-of-contents');
+        const tocList = document.getElementById('toc-list');
+
+        if (!markdownElement || !tocContainer || !tocList) return;
+
+        const headings = markdownElement.querySelectorAll("h2");
+
+        if (headings.length === 0) return;
+
+        tocContainer.style.display = 'block';
+
+        headings.forEach((heading) => {
+          const id = heading.id;
+          const text = heading.textContent;
+
+          if (!id) return;
+
+          const li = document.createElement('li');
+          li.className = 'toc-item';
+
+          const a = document.createElement('a');
+          a.href = `#${id}`;
+          a.textContent = text;
+          a.className = 'toc-link';
+
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.history.pushState(null, '', `#${id}`);
+          });
+
+          li.appendChild(a);
+          tocList.appendChild(li);
+        });
+
+        // Highlight active section in TOC
+        function updateActiveTocLink() {
+          const headings = Array.from(markdownElement.querySelectorAll("h2"));
+          const tocLinks = document.querySelectorAll('.toc-link');
+
+          let activeIndex = -1;
+          const scrollPosition = window.scrollY + 100;
+
+          headings.forEach((heading, index) => {
+            if (heading.offsetTop <= scrollPosition) {
+              activeIndex = index;
+            }
+          });
+
+          tocLinks.forEach((link, index) => {
+            if (index === activeIndex) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+
+        window.addEventListener('scroll', updateActiveTocLink);
+        updateActiveTocLink();
+      }
+
+      generateTableOfContents();
+
+      // TOC toggle for mobile
+      const tocToggle = document.getElementById('toc-toggle');
+      const tocList = document.getElementById('toc-list');
+
+      if (tocToggle && tocList) {
+        tocToggle.addEventListener('click', () => {
+          const isCollapsed = tocList.classList.contains('collapsed');
+
+          if (isCollapsed) {
+            tocList.classList.remove('collapsed');
+            tocToggle.textContent = '▼';
+          } else {
+            tocList.classList.add('collapsed');
+            tocToggle.textContent = '▶';
+          }
+        });
+      }
+
+      // Code block copy buttons
+      function addCopyButtonsToCodeBlocks() {
+        const markdownElement = document.querySelector(".markdown-body");
+        if (!markdownElement) return;
+
+        const codeBlocks = markdownElement.querySelectorAll('pre');
+
+        codeBlocks.forEach((pre) => {
+          const code = pre.querySelector('code');
+          if (!code) return;
+
+          const button = document.createElement('button');
+          button.className = 'copy-code-button';
+          button.textContent = '복사';
+          button.setAttribute('aria-label', 'Copy code to clipboard');
+
+          button.addEventListener('click', async () => {
+            try {
+              await navigator.clipboard.writeText(code.textContent || '');
+              button.textContent = '복사됨!';
+              button.classList.add('copied');
+
+              setTimeout(() => {
+                button.textContent = '복사';
+                button.classList.remove('copied');
+              }, 2000);
+            } catch (err) {
+              console.error('Failed to copy code:', err);
+              button.textContent = '실패';
+              setTimeout(() => {
+                button.textContent = '복사';
+              }, 2000);
+            }
+          });
+
+          pre.style.position = 'relative';
+          pre.appendChild(button);
+        });
+      }
+
+      addCopyButtonsToCodeBlocks();
+
+      // Existing heading click-to-copy functionality
+      const markdownElement = document.querySelector(".markdown-body");
       const headingElements = markdownElement?.querySelectorAll("h2");
       if (headingElements) {
         Array.from(headingElements).forEach((element) => {

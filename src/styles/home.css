@@ -1,8 +1,29 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 .section {
   margin-bottom: 2rem;
   padding: 3rem 1rem;
   text-align: center;
   background: linear-gradient(180deg, transparent 0%, var(--hover-bg) 100%);
+  animation: fadeInUp 0.8s ease-out;
 
   @media (min-width: 1024px) {
     margin-bottom: 4rem;
@@ -38,11 +59,18 @@
     width: 3.5rem;
     height: 3.5rem;
     filter: drop-shadow(0 4px 6px rgba(48, 62, 204, 0.3));
+    animation: pulse 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
 
     @media (min-width: 1024px) {
       width: 6rem;
       height: 6rem;
       margin-right: 1rem;
+    }
+
+    &:hover {
+      animation-play-state: paused;
+      transform: scale(1.1) rotate(5deg);
     }
   }
 
@@ -108,6 +136,7 @@
 .card-section {
   padding: 3rem 1rem;
   background: linear-gradient(180deg, var(--background) 0%, var(--hover-bg) 100%);
+  animation: fadeInUp 0.8s ease-out 0.2s both;
 
   @media (min-width: 1024px) {
     padding: 4rem 3rem;
@@ -142,6 +171,20 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
   }
+
+  /* Stagger animation for child items */
+  & > * {
+    animation: fadeInUp 0.6s ease-out both;
+  }
+
+  & > *:nth-child(1) { animation-delay: 0.05s; }
+  & > *:nth-child(2) { animation-delay: 0.1s; }
+  & > *:nth-child(3) { animation-delay: 0.15s; }
+  & > *:nth-child(4) { animation-delay: 0.2s; }
+  & > *:nth-child(5) { animation-delay: 0.25s; }
+  & > *:nth-child(6) { animation-delay: 0.3s; }
+  & > *:nth-child(7) { animation-delay: 0.35s; }
+  & > *:nth-child(8) { animation-delay: 0.4s; }
 }
 
 .contact {
@@ -184,6 +227,7 @@
 .features-section {
   padding: 3rem 1rem;
   background: var(--background);
+  animation: fadeInUp 0.8s ease-out 0.1s both;
 
   @media (min-width: 1024px) {
     padding: 4rem 3rem;
@@ -212,6 +256,16 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 3rem;
   }
+
+  /* Stagger animation for feature cards */
+  & > * {
+    animation: fadeInUp 0.6s ease-out both;
+  }
+
+  & > *:nth-child(1) { animation-delay: 0.1s; }
+  & > *:nth-child(2) { animation-delay: 0.2s; }
+  & > *:nth-child(3) { animation-delay: 0.3s; }
+  & > *:nth-child(4) { animation-delay: 0.4s; }
 }
 
 .feature-card {
