@@ -236,6 +236,7 @@ article .markdown-body {
     line-height: 1.75rem;
     cursor: pointer;
     transition: color 0.2s ease;
+    scroll-margin-top: 100px;
 
     &:hover {
       color: var(--primary-color);
