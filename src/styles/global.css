@@ -19,6 +19,10 @@
   font-style: normal;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   /* Original blue color palette */
   --base-950: #080d40;
