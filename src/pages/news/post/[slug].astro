@@ -139,14 +139,21 @@ if (import.meta.env.DEV) {
       </p>
     </div>
 
-    <!-- Table of Contents -->
-    <div class="toc-container" id="table-of-contents" style="display: none;">
-      <h3 class="toc-title">목차</h3>
-      <ul class="toc-list" id="toc-list"></ul>
-    </div>
+    <!-- Content wrapper with sidebar layout -->
+    <div class="content-wrapper">
+      <!-- Table of Contents -->
+      <aside class="toc-container" id="table-of-contents" style="display: none;">
+        <h3 class="toc-title">
+          목차
+          <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">▼</button>
+        </h3>
+        <ul class="toc-list" id="toc-list"></ul>
+      </aside>
 
-    <div class="markdown-body" id="article-content">
-      <Content />
+      <!-- Article content -->
+      <div class="markdown-body" id="article-content">
+        <Content />
+      </div>
     </div>
     <script>
       // Reading progress bar
@@ -239,6 +246,24 @@ if (import.meta.env.DEV) {
       }
 
       generateTableOfContents();
+
+      // TOC toggle for mobile
+      const tocToggle = document.getElementById('toc-toggle');
+      const tocList = document.getElementById('toc-list');
+
+      if (tocToggle && tocList) {
+        tocToggle.addEventListener('click', () => {
+          const isCollapsed = tocList.classList.contains('collapsed');
+
+          if (isCollapsed) {
+            tocList.classList.remove('collapsed');
+            tocToggle.textContent = '▼';
+          } else {
+            tocList.classList.add('collapsed');
+            tocToggle.textContent = '▶';
+          }
+        });
+      }
 
       // Code block copy buttons
       function addCopyButtonsToCodeBlocks() {
