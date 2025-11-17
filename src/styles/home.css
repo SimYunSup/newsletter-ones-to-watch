@@ -2,6 +2,8 @@
   margin-bottom: 2rem;
   padding: 3rem 1rem;
   text-align: center;
+  background: linear-gradient(180deg, var(--background) 0%, var(--hover-bg) 100%);
+  background-size: 100% 200%;
 
   @media (min-width: 1024px) {
     margin-bottom: 4rem;
@@ -201,5 +203,45 @@
   &>* {
     width: 100%;
     max-width: 32rem;
+  }
+}
+
+.count-up {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.sticky-cta {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: var(--background);
+  border-top: 1px solid var(--card-border);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  text-align: center;
+
+  &.visible {
+    transform: translateY(0);
+  }
+}
+
+.sticky-cta-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--foreground);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--hover-bg);
   }
 }

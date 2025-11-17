@@ -49,7 +49,7 @@ const length = collection.length;
         브라우저 업데이트, 커뮤니티에서 논의되는 주제들까지 다룹니다.
       </p>
       <p class="about-text">
-        지금까지 발행한 {length}개의 뉴스레터는 전부 아카이브에서 볼 수 있습니다.
+        지금까지 발행한 <span class="count-up" data-target={length}>0</span>개의 뉴스레터는 전부 아카이브에서 볼 수 있습니다.
         이메일 구독을 원하시면 아래에서 등록하세요.
       </p>
     </div>
@@ -70,4 +70,71 @@ const length = collection.length;
       <script async data-uid="c7b118d8c2" src="https://ones-to-watch-for-frontend.kit.com/c7b118d8c2/index.js"></script>
     </div>
   </article>
+
+  <div class="sticky-cta" id="sticky-cta">
+    <a href="/news/list/1" class="sticky-cta-button">
+      뉴스레터 보러가기
+    </a>
+  </div>
+
+  <script>
+    // Count-up animation
+    const countUpElement = document.querySelector('.count-up');
+    if (countUpElement) {
+      const target = parseInt(countUpElement.getAttribute('data-target') || '0', 10);
+      let hasAnimated = false;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
+            hasAnimated = true;
+            let current = 0;
+            const duration = 1500;
+            const step = target / (duration / 16);
+
+            const animate = () => {
+              current += step;
+              if (current < target) {
+                countUpElement.textContent = Math.floor(current).toString();
+                requestAnimationFrame(animate);
+              } else {
+                countUpElement.textContent = target.toString();
+              }
+            };
+            animate();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(countUpElement);
+    }
+
+    // Sticky CTA button
+    const stickyCta = document.getElementById('sticky-cta');
+    const heroSection = document.querySelector('.section');
+
+    if (stickyCta && heroSection) {
+      const showStickyCta = () => {
+        const heroBottom = heroSection.getBoundingClientRect().bottom;
+        if (heroBottom < 0) {
+          stickyCta.classList.add('visible');
+        } else {
+          stickyCta.classList.remove('visible');
+        }
+      };
+
+      window.addEventListener('scroll', showStickyCta);
+      showStickyCta();
+    }
+
+    // Parallax background
+    const parallaxSection = document.querySelector('.section');
+    if (parallaxSection) {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * 0.3;
+        parallaxSection.style.backgroundPositionY = `${rate}px`;
+      });
+    }
+  </script>
 </Layout>
