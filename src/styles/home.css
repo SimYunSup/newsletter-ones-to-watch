@@ -1,17 +1,29 @@
-.section {
-  margin-bottom: 2rem;
-  padding: 3rem 1rem;
-  text-align: center;
-  text-align: center;
-  background: radial-gradient(circle at 50% -20%, var(--base-200), transparent 70%);
+/* Hero Section */
+.hero-wrapper {
   position: relative;
-  position: relative;
-  /* overflow: hidden; Removed to allow button animation to fall out */
+  width: 100%;
+  /* Default block behavior */
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 
-  @media (min-width: 1024px) {
-    margin-bottom: 4rem;
-    padding: 5rem 2rem;
-  }
+  /* Ensure gradient covers everything */
+  background: radial-gradient(circle at 50% 30%, var(--base-200), transparent 70%),
+    radial-gradient(circle at 80% 10%, var(--base-100), transparent 50%);
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Fix Hero Background Cutoff Attempt 2:
+   If the element is inside a restricted width container, the background is restricted.
+   We should probably fix the HTML to allow fullbleed, but let's try to fix it here with a pseudo-element
+   that is absolutely positioned to viewport if permissible, or just accept it's contained.
+   The user said "background is cut off", implying they want full width.
+   Let's assume the gradient should extend.
+*/
+
+.hero-content {
+  position: relative;
+  z-index: 10;
 }
 
 .title {
@@ -19,9 +31,9 @@
   flex-direction: column;
   row-gap: 1rem;
   align-items: center;
-  margin-bottom: 1.5rem;
-  font-size: 2rem;
-  line-height: 1.2;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  line-height: 1.1;
   font-weight: 900;
   text-align: center;
   justify-content: center;
@@ -29,20 +41,22 @@
 
   @media (min-width: 1024px) {
     row-gap: 0;
-    font-size: 3.5rem;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    font-size: 4.5rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
   &>.logo {
-    margin-right: .5rem;
-    width: 3.5rem;
-    height: 3.5rem;
+    display: block;
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1rem;
 
     @media (min-width: 1024px) {
-      width: 6rem;
-      height: 6rem;
-      margin-right: 1rem;
+      width: 7rem;
+      height: 7rem;
+      margin-bottom: 1.5rem;
+      margin-right: 0;
     }
   }
 
@@ -50,141 +64,191 @@
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 900px;
   }
 
   & .sub {
     margin: auto .375rem;
-    font-size: 1.125rem;
-    line-height: 1.25;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: var(--muted-color);
 
     @media (min-width: 1024px) {
       margin: auto .75rem 0;
-      line-height: 1.25;
       font-size: 2.5rem;
-      color: var(--primary-color);
     }
   }
 }
 
 .description {
-  margin-bottom: 3rem;
-  font-size: 1.125rem;
-  font-weight: 400;
+  margin-bottom: 3.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
   text-align: center;
-  color: var(--muted-color);
-  max-width: 42rem;
+  color: var(--foreground);
+  /* Changed from muted-color to foreground for visibility */
+  opacity: 0.9;
+  max-width: 40rem;
   margin-left: auto;
   margin-right: auto;
+  word-break: keep-all;
 
   @media (min-width: 1024px) {
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 1.75rem;
   }
+}
+
+.cta-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .cta-button {
-  display: inline-block;
-  padding: 0.875rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
   font-size: 1.125rem;
   font-weight: 700;
-  color: white;
-  background-color: var(--primary-color);
-  border: 1px solid transparent;
   border-radius: 9999px;
   text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-md);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* Enhanced shadow */
 
-  &:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+  &.primary {
+    color: white;
+    background-color: var(--primary-color);
+    border: 1px solid transparent;
+
+    &:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+  }
+
+  &.secondary {
+    color: var(--foreground);
+    background-color: var(--background);
+    border: 1px solid var(--border-color);
+
+    &:hover {
+      background-color: var(--hover-bg);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-color);
+    }
   }
 }
 
-.about-section {
-  padding: 2rem 1rem;
-
-  @media (min-width: 1024px) {
-    padding: 3rem;
-  }
-}
-
-.about-content {
-  max-width: 48rem;
-  margin: 0 auto;
-}
-
-.about-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 1.5rem 0;
-  color: var(--foreground);
-
-  @media (min-width: 1024px) {
-    font-size: 1.5rem;
-  }
-}
-
-.about-text {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--muted-color);
-  margin: 0 0 1rem 0;
-
-  @media (min-width: 1024px) {
-    font-size: 1.125rem;
-    line-height: 1.9;
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.card-section {
-  padding: 3rem 1rem;
-
-  @media (min-width: 1024px) {
-    padding: 4rem 3rem;
-  }
-}
-
-.card-section-title {
-  margin: 0 0 2rem;
-  font-size: 1.5rem;
-  line-height: 1.75rem;
-  font-weight: 700;
-  color: var(--foreground);
-
-  @media (min-width: 1024px) {
-    margin: 0 0 3rem;
-    font-size: 2.25rem;
-    line-height: 2.5rem;
-  }
-}
-
-.card-grid {
+/* Feature Section */
+.feature-section {
   padding: 0;
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(1, 1fr);
+  max-width: 100%;
+}
 
-  @media (min-width: 769px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
+.feature-item {
+  min-height: auto;
+  /* Remove fixed height constraint */
+  padding: 4rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Add subtle background to odd items to differentiate */
+  &:nth-child(odd) {
+    background-color: var(--background);
+  }
+
+  &:nth-child(even) {
+    background-color: var(--hover-bg);
   }
 }
 
-.contact {
-  display: flex;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-  justify-content: center;
+.feature-icon {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+
+  & svg {
+    width: 6rem;
+    height: 6rem;
+    stroke-width: 1.5;
+
+    @media (min-width: 1024px) {
+      width: 8rem;
+      height: 8rem;
+    }
+
+    & path,
+    & circle,
+    & line,
+    & polyline {
+      /* With pathLength="1" in SVG, we can use 1 for full length */
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+  }
+}
+
+.feature-item.visible .feature-icon svg {
+
+  & path,
+  & circle,
+  & line,
+  & polyline {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.feature-text {
+  text-align: center;
+  max-width: 800px;
+}
+
+.feature-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  letter-spacing: -0.02em;
+
+  @media (min-width: 1024px) {
+    font-size: 4rem;
+  }
+}
+
+.feature-desc {
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  word-break: keep-all;
+
+  @media (min-width: 1024px) {
+    font-size: 2rem;
+  }
 }
 
 .newsletter-form {
+  /* Removed border-top that was copied from sticky-cta */
   margin-top: 4rem;
   padding: 2rem;
   display: flex;
@@ -195,6 +259,10 @@
   border: 1px solid var(--card-border);
   border-radius: 1.5rem;
   box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
 
   & .form-title {
     font-size: 1.25rem;
@@ -207,71 +275,6 @@
       font-size: 1.5rem;
     }
   }
-
-  width: 100%;
-  max-width: 32rem;
-}
-
-/* Force theme styles on the injected ConvertKit form */
-& :global(.formkit-form) {
-  background: transparent !important;
-}
-
-& :global(.formkit-input),
-& input[type="email"],
-& input[type="text"] {
-  background-color: var(--background) !important;
-  color: var(--foreground) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: 0.5rem !important;
-  padding: 0.75rem 1rem !important;
-  width: 100% !important;
-  box-shadow: var(--shadow-sm) !important;
-  transition: all 0.2s ease !important;
-
-  &:focus {
-    outline: none;
-    border-color: var(--primary-color) !important;
-    box-shadow: 0 0 0 2px var(--primary-color) !important;
-    /* Ring effect */
-  }
-}
-
-& :global(.formkit-submit),
-& button[type="submit"] {
-  background-color: var(--primary-color) !important;
-  color: white !important;
-  border-radius: 9999px !important;
-  font-weight: 700 !important;
-  padding: 0.75rem 2rem !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  box-shadow: var(--shadow-md) !important;
-
-  &:hover {
-    background-color: var(--primary-hover) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: var(--shadow-lg) !important;
-  }
-}
-
-/* Make sure labels or other text are visible */
-& :global(.formkit-label),
-& :global(.formkit-header),
-& :global(.formkit-subheader),
-& :global(.formkit-guarantee) {
-  color: var(--muted-color) !important;
-}
-}
-
-.count-up {
-  font-weight: 700;
-  color: var(--primary-color);
-  font-variant-numeric: tabular-nums;
-  display: inline-block;
-  min-width: 1.5ch;
-  /* Ensure space for digits */
 }
 
 .sticky-cta {
@@ -281,7 +284,8 @@
   right: 0;
   padding: 1rem;
   background: var(--background);
-  border-top: 1px solid var(--card-border);
+  border-top: none;
+  /* Removed border */
   transform: translateY(100%);
   transition: transform 0.3s ease;
   z-index: 1000;
@@ -309,5 +313,17 @@
     background-color: var(--primary-hover);
     transform: translateY(-1px);
     box-shadow: var(--shadow-lg);
+  }
+}
+
+.card-grid {
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 769px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
   }
 }

@@ -31,30 +31,97 @@ const length = collection.length;
       content="매주 프론트엔드 소식을 정리해서 보내드립니다."
     />
   </Fragment>
-  <article class="container section">
-    <h1 class="title">
-      <Favicon class="logo" />
-      <span class="text"
-        >Ones To Watch <span class="sub">for</span> FrontEnd</span
-      >
-    </h1>
-    <h2 class="description">매주 프론트엔드 소식을 정리해서 보내드립니다.</h2>
-    <a href="/news/list/1" class="cta-button"> 뉴스레터 보러가기 </a>
+  <article class="hero-wrapper section">
+    <div class="container hero-content">
+      <h1 class="title">
+        <Favicon class="logo" />
+        <span class="text"
+          >Ones To Watch <span class="sub">for</span> FrontEnd</span
+        >
+      </h1>
+      <h2 class="description">주목할 만한 블로그를 모아두는 웹사이트</h2>
+      <div class="cta-group">
+        <a href="/news/list/1" class="cta-button primary">
+          뉴스레터 보러가기
+        </a>
+      </div>
+    </div>
   </article>
 
-  <article class="container about-section">
-    <div class="about-content">
-      <h3 class="about-title">이 뉴스레터는</h3>
-      <p class="about-text">
-        2023년 9월부터 매주 프론트엔드 생태계에서 일어나는 일들을 정리하고
-        있습니다. React, Next.js, Vite 같은 도구들의 릴리즈 노트부터 CSS 스펙
-        변경, 브라우저 업데이트, 커뮤니티에서 논의되는 주제들까지 다룹니다.
-      </p>
-      <p class="about-text">
-        지금까지 발행한 <span class="count-up" data-target={length}>0</span>개의
-        뉴스레터는 전부 아카이브에서 볼 수 있습니다. 이메일 구독을 원하시면
-        아래에서 등록하세요.
-      </p>
+  <article class="feature-section">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          pathLength="1"
+        >
+          <circle cx="11" cy="11" r="8" pathLength="1"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" pathLength="1"></line>
+          <line x1="11" y1="8" x2="11" y2="14" pathLength="1"></line>
+          <line x1="8" y1="11" x2="14" y2="11" pathLength="1"></line>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <h3 class="feature-title">Deep Insights</h3>
+        <p class="feature-desc">
+          기술적인 깊이가 있거나<br />방향성을 고민하게 만드는 글
+        </p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          pathLength="1"
+        >
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            pathLength="1"></path>
+          <polyline points="14 2 14 8 20 8" pathLength="1"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13" pathLength="1"></line>
+          <line x1="16" y1="17" x2="8" y2="17" pathLength="1"></line>
+          <polyline points="10 9 9 9 8 9" pathLength="1"></polyline>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <h3 class="feature-title">Curated Archive</h3>
+        <p class="feature-desc">주 1회 발행되는<br />프론트엔드 아카이브</p>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          pathLength="1"
+        >
+          <polyline points="16 18 22 12 16 6" pathLength="1"></polyline>
+          <polyline points="8 6 2 12 8 18" pathLength="1"></polyline>
+        </svg>
+      </div>
+      <div class="feature-text">
+        <h3 class="feature-title">Developer Focused</h3>
+        <p class="feature-desc">
+          프론트엔드 개발자에게<br />영감을 주는 인사이트
+        </p>
+      </div>
     </div>
   </article>
   <article class="container card-section">
@@ -77,41 +144,21 @@ const length = collection.length;
   </div>
 
   <script>
-    // Count-up animation
-    const countUpElement = document.querySelector(".count-up");
-    if (countUpElement) {
-      const target = parseInt(
-        countUpElement.getAttribute("data-target") || "0",
-        10,
-      );
-      let hasAnimated = false;
-
+    // Feature scroll animation
+    const features = document.querySelectorAll(".feature-item");
+    if (features.length > 0) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (entry.isIntersecting && !hasAnimated) {
-              hasAnimated = true;
-              let current = 0;
-              const duration = 1500;
-              const step = target / (duration / 16);
-
-              const animate = () => {
-                current += step;
-                if (current < target) {
-                  countUpElement.textContent = Math.floor(current).toString();
-                  requestAnimationFrame(animate);
-                } else {
-                  countUpElement.textContent = target.toString();
-                }
-              };
-              animate();
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
             }
           });
         },
-        { threshold: 0.5 },
+        { threshold: 0.2 },
       );
 
-      observer.observe(countUpElement);
+      features.forEach((feature) => observer.observe(feature));
     }
 
     // Sticky CTA button - optimized with IntersectionObserver instead of scroll event
