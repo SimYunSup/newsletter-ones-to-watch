@@ -1,25 +1,17 @@
 .card {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  padding: 1.25rem;
-  border-radius: 1rem;
-  border: 1px solid var(--card-border, #e2e8f0);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  border: 1px solid transparent;
   background: var(--card-bg, white);
   height: 100%;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 0;
-  background: linear-gradient(90deg, var(--primary-color), var(--base-500));
-  transition: height 0.3s ease;
-}
+/* Removed top border gradient for cleaner look */
 
 .link {
   text-decoration: none;
@@ -29,13 +21,11 @@
 
 .link:hover .card {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(48, 62, 204, 0.15);
+  box-shadow: var(--shadow-lg);
   border-color: var(--primary-color);
 }
 
-.link:hover .card::before {
-  height: 3px;
-}
+/* Removed top border hover effect */
 
 .content {
   height: 100%;
@@ -50,9 +40,10 @@
   position: relative;
   aspect-ratio: 16 / 9;
   flex-shrink: 0;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   overflow: hidden;
   background: var(--hover-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 .image-container img {
@@ -81,16 +72,18 @@
 }
 
 .title {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   margin: auto 0 0.5rem 0;
-  line-height: 1.5;
+  line-height: 1.4;
   color: var(--foreground);
+  letter-spacing: -0.01em;
   /* Ensure text doesn't overflow */
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 

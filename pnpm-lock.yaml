@@ -37,6 +37,9 @@ importers:
       github-markdown-css:
         specifier: ^5.8.1
         version: 5.8.1
+      gsap:
+        specifier: ^3.14.1
+        version: 3.14.1
       notion-astro-loader:
         specifier: ^0.4.0
         version: 0.4.0(patch_hash=22fa6a08bed43e4b25d119528c52103280177ef151a2ed25126769da950cf303)(astro@5.15.3(@types/node@24.9.2)(jiti@1.21.6)(rollup@4.40.0)(typescript@5.6.3))
@@ -1608,6 +1611,9 @@ packages:
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
     engines: {node: '>=18'}
+
+  gsap@3.14.1:
+    resolution: {integrity: sha512-nOFRJpVu+U0IPgKzfC5MEdZrJ1iVidGaOuxK0+Un+7vMOHa5rw/SKOaMaRRyHZiJKaeAEALTBwnj6R3gifyGBw==}
 
   h3@1.15.4:
     resolution: {integrity: sha512-z5cFQWDffyOe4vQ9xIqNfCZdV4p//vy6fBnr8Q1AWnVZ0teurKMG66rLj++TKwKPUP3u7iMUvrvKaEUiQw2QWQ==}
@@ -4500,6 +4506,8 @@ snapshots:
       path-scurry: 2.0.0
 
   globals@14.0.0: {}
+
+  gsap@3.14.1: {}
 
   h3@1.15.4:
     dependencies:

@@ -25,57 +25,100 @@ html {
 }
 
 :root {
-  /* Original blue color palette */
-  --base-950: #080d40;
-  --base-900: #131b67;
-  --base-800: #1a237e;
-  --base-700: #303ecc;
-  --base-600: #5860e2;
-  --base-500: #7d82ea;
-  --base-400: #9ea2f0;
-  --base-300: #c1c3f5;
-  --base-200: #cfd1f7;
-  --base-100: #dedffa;
-  --base-50: #f3f3fd;
+  /* Modern Blue Palette - More vivid yet professional */
+  --base-950: #0f172a;
+  /* Slate 900 */
+  --base-900: #1e293b;
+  /* Slate 800 */
+  --base-800: #334155;
+  /* Slate 700 */
+  --base-700: #475569;
+  /* Slate 600 */
+  --base-600: #4f46e5;
+  /* Indigo 600 - Primary Brand */
+  --base-500: #6366f1;
+  /* Indigo 500 */
+  --base-400: #818cf8;
+  /* Indigo 400 */
+  --base-300: #a5b4fc;
+  /* Indigo 300 */
+  --base-200: #c7d2fe;
+  /* Indigo 200 */
+  --base-100: #e0e7ff;
+  /* Indigo 100 */
+  --base-50: #f8fafc;
+  /* Slate 50 */
 }
 
 :root {
   /* Light theme */
-  --background: var(--base-50);
+  --background: #ffffff;
   --foreground: var(--base-950);
-  --muted-color: var(--base-600);
-  --border-color: var(--base-200);
-  --primary-color: var(--base-700);
-  --primary-hover: var(--base-800);
-  --hover-bg: var(--base-100);
+  --muted-color: var(--base-700);
+  --border-color: #e2e8f0;
+  --primary-color: var(--base-600);
+  --primary-hover: var(--base-500);
+  --hover-bg: var(--base-50);
   --card-bg: #ffffff;
-  --card-border: var(--base-200);
+  --card-border: #f1f5f9;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --mobile-nav-bg: rgba(255, 255, 255, 0.95);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: var(--base-950);
-    --foreground: var(--base-50);
-    --muted-color: var(--base-400);
+    --foreground: #f8fafc;
+    --muted-color: #94a3b8;
     --border-color: var(--base-800);
-    --primary-color: var(--base-300);
-    --primary-hover: var(--base-200);
+    --primary-color: var(--base-400);
+    --primary-hover: var(--base-300);
     --hover-bg: var(--base-900);
     --card-bg: var(--base-900);
     --card-border: var(--base-800);
+    --header-bg: rgba(15, 23, 42, 0.8);
+    --mobile-nav-bg: rgba(15, 23, 42, 0.95);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
   }
 }
 
 [data-theme="dark"] {
   --background: var(--base-950);
-  --foreground: var(--base-50);
-  --muted-color: var(--base-400);
+  --foreground: #f8fafc;
+  --muted-color: #94a3b8;
   --border-color: var(--base-800);
-  --primary-color: var(--base-300);
-  --primary-hover: var(--base-200);
+  --primary-color: var(--base-400);
+  --primary-hover: var(--base-300);
   --hover-bg: var(--base-900);
   --card-bg: var(--base-900);
   --card-border: var(--base-800);
+  --header-bg: rgba(15, 23, 42, 0.8);
+  --mobile-nav-bg: rgba(15, 23, 42, 0.95);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: var(--base-950);
+  --muted-color: var(--base-700);
+  --border-color: #e2e8f0;
+  --primary-color: var(--base-600);
+  --primary-hover: var(--base-500);
+  --hover-bg: var(--base-50);
+  --card-bg: #ffffff;
+  --card-border: #f1f5f9;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --mobile-nav-bg: rgba(255, 255, 255, 0.95);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 html,
@@ -90,6 +133,8 @@ body {
 body {
   margin: 0;
   min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 .container {

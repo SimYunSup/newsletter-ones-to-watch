@@ -23,6 +23,7 @@
     "astro": "^5.15.3",
     "cheerio": "^1.1.2",
     "github-markdown-css": "^5.8.1",
+    "gsap": "^3.14.1",
     "notion-astro-loader": "^0.4.0"
   },
   "devDependencies": {

@@ -125,17 +125,20 @@
 .container {
   padding-top: 1.5rem;
 }
+
 .title {
   margin: 1rem 0;
   font-size: 2.5rem;
   text-align: center;
 }
+
 .description {
   margin-bottom: 1rem;
   padding: 0 0 8px;
   border-bottom: 1px solid var(--border-color);
   text-align: center;
 }
+
 .image-container {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -147,13 +150,16 @@
     }
   }
 }
+
 .image-container img {
   width: 100%;
   height: 100%;
 }
+
 article .markdown-body:has(~ .giscus) {
   margin-bottom: 5rem;
 }
+
 article .markdown-body {
   margin: 0 auto;
   display: flex;
@@ -162,9 +168,11 @@ article .markdown-body {
   max-width: 900px;
   padding: 0 .5rem;
   font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+
   @media (min-width: 769px) {
     padding: 0 1rem;
   }
+
   & code {
     margin: 0;
     font-size: 85%;
@@ -222,6 +230,7 @@ article .markdown-body {
     color: white;
     border-color: var(--primary-color);
   }
+
   & h1 {
     position: relative;
     margin: 1rem 0 0;
@@ -229,6 +238,7 @@ article .markdown-body {
     line-height: 2.5rem;
     cursor: pointer;
   }
+
   & h2 {
     position: relative;
     margin: 0.5rem 0 0;
@@ -249,6 +259,7 @@ article .markdown-body {
       font-size: 1rem;
       line-height: 1.75rem;
       animation: fadeIn 0.2s ease-in;
+
       @media (min-width: 769px) {
         left: -1.5rem;
         top: 0;
@@ -263,87 +274,70 @@ article .markdown-body {
       opacity: 0;
       transform: translateX(-5px);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
     }
   }
+
   & p {
     margin: .5rem 0 0;
     word-break: keep-all;
     overflow-wrap: break-word;
     line-height: 1.45;
 
-    & + h2 {
+    &+h2 {
       margin: 1.5rem 0 0;
     }
   }
+
   & a {
     text-decoration: none;
-    border-radius: .25rem;
-    padding: 0 .25rem;
+    border-radius: .375rem;
+    padding: .125rem .375rem;
     font-size: 1rem;
-    color: var(--base-950);
-    background: var(--base-200);
-    transition: background-color .2s ease-in-out;
+    color: var(--primary-color);
+    background: var(--hover-bg);
+    transition: all .2s ease-in-out;
+    border: 1px solid transparent;
 
-    @media (prefers-color-scheme: dark) {
-      background: var(--base-800);
-      color: var(--base-100);
-    }
     &:hover {
-      background: var(--base-300);
-      @media (prefers-color-scheme: dark) {
-        background: var(--base-700);
-      }
-    }
-    &:visited {
-      color: var(--base-700);
-      @media (prefers-color-scheme: dark) {
-        color: var(--base-400);
-      }
+      background: var(--card-bg);
+      border-color: var(--border-color);
+      box-shadow: var(--shadow-sm);
     }
   }
-  & > .bookmark-link {
+
+  &>.bookmark-link {
     cursor: pointer;
-    width: fit-content;
     width: 100%;
     display: flex;
-    font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+    font-family: inherit;
     margin: 1rem 0 0;
     padding: 1rem;
     text-decoration: none;
-    border-radius: .25rem;
+    border-radius: .5rem;
     font-size: 1rem;
-    color: var(--base-950);
-    background: var(--base-200);
-    border: 1px solid var(--base-300);
-    transition: background-color .2s ease-in-out;
+    color: var(--foreground);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    transition: all .2s ease-in-out;
+    box-shadow: var(--shadow-sm);
 
-    @media (prefers-color-scheme: dark) {
-      background: var(--base-800);
-      border-color: var(--base-700);
-      color: var(--base-100);
-    }
     &:has(+ &) {
       margin-top: 1.25rem;
     }
 
-    & + p {
+    &+p {
       margin-top: 1rem;
     }
-    &:hover {
-      background: var(--base-300);
-      @media (prefers-color-scheme: dark) {
-        background: var(--base-700);
-      }
-    }
 
-    &:visited {
-      color: var(--base-700);
-      @media (prefers-color-scheme: dark) {
-        color: var(--base-400);
-      }
+    &:hover {
+      background: var(--hover-bg);
+      border-color: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
   }
 }

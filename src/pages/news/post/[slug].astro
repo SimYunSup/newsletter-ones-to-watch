@@ -60,13 +60,13 @@ await Promise.all(
     try {
       const result = await env.NEWSLETTER_CRAWL.get<URLSearchResult>(
         `url:${match.url}`,
-        { type: "json" }
+        { type: "json" },
       );
       if (!result) {
         throw new Error("Result not found");
       }
       rendered(`a.bookmark-link[href='${result.url}']`).replaceWith(
-        `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replace(/</g, "&lt;").replace(/>/g, "&gt;")} 🔗</a>`
+        `<a class="bookmark-link" href="${result.url}" target="_blank" rel="noreferrer">${result.value.replace(/</g, "&lt;").replace(/>/g, "&gt;")} 🔗</a>`,
       );
     } catch (e) {
       console.error(e);
@@ -82,7 +82,7 @@ await Promise.all(
         delaySeconds: 2,
       });
     }
-  })
+  }),
 );
 if (messages.length > 0) {
   if (import.meta.env.DEV) {
@@ -133,7 +133,7 @@ if (import.meta.env.DEV) {
       <p>
         {
           new Intl.DateTimeFormat("ko-KR").format(
-            news.data.properties.날짜?.start
+            news.data.properties.날짜?.start,
           )
         }
       </p>
@@ -142,10 +142,18 @@ if (import.meta.env.DEV) {
     <!-- Content wrapper with sidebar layout -->
     <div class="content-wrapper">
       <!-- Table of Contents -->
-      <aside class="toc-container" id="table-of-contents" style="display: none;">
+      <aside
+        class="toc-container"
+        id="table-of-contents"
+        style="display: none;"
+      >
         <h3 class="toc-title">
           목차
-          <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">▼</button>
+          <button
+            class="toc-toggle"
+            id="toc-toggle"
+            aria-label="Toggle table of contents">▼</button
+          >
         </h3>
         <ul class="toc-list" id="toc-list"></ul>
       </aside>
@@ -158,33 +166,35 @@ if (import.meta.env.DEV) {
     <script>
       // Reading progress bar
       function updateReadingProgress() {
-        const progressBar = document.getElementById('reading-progress');
-        const article = document.getElementById('article-content');
+        const progressBar = document.getElementById("reading-progress");
+        const article = document.getElementById("article-content");
 
         if (!progressBar || !article) return;
 
         const articleTop = article.offsetTop;
         const articleHeight = article.offsetHeight;
         const windowHeight = window.innerHeight;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
 
         const scrollStart = articleTop;
         const scrollEnd = articleTop + articleHeight - windowHeight;
-        const scrollProgress = (scrollTop - scrollStart) / (scrollEnd - scrollStart);
+        const scrollProgress =
+          (scrollTop - scrollStart) / (scrollEnd - scrollStart);
 
         const percentage = Math.min(Math.max(scrollProgress * 100, 0), 100);
         progressBar.style.width = `${percentage}%`;
       }
 
-      window.addEventListener('scroll', updateReadingProgress);
-      window.addEventListener('resize', updateReadingProgress);
+      window.addEventListener("scroll", updateReadingProgress);
+      window.addEventListener("resize", updateReadingProgress);
       updateReadingProgress();
 
       // Table of Contents generation
       function generateTableOfContents() {
         const markdownElement = document.querySelector(".markdown-body");
-        const tocContainer = document.getElementById('table-of-contents');
-        const tocList = document.getElementById('toc-list');
+        const tocContainer = document.getElementById("table-of-contents");
+        const tocList = document.getElementById("toc-list");
 
         if (!markdownElement || !tocContainer || !tocList) return;
 
@@ -192,7 +202,7 @@ if (import.meta.env.DEV) {
 
         if (headings.length === 0) return;
 
-        tocContainer.style.display = 'block';
+        tocContainer.style.display = "block";
 
         headings.forEach((heading) => {
           const id = heading.id;
@@ -200,18 +210,18 @@ if (import.meta.env.DEV) {
 
           if (!id) return;
 
-          const li = document.createElement('li');
-          li.className = 'toc-item';
+          const li = document.createElement("li");
+          li.className = "toc-item";
 
-          const a = document.createElement('a');
+          const a = document.createElement("a");
           a.href = `#${id}`;
           a.textContent = text;
-          a.className = 'toc-link';
+          a.className = "toc-link";
 
-          a.addEventListener('click', (e) => {
+          a.addEventListener("click", (e) => {
             e.preventDefault();
-            heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            window.history.pushState(null, '', `#${id}`);
+            heading.scrollIntoView({ behavior: "smooth", block: "start" });
+            window.history.pushState(null, "", `#${id}`);
           });
 
           li.appendChild(a);
@@ -220,8 +230,9 @@ if (import.meta.env.DEV) {
 
         // Highlight active section in TOC
         function updateActiveTocLink() {
+          if (!markdownElement) return;
           const headings = Array.from(markdownElement.querySelectorAll("h2"));
-          const tocLinks = document.querySelectorAll('.toc-link');
+          const tocLinks = document.querySelectorAll(".toc-link");
 
           let activeIndex = -1;
           const scrollPosition = window.scrollY + 100;
@@ -234,33 +245,33 @@ if (import.meta.env.DEV) {
 
           tocLinks.forEach((link, index) => {
             if (index === activeIndex) {
-              link.classList.add('active');
+              link.classList.add("active");
             } else {
-              link.classList.remove('active');
+              link.classList.remove("active");
             }
           });
         }
 
-        window.addEventListener('scroll', updateActiveTocLink);
+        window.addEventListener("scroll", updateActiveTocLink);
         updateActiveTocLink();
       }
 
       generateTableOfContents();
 
       // TOC toggle for mobile
-      const tocToggle = document.getElementById('toc-toggle');
-      const tocList = document.getElementById('toc-list');
+      const tocToggle = document.getElementById("toc-toggle");
+      const tocList = document.getElementById("toc-list");
 
       if (tocToggle && tocList) {
-        tocToggle.addEventListener('click', () => {
-          const isCollapsed = tocList.classList.contains('collapsed');
+        tocToggle.addEventListener("click", () => {
+          const isCollapsed = tocList.classList.contains("collapsed");
 
           if (isCollapsed) {
-            tocList.classList.remove('collapsed');
-            tocToggle.textContent = '▼';
+            tocList.classList.remove("collapsed");
+            tocToggle.textContent = "▼";
           } else {
-            tocList.classList.add('collapsed');
-            tocToggle.textContent = '▶';
+            tocList.classList.add("collapsed");
+            tocToggle.textContent = "▶";
           }
         });
       }
@@ -270,37 +281,37 @@ if (import.meta.env.DEV) {
         const markdownElement = document.querySelector(".markdown-body");
         if (!markdownElement) return;
 
-        const codeBlocks = markdownElement.querySelectorAll('pre');
+        const codeBlocks = markdownElement.querySelectorAll("pre");
 
         codeBlocks.forEach((pre) => {
-          const code = pre.querySelector('code');
+          const code = pre.querySelector("code");
           if (!code) return;
 
-          const button = document.createElement('button');
-          button.className = 'copy-code-button';
-          button.textContent = '복사';
-          button.setAttribute('aria-label', 'Copy code to clipboard');
+          const button = document.createElement("button");
+          button.className = "copy-code-button";
+          button.textContent = "복사";
+          button.setAttribute("aria-label", "Copy code to clipboard");
 
-          button.addEventListener('click', async () => {
+          button.addEventListener("click", async () => {
             try {
-              await navigator.clipboard.writeText(code.textContent || '');
-              button.textContent = '복사됨!';
-              button.classList.add('copied');
+              await navigator.clipboard.writeText(code.textContent || "");
+              button.textContent = "복사됨!";
+              button.classList.add("copied");
 
               setTimeout(() => {
-                button.textContent = '복사';
-                button.classList.remove('copied');
+                button.textContent = "복사";
+                button.classList.remove("copied");
               }, 2000);
             } catch (err) {
-              console.error('Failed to copy code:', err);
-              button.textContent = '실패';
+              console.error("Failed to copy code:", err);
+              button.textContent = "실패";
               setTimeout(() => {
-                button.textContent = '복사';
+                button.textContent = "복사";
               }, 2000);
             }
           });
 
-          pre.style.position = 'relative';
+          pre.style.position = "relative";
           pre.appendChild(button);
         });
       }
@@ -329,6 +340,54 @@ if (import.meta.env.DEV) {
         });
       }
     </script>
+    <script>
+      function getGiscusTheme() {
+        const theme = document.documentElement.getAttribute("data-theme");
+        return theme === "dark" ? "dark" : "light";
+      }
+
+      function setGiscusTheme() {
+        const iframe = document.querySelector("iframe.giscus-frame");
+        if (!iframe) return;
+        const theme = getGiscusTheme();
+        const contentWindow = (iframe as HTMLIFrameElement).contentWindow;
+        if (contentWindow) {
+          contentWindow.postMessage(
+            {
+              giscus: {
+                setConfig: {
+                  theme: theme,
+                },
+              },
+            },
+            "https://giscus.app",
+          );
+        }
+      }
+
+      // Sync on load
+      const iframe = document.querySelector("iframe.giscus-frame");
+      if (iframe) {
+        iframe.addEventListener("load", setGiscusTheme);
+      }
+
+      // Sync on theme change
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (
+            mutation.type === "attributes" &&
+            mutation.attributeName === "data-theme"
+          ) {
+            setGiscusTheme();
+          }
+        });
+      });
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+    </script>
     <script
       src="https://giscus.app/client.js"
       data-repo="SimYunSup/newsletter-ones-to-watch"
@@ -339,7 +398,7 @@ if (import.meta.env.DEV) {
       data-reactions-enabled="1"
       data-emit-metadata="0"
       data-input-position="bottom"
-      data-theme="preferred_color_scheme"
+      data-theme="light"
       data-lang="ko"
       data-loading="lazy"
       crossorigin="anonymous"

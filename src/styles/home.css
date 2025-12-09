@@ -2,8 +2,11 @@
   margin-bottom: 2rem;
   padding: 3rem 1rem;
   text-align: center;
-  background: linear-gradient(180deg, var(--background) 0%, var(--hover-bg) 100%);
-  background-size: 100% 200%;
+  text-align: center;
+  background: radial-gradient(circle at 50% -20%, var(--base-200), transparent 70%);
+  position: relative;
+  position: relative;
+  /* overflow: hidden; Removed to allow button animation to fall out */
 
   @media (min-width: 1024px) {
     margin-bottom: 4rem;
@@ -25,10 +28,10 @@
   color: var(--foreground);
 
   @media (min-width: 1024px) {
-    flex-direction: row;
     row-gap: 0;
-    font-size: 4.5rem;
+    font-size: 3.5rem;
     line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 
   &>.logo {
@@ -58,7 +61,8 @@
     @media (min-width: 1024px) {
       margin: auto .75rem 0;
       line-height: 1.25;
-      font-size: 2.75rem;
+      font-size: 2.5rem;
+      color: var(--primary-color);
     }
   }
 }
@@ -84,15 +88,18 @@
   padding: 0.875rem 2rem;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--foreground);
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 0.5rem;
+  color: white;
+  background-color: var(--primary-color);
+  border: 1px solid transparent;
+  border-radius: 9999px;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-md);
 
   &:hover {
-    background-color: var(--hover-bg);
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
   }
 }
 
@@ -186,7 +193,8 @@
   justify-content: center;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 0.5rem;
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-lg);
 
   & .form-title {
     font-size: 1.25rem;
@@ -200,15 +208,70 @@
     }
   }
 
-  &>* {
-    width: 100%;
-    max-width: 32rem;
+  width: 100%;
+  max-width: 32rem;
+}
+
+/* Force theme styles on the injected ConvertKit form */
+& :global(.formkit-form) {
+  background: transparent !important;
+}
+
+& :global(.formkit-input),
+& input[type="email"],
+& input[type="text"] {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1rem !important;
+  width: 100% !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all 0.2s ease !important;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px var(--primary-color) !important;
+    /* Ring effect */
   }
+}
+
+& :global(.formkit-submit),
+& button[type="submit"] {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  border-radius: 9999px !important;
+  font-weight: 700 !important;
+  padding: 0.75rem 2rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: var(--shadow-md) !important;
+
+  &:hover {
+    background-color: var(--primary-hover) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+}
+
+/* Make sure labels or other text are visible */
+& :global(.formkit-label),
+& :global(.formkit-header),
+& :global(.formkit-subheader),
+& :global(.formkit-guarantee) {
+  color: var(--muted-color) !important;
+}
 }
 
 .count-up {
   font-weight: 700;
   color: var(--primary-color);
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  min-width: 1.5ch;
+  /* Ensure space for digits */
 }
 
 .sticky-cta {
@@ -234,14 +297,17 @@
   padding: 0.75rem 2rem;
   font-size: 1rem;
   font-weight: 700;
-  color: var(--foreground);
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 0.5rem;
+  color: white;
+  background-color: var(--primary-color);
+  border: 1px solid transparent;
+  border-radius: 9999px;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-md);
 
   &:hover {
-    background-color: var(--hover-bg);
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
   }
 }
