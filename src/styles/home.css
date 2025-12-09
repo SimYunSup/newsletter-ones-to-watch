@@ -175,6 +175,10 @@
   &:nth-child(even) {
     background-color: var(--hover-bg);
   }
+
+  .feature-bottom {
+    height: 1px;
+  }
 }
 
 .feature-icon {

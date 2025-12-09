@@ -73,6 +73,7 @@ const length = collection.length;
           기술적인 깊이가 있거나<br />방향성을 고민하게 만드는 글
         </p>
       </div>
+      <div class="feature-bottom"></div>
     </div>
     <div class="feature-item">
       <div class="feature-icon">
@@ -99,6 +100,7 @@ const length = collection.length;
         <h3 class="feature-title">Curated Archive</h3>
         <p class="feature-desc">주 1회 발행되는<br />프론트엔드 아카이브</p>
       </div>
+      <div class="feature-bottom"></div>
     </div>
     <div class="feature-item">
       <div class="feature-icon">
@@ -122,6 +124,7 @@ const length = collection.length;
           프론트엔드 개발자에게<br />영감을 주는 인사이트
         </p>
       </div>
+      <div class="feature-bottom"></div>
     </div>
   </article>
   <article class="container card-section">
@@ -145,13 +148,15 @@ const length = collection.length;
 
   <script>
     // Feature scroll animation
-    const features = document.querySelectorAll(".feature-item");
+    const features = document.querySelectorAll(".feature-item .feature-bottom");
     if (features.length > 0) {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
+              (entry.target.parentNode as HTMLElement)?.classList.add(
+                "visible",
+              );
             }
           });
         },
@@ -177,10 +182,9 @@ const length = collection.length;
             }
           });
         },
-        { threshold: 0, rootMargin: "-100px 0px 0px 0px" },
+        { threshold: 0, rootMargin: "0px 0px 0px 0px" },
       );
 
-      observer.observe(heroSection);
       observer.observe(heroSection);
     }
 
