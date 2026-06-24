@@ -1,11 +1,12 @@
 import process from "node:process";
 import { defineCollection, z } from 'astro:content';
 import { loadEnv } from "vite";
-import { notionLoader, notionPageSchema } from "notion-astro-loader";
 import {
+  notionLoader,
+  notionPageSchema,
   propertySchema,
-  transformedPropertySchema
-} from "notion-astro-loader/schemas";
+  transformedPropertySchema,
+} from "@/lib/notion-loader";
 import convertNotionBookmark from "./lib/rehype/convertNotionBookmark";
 
 const env = loadEnv(import.meta.env.NODE_ENV, process.cwd(), "");
