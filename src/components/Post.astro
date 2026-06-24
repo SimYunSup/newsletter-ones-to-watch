@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { env } from 'cloudflare:workers';
 import styles from "@/styles/components/post.module.css";
 
 
@@ -10,7 +11,7 @@ const { post } = Astro.props;
 
 
 const { properties: data } = post.data;
-const { env } = Astro.locals.runtime;
+// Astro 6+ removed `Astro.locals.runtime.env`; bindings come from `cloudflare:workers`.
 if (post.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`/thumbnail/${post.id}`);
   if (!image) {

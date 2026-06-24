@@ -276,18 +276,6 @@ article .markdown-body {
     }
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateX(-5px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
   & p {
     margin: .5rem 0 0;
     word-break: keep-all;
@@ -346,5 +334,19 @@ article .markdown-body {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
     }
+  }
+}
+
+/* @keyframes must live at the top level — nesting it inside a rule breaks
+   lightningcss (Astro 7's CSS minifier). */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

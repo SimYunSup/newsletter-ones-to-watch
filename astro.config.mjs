@@ -33,14 +33,10 @@ export default defineConfig({
     }
   },
   adapter: cloudflare({
-    mode: 'directory',
-    imageService: "cloudflare",
-    platformProxy: {
-      enabled: true
-    },
-    runtime: {
-      mode: 'local',
-      type: 'workers',
-    },
+    // @astrojs/cloudflare v14 dropped `mode`, `platformProxy`, and `runtime`
+    // (bindings now come from the wrangler config via @cloudflare/vite-plugin).
+    // `imageService: 'passthrough'` avoids claiming the R2 `IMAGES` binding as a
+    // Cloudflare Images binding; the loader already falls back to remote URLs.
+    imageService: 'passthrough',
   }),
 });

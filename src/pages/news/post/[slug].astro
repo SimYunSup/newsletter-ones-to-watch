@@ -1,5 +1,6 @@
 ---
 import { getEntry, render } from "astro:content";
+import { env } from "cloudflare:workers";
 import * as cheerio from "cheerio";
 import "@/styles/content.css";
 import Layout from "@/components/BasicLayout.astro";
@@ -36,7 +37,7 @@ interface URLSearchResult {
   description?: string;
 }
 
-const { env } = Astro.locals.runtime;
+// Astro 6+ removed `Astro.locals.runtime.env`; bindings come from `cloudflare:workers`.
 if (news.data.cover?.type === "file") {
   await env.CRALWER_QUEUE.send({
     type: "image",
