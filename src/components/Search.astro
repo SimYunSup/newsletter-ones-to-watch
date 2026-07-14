@@ -1,0 +1,96 @@
+---
+// munja search island — dictionary-free CJK/Latin full-text search running
+// entirely in the browser against the prebuilt /index.bin (written by the
+// notion-loader at build time). No framework, no backend.
+---
+
+<div class="munja-search">
+  <input
+    id="munja-input"
+    type="search"
+    placeholder="검색 (한 / 日 / 中 / EN)"
+    aria-label="검색"
+    autocomplete="off"
+  />
+  <ul id="munja-results" class="munja-results"></ul>
+</div>
+
+<script>
+  import init, { search_json } from "@pickhealer/munja";
+  import wasmUrl from "@pickhealer/munja/munja_bg.wasm?url";
+
+  type Hit = { title: string; href: string; category: string; body: string };
+
+  const input = document.getElementById("munja-input") as HTMLInputElement | null;
+  const list = document.getElementById("munja-results") as HTMLUListElement | null;
+
+  const escapeHtml = (s: string) =>
+    s.replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!
+    );
+
+  if (input && list) {
+    let index: Uint8Array | null = null;
+
+    // Load the wasm module + index once; every keystroke awaits this.
+    const ready = (async () => {
+      await init(wasmUrl);
+      const res = await fetch("/index.bin");
+      if (!res.ok) throw new Error(`index.bin ${res.status}`);
+      index = new Uint8Array(await res.arrayBuffer());
+    })().catch((e) => console.error("munja: failed to load index", e));
+
+    const renderHits = (hits: Hit[]) => {
+      list.innerHTML = hits
+        .map(
+          (h) =>
+            `<li><a href="${escapeHtml(h.href)}">${escapeHtml(h.title)}</a></li>`
+        )
+        .join("");
+    };
+
+    input.addEventListener("input", async () => {
+      await ready;
+      const query = input.value.trim();
+      if (!index || query === "") {
+        renderHits([]);
+        return;
+      }
+      try {
+        // search_json is synchronous once the module is initialized.
+        renderHits(JSON.parse(search_json(index, query, 10)) as Hit[]);
+      } catch (e) {
+        console.error("munja: search failed", e);
+        renderHits([]);
+      }
+    });
+  }
+</script>
+
+<style>
+  .munja-search {
+    max-width: 32rem;
+    margin: 0 auto 1.5rem;
+  }
+  .munja-search input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color, #d0d0d0);
+    border-radius: 8px;
+    background: var(--background-color, #fff);
+    color: inherit;
+  }
+  .munja-results {
+    list-style: none;
+    margin: 0.35rem 0 0;
+    padding: 0;
+  }
+  .munja-results li {
+    padding: 0.4rem 0.2rem;
+    border-bottom: 1px solid var(--border-color, #eee);
+  }
+  .munja-results a {
+    text-decoration: none;
+  }
+</style>

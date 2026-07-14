@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Layout from '@/components/BasicLayout.astro';
 import Post from '@/components/Post.astro';
+import Search from '@/components/Search.astro';
 import "@/styles/list-page.css";
 
 export const prerender = false;
@@ -21,6 +22,7 @@ const length = collection.length;
 
 <Layout pageTitle={`${page}페이지 | OTW for FE`}>
     <div class="container">
+      <Search />
       <ul
         class="article-grid"
       >
