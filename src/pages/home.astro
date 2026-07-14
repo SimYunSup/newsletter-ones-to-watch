@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "@/components/BasicLayout.astro";
 import Post from "@/components/Post.astro";
+import Search from "@/components/Search.astro";
 import Favicon from "@/assets/favicon.svg";
 import "@/styles/home.css";
 
@@ -44,6 +45,9 @@ const length = collection.length;
         <a href="/news/list/1" class="cta-button primary">
           뉴스레터 보러가기
         </a>
+      </div>
+      <div class="hero-search">
+        <Search />
       </div>
     </div>
   </article>

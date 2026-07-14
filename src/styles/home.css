@@ -105,6 +105,11 @@
   flex-wrap: wrap;
 }
 
+.hero-search {
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
 .cta-button {
   display: inline-flex;
   align-items: center;

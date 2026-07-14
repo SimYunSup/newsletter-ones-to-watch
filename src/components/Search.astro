@@ -2,17 +2,36 @@
 // munja search island — dictionary-free CJK/Latin full-text search running
 // entirely in the browser against the prebuilt /index.bin (written by the
 // notion-loader at build time). No framework, no backend.
+//
+// Each result links to the post with `?q=<query>` so the destination page can
+// natively highlight the matched terms (see news/post/[slug].astro).
 ---
 
-<div class="munja-search">
-  <input
-    id="munja-input"
-    type="search"
-    placeholder="검색 (한 / 日 / 中 / EN)"
-    aria-label="검색"
-    autocomplete="off"
-  />
-  <ul id="munja-results" class="munja-results"></ul>
+<div class="munja-search" data-munja>
+  <div class="munja-field">
+    <svg
+      class="munja-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <input
+      class="munja-input"
+      type="search"
+      placeholder="글 검색 (한 · 日 · 中 · EN)"
+      aria-label="글 검색"
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </div>
+  <ul class="munja-panel" role="listbox" aria-label="검색 결과" hidden></ul>
 </div>
 
 <script>
@@ -21,18 +40,37 @@
 
   type Hit = { title: string; href: string; category: string; body: string };
 
-  const input = document.getElementById("munja-input") as HTMLInputElement | null;
-  const list = document.getElementById("munja-results") as HTMLUListElement | null;
-
   const escapeHtml = (s: string) =>
     s.replace(/[&<>"']/g, (c) =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!
     );
+  const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-  if (input && list) {
+  // Build a ~80-char snippet centered on the first matched term, with every
+  // term wrapped in <mark> — this is what makes it obvious *why* a doc matched
+  // (e.g. an English word buried in Korean body text).
+  function snippet(body: string, terms: string[]): string {
+    const lower = body.toLowerCase();
+    let pos = -1;
+    for (const t of terms) {
+      const i = lower.indexOf(t);
+      if (i !== -1 && (pos === -1 || i < pos)) pos = i;
+    }
+    const start = pos === -1 ? 0 : Math.max(0, pos - 30);
+    const end = pos === -1 ? 90 : Math.min(body.length, pos + 50);
+    let html = escapeHtml(body.slice(start, end));
+    for (const t of terms) {
+      if (t) html = html.replace(new RegExp(`(${escapeRe(t)})`, "gi"), "<mark>$1</mark>");
+    }
+    return (start > 0 ? "…" : "") + html + (end < body.length ? "…" : "");
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-munja]").forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>(".munja-input");
+    const panel = root.querySelector<HTMLUListElement>(".munja-panel");
+    if (!input || !panel) return;
+
     let index: Uint8Array | null = null;
-
-    // Load the wasm module + index once; every keystroke awaits this.
     const ready = (async () => {
       await init(wasmUrl);
       const res = await fetch("/index.bin");
@@ -40,57 +78,197 @@
       index = new Uint8Array(await res.arrayBuffer());
     })().catch((e) => console.error("munja: failed to load index", e));
 
-    const renderHits = (hits: Hit[]) => {
-      list.innerHTML = hits
-        .map(
-          (h) =>
-            `<li><a href="${escapeHtml(h.href)}">${escapeHtml(h.title)}</a></li>`
-        )
-        .join("");
+    const close = () => {
+      panel.hidden = true;
+      panel.innerHTML = "";
     };
 
-    input.addEventListener("input", async () => {
+    const run = async () => {
       await ready;
-      const query = input.value.trim();
-      if (!index || query === "") {
-        renderHits([]);
-        return;
-      }
+      const raw = input.value.trim();
+      if (!index || raw === "") return close();
+      const terms = raw.toLowerCase().split(/\s+/).filter(Boolean);
+      let hits: Hit[] = [];
       try {
-        // search_json is synchronous once the module is initialized.
-        renderHits(JSON.parse(search_json(index, query, 10)) as Hit[]);
+        hits = JSON.parse(search_json(index, raw, 8)) as Hit[];
       } catch (e) {
         console.error("munja: search failed", e);
-        renderHits([]);
+      }
+      if (hits.length === 0) {
+        panel.innerHTML = `<li class="munja-empty">검색 결과가 없어요</li>`;
+        panel.hidden = false;
+        return;
+      }
+      const qs = `?q=${encodeURIComponent(raw)}`;
+      panel.innerHTML = hits
+        .map(
+          (h) => `<li role="option">
+            <a href="${escapeHtml(h.href)}${qs}">
+              <span class="munja-hit-head">
+                <span class="munja-hit-title">${escapeHtml(h.title)}</span>
+                <span class="munja-hit-cat">${escapeHtml(h.category)}</span>
+              </span>
+              <span class="munja-hit-snippet">${snippet(h.body, terms)}</span>
+            </a>
+          </li>`
+        )
+        .join("");
+      panel.hidden = false;
+    };
+
+    input.addEventListener("input", run);
+    input.addEventListener("focus", () => {
+      if (input.value.trim() !== "") run();
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        input.value = "";
+        close();
+      } else if (e.key === "Enter") {
+        const first = panel.querySelector<HTMLAnchorElement>("a");
+        if (first) {
+          e.preventDefault();
+          window.location.href = first.href;
+        }
       }
     });
-  }
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target as Node)) close();
+    });
+  });
 </script>
 
 <style>
   .munja-search {
-    max-width: 32rem;
-    margin: 0 auto 1.5rem;
-  }
-  .munja-search input {
+    position: relative;
     width: 100%;
-    padding: 0.6rem 0.9rem;
+    max-width: 34rem;
+    margin: 0 auto;
+  }
+
+  .munja-field {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0 1rem;
+    height: 3rem;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 9999px;
+    box-shadow: var(--shadow-sm, 0 1px 2px rgb(0 0 0 / 0.05));
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .munja-field:focus-within {
+    border-color: var(--primary-color, #4f46e5);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #4f46e5) 22%, transparent);
+  }
+  .munja-icon {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--muted-color, #64748b);
+  }
+  .munja-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--foreground, #0f172a);
     font-size: 1rem;
-    border: 1px solid var(--border-color, #d0d0d0);
-    border-radius: 8px;
-    background: var(--background-color, #fff);
-    color: inherit;
+    outline: none;
   }
-  .munja-results {
+  .munja-input::placeholder {
+    color: var(--muted-color, #94a3b8);
+  }
+  /* Kill the native search "×" so the field stays clean. */
+  .munja-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .munja-panel {
+    position: absolute;
+    z-index: 50;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.4rem;
     list-style: none;
-    margin: 0.35rem 0 0;
-    padding: 0;
+    max-height: 22rem;
+    overflow-y: auto;
+    background: var(--card-bg, #fff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 1rem;
+    box-shadow: var(--shadow-lg, 0 10px 15px -3px rgb(0 0 0 / 0.1));
+    text-align: left;
   }
-  .munja-results li {
-    padding: 0.4rem 0.2rem;
-    border-bottom: 1px solid var(--border-color, #eee);
+  .munja-panel[hidden] {
+    display: none;
   }
-  .munja-results a {
+
+  .munja-panel li {
+    margin: 0;
+  }
+  .munja-panel a {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.65rem;
     text-decoration: none;
+    color: inherit;
+    transition: background-color 0.12s ease;
+  }
+  .munja-panel a:hover,
+  .munja-panel a:focus-visible {
+    background: var(--hover-bg, #f1f5f9);
+  }
+
+  .munja-hit-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .munja-hit-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--foreground, #0f172a);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .munja-hit-cat {
+    flex: none;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.1rem 0.5rem;
+    border-radius: 9999px;
+    color: var(--primary-color, #4f46e5);
+    background: color-mix(in srgb, var(--primary-color, #4f46e5) 12%, transparent);
+  }
+  .munja-hit-snippet {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 0.2rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--muted-color, #64748b);
+  }
+  .munja-hit-snippet mark {
+    background: color-mix(in srgb, var(--primary-color, #4f46e5) 24%, transparent);
+    color: var(--foreground, #0f172a);
+    border-radius: 3px;
+    padding: 0 1px;
+    font-weight: 600;
+  }
+
+  .munja-empty {
+    padding: 0.85rem 0.75rem;
+    font-size: 0.9rem;
+    color: var(--muted-color, #64748b);
+    text-align: center;
   }
 </style>
