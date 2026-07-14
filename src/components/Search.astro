@@ -25,8 +25,8 @@
     <input
       class="munja-input"
       type="search"
-      placeholder="검색"
-      aria-label="검색"
+      placeholder="뉴스레터 검색…"
+      aria-label="뉴스레터 검색"
       autocomplete="off"
       spellcheck="false"
     />
@@ -144,31 +144,29 @@
   .munja-search {
     position: relative;
     width: 100%;
-    max-width: 34rem;
     margin: 0 auto;
   }
 
   .munja-field {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0 1.1rem;
-    height: 3rem;
-    background: var(--card-bg, #fff);
-    border: 1px solid var(--border-color, #e2e8f0);
-    border-radius: 9999px;
-    box-shadow: var(--shadow-sm, 0 1px 2px rgb(0 0 0 / 0.05));
+    gap: 0.7rem;
+    padding: 0 16px;
+    height: 48px;
+    background: var(--card, #fff);
+    border: 1px solid var(--line, #e2e8f0);
+    border-radius: 10px;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .munja-field:focus-within {
-    border-color: var(--primary-color, #4f46e5);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color, #4f46e5) 22%, transparent);
+    border-color: var(--accent, #4f46e5);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent, #4f46e5) 18%, transparent);
   }
   .munja-icon {
     flex: none;
-    width: 1.15rem;
-    height: 1.15rem;
-    color: var(--muted-color, #64748b);
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted, #64748b);
   }
   .munja-input {
     flex: 1;
@@ -176,8 +174,9 @@
     height: 100%;
     border: 0;
     background: transparent;
-    color: var(--foreground, #0f172a);
-    font-size: 1rem;
+    color: var(--ink, #0f172a);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 14px;
     outline: none;
   }
   .munja-input::placeholder {

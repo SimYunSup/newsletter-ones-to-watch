@@ -19,12 +19,11 @@ const list = collection
       (a.data.properties.날짜?.start.getTime() ?? 0),
   )
   .slice(0, 8);
-const length = collection.length;
 ---
 
 <Layout
   pageTitle={"Ones To Watch for FrontEnd"}
-  description={"프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."}
+  description={"프론트엔드에 대한 정보들을 매주 큐레이션해드립니다."}
 >
   <Fragment slot="head">
     <meta
@@ -32,219 +31,59 @@ const length = collection.length;
       content="매주 프론트엔드 소식을 정리해서 보내드립니다."
     />
   </Fragment>
-  <article class="hero-wrapper section">
-    <div class="container hero-content">
-      <h1 class="title">
-        <Favicon class="logo" />
-        <span class="text"
-          >Ones To Watch <span class="sub">for</span> FrontEnd</span
-        >
-      </h1>
-      <h2 class="description">주목할 만한 블로그를 모아두는 웹사이트</h2>
-      <div class="cta-group">
-        <a href="/news/list/1" class="cta-button primary">
-          뉴스레터 보러가기
-        </a>
+
+  <main class="home">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="mono-eyebrow hero-eyebrow">// weekly frontend newsletter</p>
+        <h1 class="hero-title">Ones To Watch<br />for FrontEnd</h1>
+        <p class="hero-sub">주목할 만한 블로그를 모아두는 웹사이트</p>
+        <div class="hero-subscribe">
+          <script
+            async
+            data-uid="c7b118d8c2"
+            src="https://ones-to-watch-for-frontend.kit.com/c7b118d8c2/index.js"
+          ></script>
+        </div>
+        <p class="hero-fineprint">주 1회 발행 · 광고 없음 · 언제든 해지</p>
       </div>
-      <div class="hero-search">
+      <Favicon class="hero-logo" />
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+      <div class="features-inner">
+        <div class="feature">
+          <p class="feature-num">01</p>
+          <h3 class="feature-title">Deep Insights</h3>
+          <p class="feature-desc">기술적인 깊이가 있거나 방향성을 고민하게 만드는 글</p>
+        </div>
+        <div class="feature">
+          <p class="feature-num">02</p>
+          <h3 class="feature-title">Curated Archive</h3>
+          <p class="feature-desc">주 1회 발행되는 프론트엔드 아카이브</p>
+        </div>
+        <div class="feature">
+          <p class="feature-num">03</p>
+          <h3 class="feature-title">Developer Focused</h3>
+          <p class="feature-desc">프론트엔드 개발자에게 영감을 주는 인사이트</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent -->
+    <section class="recent">
+      <div class="recent-head">
+        <h2 class="recent-title">최근 뉴스레터</h2>
+        <a class="recent-all" href="/news/list/1">전체 보기 →</a>
+      </div>
+      <div class="recent-search">
         <Search />
       </div>
-    </div>
-  </article>
-
-  <article class="feature-section">
-    <div class="feature-item">
-      <div class="feature-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          pathLength="1"
-        >
-          <circle cx="11" cy="11" r="8" pathLength="1"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65" pathLength="1"></line>
-          <line x1="11" y1="8" x2="11" y2="14" pathLength="1"></line>
-          <line x1="8" y1="11" x2="14" y2="11" pathLength="1"></line>
-        </svg>
+      <div class="post-list">
+        {list.map((post) => <Post post={post} />)}
       </div>
-      <div class="feature-text">
-        <h3 class="feature-title">Deep Insights</h3>
-        <p class="feature-desc">
-          기술적인 깊이가 있거나<br />방향성을 고민하게 만드는 글
-        </p>
-      </div>
-      <div class="feature-bottom"></div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          pathLength="1"
-        >
-          <path
-            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-            pathLength="1"></path>
-          <polyline points="14 2 14 8 20 8" pathLength="1"></polyline>
-          <line x1="16" y1="13" x2="8" y2="13" pathLength="1"></line>
-          <line x1="16" y1="17" x2="8" y2="17" pathLength="1"></line>
-          <polyline points="10 9 9 9 8 9" pathLength="1"></polyline>
-        </svg>
-      </div>
-      <div class="feature-text">
-        <h3 class="feature-title">Curated Archive</h3>
-        <p class="feature-desc">주 1회 발행되는<br />프론트엔드 아카이브</p>
-      </div>
-      <div class="feature-bottom"></div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          pathLength="1"
-        >
-          <polyline points="16 18 22 12 16 6" pathLength="1"></polyline>
-          <polyline points="8 6 2 12 8 18" pathLength="1"></polyline>
-        </svg>
-      </div>
-      <div class="feature-text">
-        <h3 class="feature-title">Developer Focused</h3>
-        <p class="feature-desc">
-          프론트엔드 개발자에게<br />영감을 주는 인사이트
-        </p>
-      </div>
-      <div class="feature-bottom"></div>
-    </div>
-  </article>
-  <article class="container card-section">
-    <h3 class="card-section-title">최근 뉴스레터</h3>
-    <ul class="card-grid">
-      {list.map((post) => <Post post={post} />)}
-    </ul>
-    <div class="newsletter-form">
-      <div class="form-title">이메일로 받아보기</div>
-      <script
-        async
-        data-uid="c7b118d8c2"
-        src="https://ones-to-watch-for-frontend.kit.com/c7b118d8c2/index.js"
-      ></script>
-    </div>
-  </article>
-
-  <div class="sticky-cta" id="sticky-cta">
-    <a href="/news/list/1" class="sticky-cta-button"> 뉴스레터 보러가기 </a>
-  </div>
-
-  <script>
-    // Feature scroll animation
-    const features = document.querySelectorAll(".feature-item .feature-bottom");
-    if (features.length > 0) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              (entry.target.parentNode as HTMLElement)?.classList.add(
-                "visible",
-              );
-            }
-          });
-        },
-        { threshold: 0.2 },
-      );
-
-      features.forEach((feature) => observer.observe(feature));
-    }
-
-    // Sticky CTA button - optimized with IntersectionObserver instead of scroll event
-    const stickyCta = document.getElementById("sticky-cta");
-    const heroSection = document.querySelector(".section");
-
-    if (stickyCta && heroSection) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-              // Hero section has scrolled past the top
-              stickyCta.classList.add("visible");
-            } else {
-              stickyCta.classList.remove("visible");
-            }
-          });
-        },
-        { threshold: 0, rootMargin: "0px 0px 0px 0px" },
-      );
-
-      observer.observe(heroSection);
-    }
-
-    // GSAP Button Animation
-    import { gsap } from "gsap";
-
-    const ctaButton = document.querySelector(".cta-button") as HTMLElement;
-    const cardSection = document.querySelector(".card-section");
-
-    if (ctaButton && cardSection) {
-      ctaButton.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        // 1. Shake animation
-        const shakeTimeline = gsap.timeline();
-
-        shakeTimeline
-          .to(ctaButton, {
-            x: -20,
-            duration: 0.1,
-            repeat: 5,
-            yoyo: true,
-            ease: "power1.inOut",
-          })
-          .to(ctaButton, {
-            x: 0,
-            duration: 0.1,
-            onComplete: () => {
-              // 2. Fall animation
-              gsap.to(ctaButton, {
-                y: 500,
-                opacity: 0,
-                rotation: 45,
-                duration: 0.8,
-                ease: "power2.in",
-                onComplete: () => {
-                  // 3. Scroll to section
-                  cardSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-
-                  // (Optional) Reset button after a delay if user scrolls back up
-                  setTimeout(() => {
-                    gsap.set(ctaButton, {
-                      y: 0,
-                      opacity: 1,
-                      rotation: 0,
-                      clearProps: "all",
-                    });
-                  }, 2000);
-                },
-              });
-            },
-          });
-      });
-    }
-  </script>
+    </section>
+  </main>
 </Layout>

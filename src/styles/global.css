@@ -1,161 +1,140 @@
-@font-face {
-  font-family: "SUITE";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "SUITE";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "SUITE";
-  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Heavy.woff2") format("woff2");
-  font-weight: 900;
-  font-style: normal;
-}
+/* Editorial redesign — IBM Plex typography + indigo/slate token system.
+   Body: IBM Plex Sans KR. Mono accents (labels, dates, // comments): IBM Plex Mono. */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap");
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 100px;
+  scroll-padding-top: 88px;
 }
 
 :root {
-  /* Modern Blue Palette - More vivid yet professional */
-  --base-950: #0f172a;
-  /* Slate 900 */
-  --base-900: #1e293b;
-  /* Slate 800 */
-  --base-800: #334155;
-  /* Slate 700 */
-  --base-700: #475569;
-  /* Slate 600 */
-  --base-600: #4f46e5;
-  /* Indigo 600 - Primary Brand */
-  --base-500: #6366f1;
-  /* Indigo 500 */
-  --base-400: #818cf8;
-  /* Indigo 400 */
-  --base-300: #a5b4fc;
-  /* Indigo 300 */
-  --base-200: #c7d2fe;
-  /* Indigo 200 */
-  --base-100: #e0e7ff;
-  /* Indigo 100 */
-  --base-50: #f8fafc;
-  /* Slate 50 */
-}
+  --font-sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-:root {
-  /* Light theme */
-  --background: #ffffff;
-  --foreground: var(--base-950);
-  --muted-color: var(--base-700);
-  --border-color: #e2e8f0;
-  --primary-color: var(--base-600);
-  --primary-hover: var(--base-500);
-  --hover-bg: var(--base-50);
-  --card-bg: #ffffff;
-  --card-border: #f1f5f9;
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --mobile-nav-bg: rgba(255, 255, 255, 0.95);
+  /* Core editorial tokens — light (default). */
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --line: #e2e8f0;
+  --ink: #0f172a;
+  --muted: #475569;
+  --accent: #4f46e5;
+  --accent-ink: #4338ca;
+  --card: #ffffff;
+  --thumb-a: #e0e7ff;
+  --thumb-b: #eef2ff;
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Back-compat aliases: existing component CSS still reads these names. They
+     reference the core tokens above, so a theme switch updates them for free. */
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --muted-color: var(--muted);
+  --border-color: var(--line);
+  --primary-color: var(--accent);
+  --primary-hover: var(--accent-ink);
+  --hover-bg: var(--surface);
+  --card-bg: var(--card);
+  --card-border: var(--line);
+  --header-bg: var(--bg);
+  --mobile-nav-bg: var(--bg);
 }
 
+/* Dark tokens — applied by the explicit toggle. Only the core tokens change;
+   the aliases above follow automatically. */
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --line: #334155;
+  --ink: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #818cf8;
+  --accent-ink: #a5b4fc;
+  --card: #1e293b;
+  --thumb-a: #1e293b;
+  --thumb-b: #263449;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
+/* System-preference dark, unless the user explicitly picked light. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--base-950);
-    --foreground: #f8fafc;
-    --muted-color: #94a3b8;
-    --border-color: var(--base-800);
-    --primary-color: var(--base-400);
-    --primary-hover: var(--base-300);
-    --hover-bg: var(--base-900);
-    --card-bg: var(--base-900);
-    --card-border: var(--base-800);
-    --header-bg: rgba(15, 23, 42, 0.8);
-    --mobile-nav-bg: rgba(15, 23, 42, 0.95);
+  :root:not([data-theme="light"]) {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --line: #334155;
+    --ink: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #818cf8;
+    --accent-ink: #a5b4fc;
+    --card: #1e293b;
+    --thumb-a: #1e293b;
+    --thumb-b: #263449;
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
   }
 }
 
-[data-theme="dark"] {
-  --background: var(--base-950);
-  --foreground: #f8fafc;
-  --muted-color: #94a3b8;
-  --border-color: var(--base-800);
-  --primary-color: var(--base-400);
-  --primary-hover: var(--base-300);
-  --hover-bg: var(--base-900);
-  --card-bg: var(--base-900);
-  --card-border: var(--base-800);
-  --header-bg: rgba(15, 23, 42, 0.8);
-  --mobile-nav-bg: rgba(15, 23, 42, 0.95);
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
-}
-
-[data-theme="light"] {
-  --background: #ffffff;
-  --foreground: var(--base-950);
-  --muted-color: var(--base-700);
-  --border-color: #e2e8f0;
-  --primary-color: var(--base-600);
-  --primary-hover: var(--base-500);
-  --hover-bg: var(--base-50);
-  --card-bg: #ffffff;
-  --card-border: #f1f5f9;
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --mobile-nav-bg: rgba(255, 255, 255, 0.95);
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: "SUITE", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
-  background-color: var(--background);
-  color: var(--foreground);
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--ink);
 }
 
 body {
-  margin: 0;
   min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-}
-
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * {
   box-sizing: border-box;
 }
 
-.sr-only {
-  display: none;
-}
-
 a {
-  color: var(--base-500);
+  color: inherit;
+  text-decoration: none;
 }
 
-main>.markdown-body {
+.container {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* Mono eyebrow used across pages, e.g. "// weekly frontend newsletter". */
+.mono-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+main > .markdown-body {
   padding: 0 1rem;
-  background-color: var(--background);
+  background-color: var(--bg);
+}
+.markdown-body a {
+  color: var(--accent);
 }

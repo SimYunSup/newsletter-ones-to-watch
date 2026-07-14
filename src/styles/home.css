@@ -1,338 +1,165 @@
-/* Hero Section */
-.hero-wrapper {
-  position: relative;
-  width: 100%;
-  /* Default block behavior */
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+/* Home — editorial layout. Body font is IBM Plex Sans KR (global); mono accents
+   use var(--font-mono). Content column is 880px, matching the header. */
 
-  /* Ensure gradient covers everything */
-  background: radial-gradient(circle at 50% 30%, var(--base-200), transparent 70%),
-    radial-gradient(circle at 80% 10%, var(--base-100), transparent 50%);
-  background-size: cover;
-  background-attachment: fixed;
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Fix Hero Background Cutoff Attempt 2:
-   If the element is inside a restricted width container, the background is restricted.
-   We should probably fix the HTML to allow fullbleed, but let's try to fix it here with a pseudo-element
-   that is absolutely positioned to viewport if permissible, or just accept it's contained.
-   The user said "background is cut off", implying they want full width.
-   Let's assume the gradient should extend.
-*/
-
-.hero-content {
-  position: relative;
-  z-index: 10;
+.home {
+  display: block;
 }
 
-.title {
+/* Hero */
+.hero {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 96px 32px 72px;
   display: flex;
-  flex-direction: column;
-  row-gap: 1rem;
   align-items: center;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-  line-height: 1.1;
-  font-weight: 900;
-  text-align: center;
-  justify-content: center;
-  color: var(--foreground);
-
-  @media (min-width: 1024px) {
-    row-gap: 0;
-    font-size: 4.5rem;
-    line-height: 1;
-    letter-spacing: -0.03em;
-  }
-
-  &>.logo {
-    display: block;
-    width: 4rem;
-    height: 4rem;
-    margin-bottom: 1rem;
-
-    @media (min-width: 1024px) {
-      width: 7rem;
-      height: 7rem;
-      margin-bottom: 1.5rem;
-      margin-right: 0;
-    }
-  }
-
-  & .text {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 900px;
-  }
-
-  & .sub {
-    margin: auto .375rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--muted-color);
-
-    @media (min-width: 1024px) {
-      margin: auto .75rem 0;
-      font-size: 2.5rem;
-    }
-  }
+  gap: 48px;
 }
-
-.description {
-  margin-bottom: 3.5rem;
-  font-size: 1.25rem;
-  font-weight: 500;
-  text-align: center;
-  color: var(--foreground);
-  /* Changed from muted-color to foreground for visibility */
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+.hero-eyebrow {
+  margin: 0 0 20px;
+  animation: heroIn 0.6s ease both;
+}
+.hero-title {
+  font-size: 54px;
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 20px;
+  color: var(--ink);
+  text-wrap: pretty;
+  animation: heroIn 0.7s ease 0.1s both;
+}
+.hero-sub {
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 32px;
+  max-width: 520px;
+  text-wrap: pretty;
+  animation: heroIn 0.7s ease 0.2s both;
+}
+.hero-subscribe {
+  max-width: 460px;
+  animation: heroIn 0.7s ease 0.3s both;
+}
+.hero-fineprint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin: 14px 0 0;
+}
+.hero-logo {
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+  color: var(--accent);
   opacity: 0.9;
-  max-width: 40rem;
-  margin-left: auto;
-  margin-right: auto;
-  word-break: keep-all;
-
-  @media (min-width: 1024px) {
-    font-size: 1.75rem;
-  }
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+.hero-logo:hover {
+  filter: drop-shadow(0 8px 24px rgba(79, 70, 229, 0.45));
+  transform: translateY(-4px);
 }
 
-.cta-group {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+/* Features */
+.features {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  transition: background-color 0.3s ease;
 }
-
-.hero-search {
-  margin-top: 2rem;
-  padding: 0 1rem;
-}
-
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 2.5rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  /* Enhanced shadow */
-
-  &.primary {
-    color: white;
-    background-color: var(--primary-color);
-    border: 1px solid transparent;
-
-    &:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-  }
-
-  &.secondary {
-    color: var(--foreground);
-    background-color: var(--background);
-    border: 1px solid var(--border-color);
-
-    &:hover {
-      background-color: var(--hover-bg);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--primary-color);
-    }
-  }
-}
-
-/* Feature Section */
-.feature-section {
-  padding: 0;
-  max-width: 100%;
-}
-
-.feature-item {
-  min-height: auto;
-  /* Remove fixed height constraint */
-  padding: 4rem 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 1s ease, transform 1s ease;
-
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Add subtle background to odd items to differentiate */
-  &:nth-child(odd) {
-    background-color: var(--background);
-  }
-
-  &:nth-child(even) {
-    background-color: var(--hover-bg);
-  }
-
-  .feature-bottom {
-    height: 1px;
-  }
-}
-
-.feature-icon {
-  margin-bottom: 1.5rem;
-  color: var(--primary-color);
-
-  & svg {
-    width: 6rem;
-    height: 6rem;
-    stroke-width: 1.5;
-
-    @media (min-width: 1024px) {
-      width: 8rem;
-      height: 8rem;
-    }
-
-    & path,
-    & circle,
-    & line,
-    & polyline {
-      /* With pathLength="1" in SVG, we can use 1 for full length */
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-  }
-}
-
-.feature-item.visible .feature-icon svg {
-
-  & path,
-  & circle,
-  & line,
-  & polyline {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.feature-text {
-  text-align: center;
-  max-width: 800px;
-}
-
-.feature-title {
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin-bottom: 2rem;
-  color: var(--primary-color);
-  letter-spacing: -0.02em;
-
-  @media (min-width: 1024px) {
-    font-size: 4rem;
-  }
-}
-
-.feature-desc {
-  font-size: 1.5rem;
-  line-height: 1.6;
-  color: var(--foreground);
-  word-break: keep-all;
-
-  @media (min-width: 1024px) {
-    font-size: 2rem;
-  }
-}
-
-.newsletter-form {
-  /* Removed border-top that was copied from sticky-cta */
-  margin-top: 4rem;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-lg);
-  width: 100%;
-  max-width: 32rem;
-  margin-left: auto;
-  margin-right: auto;
-
-  & .form-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--foreground);
-
-    @media (min-width: 1024px) {
-      font-size: 1.5rem;
-    }
-  }
-}
-
-.sticky-cta {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background: var(--background);
-  border-top: none;
-  /* Removed border */
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  z-index: 1000;
-  text-align: center;
-
-  &.visible {
-    transform: translateY(0);
-  }
-}
-
-.sticky-cta-button {
-  display: inline-block;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  font-weight: 700;
-  color: white;
-  background-color: var(--primary-color);
-  border: 1px solid transparent;
-  border-radius: 9999px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-md);
-
-  &:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-lg);
-  }
-}
-
-.card-grid {
-  padding: 0;
+.features-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 56px 32px;
   display: grid;
-  gap: 2rem;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.feature-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+.feature-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--ink);
+}
+.feature-desc {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 0;
+  word-break: keep-all;
+}
 
-  @media (min-width: 769px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2.5rem;
+/* Recent */
+.recent {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 72px 32px 96px;
+}
+.recent-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.recent-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--ink);
+}
+.recent-all {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.recent-search {
+  margin-bottom: 20px;
+}
+
+/* Shared post list (also used on the archive page) */
+.post-list {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    padding: 64px 24px 48px;
+    gap: 28px;
+  }
+  .hero-logo {
+    width: 120px;
+    height: 120px;
+  }
+  .hero-title {
+    font-size: 40px;
+  }
+  .features-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 40px 24px;
+  }
+  .recent {
+    padding: 48px 24px 72px;
   }
 }
