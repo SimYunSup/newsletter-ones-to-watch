@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.0.0",
+    "@pickhealer/munja": "^0.1.0",
     "@astrojs/mdx": "^7.0.0",
     "@astrojs/partytown": "^2.1.7",
     "@astrojs/rss": "^4.0.18",

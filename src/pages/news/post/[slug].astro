@@ -123,7 +123,11 @@ if (import.meta.env.DEV) {
     {
       news.data.cover?.type === "file" && (
         <div class="image-container">
-          <img src={thumbnail} alt="" />
+          <img
+            src={thumbnail}
+            alt=""
+            style={`view-transition-name: post-thumb-${slug}`}
+          />
         </div>
       )
     }
@@ -404,5 +408,77 @@ if (import.meta.env.DEV) {
       data-loading="lazy"
       crossorigin="anonymous"
       async></script>
+    <script>
+      // Native search-term highlighting. When arriving from the munja search
+      // box (which appends `?q=<query>`), highlight every matched term inside
+      // the article and scroll to the first hit — using the browser-native CSS
+      // Custom Highlight API (no DOM rewrite), with a <mark> fallback.
+      (() => {
+        const q = new URLSearchParams(location.search).get("q");
+        if (!q) return;
+        const terms = q
+          .toLowerCase()
+          .split(/\s+/)
+          .filter(Boolean);
+        if (!terms.length) return;
+
+        const root = document.querySelector(".markdown-body");
+        if (!root) return;
+
+        const ranges: Range[] = [];
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        let node: Node | null;
+        while ((node = walker.nextNode())) {
+          const text = (node.nodeValue ?? "").toLowerCase();
+          for (const t of terms) {
+            let i = text.indexOf(t);
+            while (i !== -1) {
+              const r = document.createRange();
+              r.setStart(node, i);
+              r.setEnd(node, i + t.length);
+              ranges.push(r);
+              i = text.indexOf(t, i + t.length);
+            }
+          }
+        }
+        if (!ranges.length) return;
+
+        const CSSns = CSS as unknown as {
+          highlights?: Map<string, unknown>;
+        };
+        if (CSSns.highlights && "Highlight" in window) {
+          // @ts-expect-error — Highlight is a recent global.
+          CSSns.highlights.set("munja-search", new Highlight(...ranges));
+        } else {
+          // Fallback: wrap in <mark>, in reverse so earlier offsets stay valid.
+          for (let k = ranges.length - 1; k >= 0; k--) {
+            try {
+              const m = document.createElement("mark");
+              m.className = "munja-hit";
+              ranges[k].surroundContents(m);
+            } catch {
+              /* skip ranges that cross element boundaries */
+            }
+          }
+        }
+
+        const target =
+          ranges[0].startContainer.parentElement ??
+          (ranges[0].startContainer as Element | null);
+        target?.scrollIntoView({ behavior: "smooth", block: "center" });
+      })();
+    </script>
+    <style is:global>
+      ::highlight(munja-search) {
+        background-color: #fde68a;
+        color: #111827;
+      }
+      .markdown-body mark.munja-hit {
+        background-color: #fde68a;
+        color: #111827;
+        border-radius: 2px;
+        padding: 0 1px;
+      }
+    </style>
   </article>
 </Layout>

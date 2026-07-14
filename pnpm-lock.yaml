@@ -29,6 +29,9 @@ importers:
       '@notionhq/client':
         specifier: ^5.22.0
         version: 5.22.0
+      '@pickhealer/munja':
+        specifier: ^0.1.0
+        version: 0.1.0
       astro:
         specifier: ^7.0.2
         version: 7.0.2(@astrojs/markdown-remark@7.2.0)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.13.2)(jiti@1.21.6)(rollup@4.40.0)
@@ -729,6 +732,9 @@ packages:
 
   '@oxc-project/types@0.137.0':
     resolution: {integrity: sha512-WT+Gb24i8hmvo85AIv2oEYouEXkRlKAlT9WaCa3TfLgNCN+GhrJOGZuIlMouAh38Qe4QOx26eUOVsq70qXrywA==}
+
+  '@pickhealer/munja@0.1.0':
+    resolution: {integrity: sha512-O3hr0otbm2ME5HLeTHLHMXrO1j2Hv5/VXWddLseiEmOIM0TP1dJYRf7SjwIeW1wak+xbuFnKQn9x2csOCLFyLw==}
 
   '@poppinss/colors@4.1.5':
     resolution: {integrity: sha512-FvdDqtcRCtz6hThExcFOgW0cWX+xwSMWcRuQe5ZEb2m7cVQOAVZOIMt+/v9RxGiD9/OY16qJBXK4CVKWAPalBw==}
@@ -3494,6 +3500,8 @@ snapshots:
   '@oslojs/encoding@1.1.0': {}
 
   '@oxc-project/types@0.137.0': {}
+
+  '@pickhealer/munja@0.1.0': {}
 
   '@poppinss/colors@4.1.5':
     dependencies:

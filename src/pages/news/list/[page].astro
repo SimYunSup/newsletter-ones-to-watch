@@ -2,64 +2,50 @@
 import { getCollection } from 'astro:content';
 import Layout from '@/components/BasicLayout.astro';
 import Post from '@/components/Post.astro';
+import Search from '@/components/Search.astro';
 import "@/styles/list-page.css";
 
 export const prerender = false;
 const { page } = Astro.params;
-// 
 const collection = await getCollection('news');
 if (!Number.isSafeInteger(Number(page)) || !collection) {
   return Astro.redirect('/404');
 }
 const validatedPage = Number(page as string);
 
-const list = collection.sort(
-  (a, b) => (b.data.properties.날짜?.start.getTime() ?? 0) - (a.data.properties.날짜?.start.getTime() ?? 0))
-  .slice(12 * (validatedPage - 1), 12 * validatedPage);
+const sorted = collection.sort(
+  (a, b) => (b.data.properties.날짜?.start.getTime() ?? 0) - (a.data.properties.날짜?.start.getTime() ?? 0));
+const list = sorted.slice(12 * (validatedPage - 1), 12 * validatedPage);
 const length = collection.length;
+const hasPrev = validatedPage > 1;
+const hasNext = length > 12 * validatedPage;
 ---
 
-<Layout pageTitle={`${page}페이지 | OTW for FE`}>
-    <div class="container">
-      <ul
-        class="article-grid"
-      >
-        {
-          list.map((post) => (
-            <Post post={post} />
-          ))
-        }
-      </ul>
-      <nav class="pagination-list">
-        <div>
-          {
-            validatedPage > 1 ? (
-              <a
-                class="pagination-previous"
-                href={`/news/list/${(validatedPage ?? 0) - 1}`}
-              >
-                이전
-              </a>
-            ) : null
-          }
-        </div>
-        <div>
-          {
-            length > 12 * validatedPage ? (
-              <a
-                class="pagination-next"
-                href={`/news/list/${(validatedPage ?? 0) + 1}`}
-              >
-                다음
-              </a>
-            ) : null
-          }
-        </div>
-      </nav>
-      <div class="newsletter-form">
-        <div class="form-title">최신 정보를 놓치지 마세요!</div>
+<Layout pageTitle={`${validatedPage}페이지 | OTW for FE`}>
+  <main class="archive">
+    <p class="mono-eyebrow">// archive</p>
+    <h1 class="archive-title">뉴스레터 아카이브</h1>
 
-        <script async data-uid="c7b118d8c2" src="https://ones-to-watch-for-frontend.kit.com/c7b118d8c2/index.js"></script>
-      </div>
+    <div class="archive-search">
+      <Search />
     </div>
+
+    <div class="post-list">
+      {list.map((post) => <Post post={post} />)}
+    </div>
+
+    <nav class="pager">
+      {hasPrev ? (
+        <a class="pager-btn" href={`/news/list/${validatedPage - 1}`}>← 이전</a>
+      ) : (
+        <span></span>
+      )}
+      <span class="pager-current">{validatedPage}</span>
+      {hasNext ? (
+        <a class="pager-btn" href={`/news/list/${validatedPage + 1}`}>다음 →</a>
+      ) : (
+        <span></span>
+      )}
+    </nav>
+  </main>
 </Layout>

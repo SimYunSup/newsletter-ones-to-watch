@@ -1,6 +1,7 @@
 import { Client, isFullPage, iteratePaginatedAPI } from "@notionhq/client";
 import type { Loader } from "astro/loaders";
 import { buildProcessor, NotionPageRenderer } from "./render";
+import { htmlToText, writeSearchIndex, type SearchDoc } from "../search/index-writer";
 
 /**
  * Notion loader for the Astro Content Layer API.
@@ -116,6 +117,33 @@ export function notionLoader({
 
       // Wait for rendering to complete
       await Promise.all(renderPromises);
+
+      // Build the munja full-text search index from every loaded entry (both
+      // freshly rendered and cache-hit) and ship it as a static asset that the
+      // browser search island fetches. Done here — the one point that sees the
+      // full, rendered Notion corpus — so build-time and query-time
+      // tokenization stay identical. Never fail the content load over search.
+      try {
+        const docs: SearchDoc[] = [];
+        for (const [id, entry] of store.entries()) {
+          const html = (entry.rendered as { html?: string } | undefined)?.html;
+          if (!html) continue;
+          const title = (entry.data as any)?.properties?.이름;
+          docs.push({
+            title: typeof title === "string" && title ? title : id,
+            category: "news",
+            href: `/news/post/${id}`,
+            body: htmlToText(html),
+            keywords: null,
+          });
+        }
+        const size = writeSearchIndex(docs);
+        logger.info(
+          `munja: indexed ${docs.length} entries → public/index.bin (${size} bytes)`
+        );
+      } catch (error) {
+        logger.warn(`munja: failed to build search index: ${String(error)}`);
+      }
     },
   };
 }

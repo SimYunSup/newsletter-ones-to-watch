@@ -3,19 +3,16 @@ import type { CollectionEntry } from 'astro:content';
 import { env } from 'cloudflare:workers';
 import styles from "@/styles/components/post.module.css";
 
-
 export interface Props {
   post: CollectionEntry<"news">;
 };
 const { post } = Astro.props;
-
 
 const { properties: data } = post.data;
 // Astro 6+ removed `Astro.locals.runtime.env`; bindings come from `cloudflare:workers`.
 if (post.data.cover?.type === "file") {
   const image = await env.IMAGES.head(`/thumbnail/${post.id}`);
   if (!image) {
-    
     await env.CRALWER_QUEUE.send({
       type: "image",
       url: post.data.cover.file.url,
@@ -23,26 +20,30 @@ if (post.data.cover?.type === "file") {
     });
   }
 }
+const thumbSrc =
+  post.data.cover?.type === "file"
+    ? (process.env.NODE_ENV === "production"
+        ? `${env.CDN_URL}/cdn-cgi/image/width=400/thumbnail/${post.id}`
+        : post.data.cover.file.url)
+    : undefined;
+const dateLabel = data.날짜?.start
+  ? new Intl.DateTimeFormat("ko-KR").format(data.날짜.start)
+  : null;
 ---
 
-<a href={`/news/post/${post.id}`} class={styles.link}>
-  <article class={styles.card}>
-    <div class={styles.content}>
-      {post.data.cover?.type === "file" && (
-        <div class={styles["image-container"]}>
-          <img 
-            src={process.env.NODE_ENV === "production" ? `${env.CDN_URL}/cdn-cgi/image/width=400/thumbnail/${post.id}` : post.data.cover.file.url}
-            alt=""
-          />
-        </div>
-      )}
-      <div class={styles.text}>
-        <h2 class={styles.title}>{data.이름}</h2>
-        <p class={styles.date}>
-          {data.날짜?.start ? new Intl.DateTimeFormat('ko-KR').format(
-            data.날짜.start,
-          ) : null}</p>
-      </div>
-    </div>
-  </article>
+<a href={`/news/post/${post.id}`} class={styles.row}>
+  <span class={styles.thumb}>
+    {thumbSrc ? (
+      <img
+        src={thumbSrc}
+        alt=""
+        loading="lazy"
+        style={`view-transition-name: post-thumb-${post.id}`}
+      />
+    ) : (
+      "thumbnail"
+    )}
+  </span>
+  <span class={styles.title}>{data.이름}</span>
+  {dateLabel && <span class={styles.date}>{dateLabel}</span>}
 </a>
