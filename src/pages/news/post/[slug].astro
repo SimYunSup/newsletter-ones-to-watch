@@ -123,7 +123,11 @@ if (import.meta.env.DEV) {
     {
       news.data.cover?.type === "file" && (
         <div class="image-container">
-          <img src={thumbnail} alt="" />
+          <img
+            src={thumbnail}
+            alt=""
+            style={`view-transition-name: post-thumb-${slug}`}
+          />
         </div>
       )
     }

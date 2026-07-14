@@ -1,6 +1,14 @@
-/* Editorial redesign — IBM Plex typography + indigo/slate token system.
-   Body: IBM Plex Sans KR. Mono accents (labels, dates, // comments): IBM Plex Mono. */
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap");
+/* Editorial redesign — Pretendard (Korean body) + IBM Plex Mono (accents),
+   indigo/slate token system. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.min.css");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+
+/* Native cross-document view transitions (MPA morph, no JS router). Elements
+   sharing a view-transition-name across pages morph — e.g. a list thumbnail
+   into the post's cover. Ignored by browsers that don't support it. */
+@view-transition {
+  navigation: auto;
+}
 
 html {
   scroll-behavior: smooth;
@@ -8,7 +16,7 @@ html {
 }
 
 :root {
-  --font-sans: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-sans: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Core editorial tokens — light (default). */

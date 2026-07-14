@@ -14,43 +14,18 @@
 
 /* Content wrapper with sidebar layout */
 .content-wrapper {
-  display: grid;
-  gap: 2rem;
+  display: block;
   margin: 0 auto;
-  max-width: 1400px;
-
-  @media (min-width: 1024px) {
-    grid-template-columns: 250px 1fr;
-    gap: 3rem;
-  }
-
-  @media (min-width: 1280px) {
-    grid-template-columns: 280px 1fr;
-  }
+  max-width: 760px;
 }
 
 /* Table of contents */
 .toc-container {
-  padding: 1.5rem;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 1rem;
-  margin-bottom: 1rem;
-
-  /* Mobile: collapsible */
-  @media (max-width: 1023px) {
-    margin-bottom: 2rem;
-  }
-
-  /* Desktop: sticky sidebar */
-  @media (min-width: 1024px) {
-    position: sticky;
-    top: 100px;
-    align-self: start;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    margin-bottom: 0;
-  }
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 2.5rem;
 }
 
 .toc-title {
@@ -72,10 +47,6 @@
   font-size: 1.25rem;
   padding: 0.25rem;
   transition: color 0.2s ease;
-
-  @media (min-width: 1024px) {
-    display: none;
-  }
 }
 
 .toc-toggle:hover {
@@ -86,13 +57,9 @@
   list-style: none;
   padding: 0;
   margin: 0;
-
-  /* Mobile: collapsible */
-  @media (max-width: 1023px) {
-    &.collapsed {
-      display: none;
-    }
-  }
+}
+.toc-list.collapsed {
+  display: none;
 }
 
 .toc-item {
@@ -123,6 +90,8 @@
 }
 
 .container {
+  max-width: 760px;
+  margin: 0 auto;
   padding-top: 1.5rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -172,9 +141,9 @@ article .markdown-body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 900px;
+  max-width: 760px;
   padding: 0 .5rem;
-  font-family: "SUITE", "Fluent Emoji Flat", -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, "sans-serif";
+  font-family: var(--font-sans), "Fluent Emoji Flat";
 
   @media (min-width: 769px) {
     padding: 0 1rem;
