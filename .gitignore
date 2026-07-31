@@ -29,5 +29,6 @@ pnpm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 .idea/*
+.vscode/
 .wrangler/*
 .dev.vars
