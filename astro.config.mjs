@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import cloudflare from "@astrojs/cloudflare";
 import { loadEnv } from "vite";
@@ -9,7 +8,7 @@ import partytown from '@astrojs/partytown';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://ones-to-watch.ethansup.net',
-  integrations: [sitemap(), mdx(), partytown()],
+  integrations: [mdx(), partytown()],
   trailingSlash: 'ignore',
   vite: {
     resolve: {

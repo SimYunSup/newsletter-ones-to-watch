@@ -92,6 +92,13 @@ if (messages.length > 0) {
   await env.CRALWER_QUEUE.sendBatch(messages);
 }
 news.rendered!.html = rendered.html();
+const topics = rendered("h2")
+  .map((_, el) => rendered(el).text().trim())
+  .get()
+  .filter(Boolean);
+const description = (
+  topics.length ? topics.join(", ") : news.data.properties.이름
+).slice(0, 160);
 const { Content } = await render(news);
 let thumbnail =
   news.data.cover?.type === "file"
@@ -113,7 +120,7 @@ if (import.meta.env.DEV) {
 
 <Layout
   pageTitle={news.data.properties.이름}
-  description={`${news.data.properties.이름} - ${new Intl.DateTimeFormat("ko-KR").format(new Date())}`}
+  description={description}
   imageUrl={thumbnail}
 >
   <!-- Reading progress bar -->

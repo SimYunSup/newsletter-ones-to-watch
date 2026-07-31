@@ -12,18 +12,24 @@ const {
   description,
   imageUrl,
 } = Astro.props;
+const canonical = new URL(
+  Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`,
+  Astro.site,
+);
+const ogImage = new URL(imageUrl ?? "/images/og.png", Astro.site);
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
   <meta name="generator" content={Astro.generator} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <title>{pageTitle}</title>
-  <meta property="og:image" content={imageUrl ?? "/images/og.png"} />
+  <meta property="og:image" content={ogImage} />
   <meta name="google-site-verification" content="ykyTYLh42SM_2IrBWFVopxp203cmvmcANgKIEtYWbfI" />
-  <meta property="og:url" content={Astro.url} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:url" content={canonical} />
   {description ? (
     <meta name="description" content={description} />
   ) : null}
