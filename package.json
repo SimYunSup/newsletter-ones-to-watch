@@ -27,11 +27,14 @@
     "@pickhealer/munja": "^0.1.0",
     "astro": "^7.0.2",
     "cheerio": "^1.2.0",
+    "devalue": "^5.9.0",
     "github-markdown-css": "^5.9.0",
     "gsap": "^3.15.0",
     "notion-rehype-k": "^1.1.6",
     "rehype-katex": "^6.0.0",
     "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
     "unified": "^11.0.0"
   },
   "devDependencies": {
